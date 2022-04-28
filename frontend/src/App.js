@@ -13,6 +13,7 @@ import Needs from './pages/Needs/Needs';
 import Propose from './pages/Propose/Propose';
 import CreateNeed from './pages/CreateNeed/CreateNeed';
 import CreatePropose from './pages/CreatePropose/CreatePropose';
+import NotFound from './pages/NotFound/NotFound';
 
 function App() {
   const [auth, setAuth] = useState(false);
@@ -37,6 +38,7 @@ function App() {
                          </RequireAuth>
                      }
               />
+              <Route path="*" element={<NotFound/>}/>
           </Route>
           <Route path="/login" element={<Login auth={auth} signIn={() => setAuth(true)}/>} />
           <Route path="/registration" element={<Registration/>} />
