@@ -1,10 +1,9 @@
 import * as React from 'react';
-import {Navigate} from "react-router-dom";
+import {Navigate, Link} from "react-router-dom";
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -64,7 +63,7 @@ function ForgotPass({auth}) {
                     </Button>
                     <Grid container>
                         <Grid item>
-                            <Link href="/registration" variant="body2">
+                            <Link to="/registration" variant="body2">
                                 {"Don't have an account? Sign Up"}
                             </Link>
                         </Grid>

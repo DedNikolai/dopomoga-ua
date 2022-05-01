@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useEffect} from 'react';
 import {
     Routes,
     Route,
@@ -14,9 +14,21 @@ import Propose from './pages/Propose/Propose';
 import CreateNeed from './pages/CreateNeed/CreateNeed';
 import CreatePropose from './pages/CreatePropose/CreatePropose';
 import NotFound from './pages/NotFound/NotFound';
+import {connect} from 'react-redux';
+import {getCurrentUser} from "./store/actions/user";
+import Preloader from './components/Preloader/Preloader';
 
-function App() {
-  const [auth, setAuth] = useState(false);
+function App(props) {
+  const {currentUserLoading, getCurrentUser, authLoading} = props;
+
+  useEffect(() => {
+      console.log("render")
+      getCurrentUser();
+  }, [getCurrentUser]);
+
+  if (currentUserLoading || authLoading) {
+      return <div className="wrapper"><Preloader/></div>
+  }
 
   return (
       <Routes>
@@ -25,7 +37,7 @@ function App() {
               <Route path="needs" element={<Needs/>}/>
               <Route path="needs/add-new"
                      element={
-                         <RequireAuth auth={auth}>
+                         <RequireAuth>
                              <CreateNeed/>
                          </RequireAuth>
                      }
@@ -33,18 +45,31 @@ function App() {
               <Route path="propose" element={<Propose/>}/>
               <Route path="propose/add-new"
                      element={
-                         <RequireAuth auth={auth}>
+                         <RequireAuth>
                              <CreatePropose/>
                          </RequireAuth>
                      }
               />
               <Route path="*" element={<NotFound/>}/>
           </Route>
-          <Route path="/login" element={<Login auth={auth} signIn={() => setAuth(true)}/>} />
+          <Route path="/login" element={<Login />} />
           <Route path="/registration" element={<Registration/>} />
           <Route path="/forgot-password" element={<ForgotPass/>} />
       </Routes>
   );
 }
 
-export default App;
+const mapStateToProps = ({user}) => {
+    return {
+        currentUserLoading: user.currentUserLoading,
+        authLoading: user.authLoading
+    }
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        getCurrentUser: () => dispatch(getCurrentUser())
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
