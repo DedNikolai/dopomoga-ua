@@ -12,15 +12,27 @@ import Container from '@mui/material/Container';
 import Copyright from '../../components/Copyright/Copyright';
 import {connect} from 'react-redux';
 import {userSignIn} from "../../store/actions/user";
+import {useForm} from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+
+const schema = yup.object({
+    email: yup.string().email('Invalid Email').required('Please input email'),
+    password: yup.string().required(),
+}).required();
+
 
 function Login({signIn, currentUser}) {
     const location = useLocation();
     const fromPage = location.state?.from?.pathname || '/';
+    const {register, handleSubmit, formState: {errors}, reset} = useForm({
+        resolver: yupResolver(schema),
+        mode: 'onBlur'
+    });
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        const data = new FormData(event.currentTarget);
+    const onSubmit = (data) => {
         signIn(data);
+        reset();
     };
 
     if (currentUser) {
@@ -44,26 +56,27 @@ function Login({signIn, currentUser}) {
                 <Typography component="h1" variant="h5">
                     Sign in
                 </Typography>
-                <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+                <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate sx={{ mt: 1 }}>
                     <TextField
+                        {...register("email")}
                         margin="normal"
                         required
                         fullWidth
                         id="email"
-                        label="Email Address"
-                        name="email"
+                        label={errors.email?.message ||"Email Address"}
                         autoComplete="email"
-                        autoFocus
+                        error={errors.hasOwnProperty('email')}
                     />
                     <TextField
+                        {...register("password")}
                         margin="normal"
                         required
                         fullWidth
-                        name="password"
-                        label="Password"
+                        label={errors.password?.message ||"Password"}
                         type="password"
                         id="password"
                         autoComplete="current-password"
+                        error={errors.hasOwnProperty('password')}
                     />
                     <Button
                         type="submit"

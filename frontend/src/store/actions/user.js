@@ -4,9 +4,9 @@ import api from '../api/FetchData';
 import { toast } from 'react-toastify';
 
 export const userSignIn = (data) => dispatch => {
-    dispatch({type: TYPES.AUTH_LOADING, payload: true})
+    dispatch({type: TYPES.AUTH_LOADING, payload: true});
     api.post('/auth/signin', data).then(res => {
-        dispatch({type: TYPES.AUTH_LOADING, payload: false})
+        dispatch({type: TYPES.AUTH_LOADING, payload: false});
         if (res.status === 200) {
             const token = res.data.accessToken;
             LocalStorageService.set(LocalStorageService.Keys.TOKEN, token);
@@ -14,7 +14,7 @@ export const userSignIn = (data) => dispatch => {
         }
     }).catch(() => {
         dispatch({type: TYPES.USER_LOADING, payload: false});
-        toast.error('Error', 'Wrong password or email!');
+        toast.error('Wrong password or email!');
     }).finally(() => {
         dispatch({type: TYPES.AUTH_LOADING, payload: false})
     })
@@ -29,4 +29,10 @@ export const getCurrentUser = () => dispatch => {
     }).finally(() => {
         dispatch({type: TYPES.USER_LOADING, payload: false})
     })
+};
+
+export const userSignOut = () => dispatch => {
+    LocalStorageService.delete(LocalStorageService.Keys.TOKEN);
+    dispatch({type: TYPES.SAVE_USER, payload: null});
+    dispatch(getCurrentUser())
 };

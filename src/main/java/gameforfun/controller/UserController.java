@@ -10,7 +10,6 @@ import gameforfun.dto.response.UserResponse;
 import gameforfun.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,7 +36,6 @@ public class UserController {
     return ResponseEntity.ok(userService.registerUser(request, signUpRequest));
   }
 
-  @PreAuthorize("hasAnyAuthority('USER, ADMIN')")
   @GetMapping("users/current")
   public ResponseEntity<UserResponse> getCurrentUser() {
     return ResponseEntity.ok(userService.getCurrentUser());
