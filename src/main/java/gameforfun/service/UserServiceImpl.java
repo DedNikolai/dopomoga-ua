@@ -24,6 +24,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -78,6 +79,9 @@ public class UserServiceImpl implements UserService {
     user.setFirstName(signUpRequest.getFirstName());
     user.setLastName(signUpRequest.getLastName());
 
+    // remove after adding email confirmation
+    //user.setConfirmed(true);
+
     User savedUser = userRepository.save(user);
 
     ConfirmationToken confirmationToken = new ConfirmationToken(user);
@@ -94,6 +98,14 @@ public class UserServiceImpl implements UserService {
     mailSender.send(email);
 
     return new ApiResponse(true,"We send the letter to your email to confirm registration");
+
+//    if (savedUser.getId() != null) {
+//      return new ApiResponse(true,"New User was created");
+//    } else {
+//      return new ApiResponse(false,"Error");
+//    }
+
+
   }
 
   private String getAppUrl(HttpServletRequest request) {
@@ -177,7 +189,19 @@ public class UserServiceImpl implements UserService {
 
   @Override
   public ApiResponse confirmRegistration(String confirmationToken) {
-    return null;
+    ConfirmationToken token = confirmationTokenRepository.findByConfirmationToken(confirmationToken);
+
+    if(token != null)
+    {
+      User user = userRepository.findByEmail(token.getUser().getEmail()).orElseThrow(() ->
+          new UsernameNotFoundException("User not found with email : " + token.getUser().getEmail()));
+
+      user.setConfirmed(true);
+      userRepository.save(user);
+      return new ApiResponse(true, "Account confirmed");
+    }
+
+    return new ApiResponse(false, "invalid token");
   }
 
   public void changeUserPassword(User user, String password) {

@@ -36,3 +36,35 @@ export const userSignOut = () => dispatch => {
     dispatch({type: TYPES.SAVE_USER, payload: null});
     dispatch(getCurrentUser())
 };
+
+export const userSignUp = data => dispatrh => {
+    dispatrh({type: TYPES.USER_SIGNING_UP, payload: true});
+    api.post('/auth/signup', data).then(res => {
+        if (res.status >= 200 && res.status < 300) {
+            if (res.data.success) {
+                dispatrh({type: TYPES.NEW_USER_REGISTERED, payload: true});
+                toast.success(res.data.message);
+            } else {
+                toast.error(res.data.message);
+            }
+        }
+    }).finally(() => dispatrh({type: TYPES.USER_SIGNING_UP, payload: false}))
+};
+
+export const resetSignUp = () => dispatch => {
+    dispatch({type: TYPES.NEW_USER_REGISTERED, payload: false});
+};
+
+export const confirmUser = token => dispatch => {
+    dispatch({type: TYPES.USER_CONFIRMING, payload: true})
+    api.get(`/user/confirm-registration?token=${token}`).then(res => {
+        if (res.status >= 200 && res.status < 300) {
+            if (res.data.success) {
+                toast.success(res.data.message);
+            } else {
+                toast.error(res.data.message)
+            }
+
+        }
+    }).finally(() => dispatch({type: TYPES.USER_CONFIRMING, payload: false}))
+};

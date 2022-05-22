@@ -32,18 +32,18 @@ public class ApplicationConfig {
   @Bean
   public JavaMailSender mailSender() {
     JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-    mailSender.setHost("smtp.gmail.com");
+    mailSender.setHost("email-smtp.eu-central-1.amazonaws.com");
     mailSender.setPort(587);
 
-    mailSender.setUsername("nikolai.blashchuk@gmail.com");
-    mailSender.setPassword("puk23puk23");
+    mailSender.setUsername("AKIAVDLCMHFFFE264POV");
+    mailSender.setPassword("BJGkxBPlOYCwquGkCquxFKswURRjDtuIKtmsz4BWX7Fe");
 
     Properties props = mailSender.getJavaMailProperties();
     props.put("mail.transport.protocol", "smtp");
     props.put("mail.smtp.auth", "true");
     props.put("mail.smtp.starttls.enable", "true");
     props.put("mail.debug", "true");
-    props.put("mail.smtp.ssl.trust", "smtp.gmail.com");
+    props.put("mail.smtp.ssl.trust", "email-smtp.eu-central-1.amazonaws.com");
 
     return mailSender;
   }

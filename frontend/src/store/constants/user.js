@@ -2,3 +2,8 @@ export const AUTH_LOADING = 'AUTH_LOADING';
 
 export const USER_LOADING = 'USER_LOADING';
 export const SAVE_USER = 'SAVE_USER';
+
+export const USER_SIGNING_UP = 'USER_SIGNING_UP';
+export const NEW_USER_REGISTERED = 'NEW_USER_REGISTERED';
+
+export const USER_CONFIRMING = 'USER_CONFIRMING';

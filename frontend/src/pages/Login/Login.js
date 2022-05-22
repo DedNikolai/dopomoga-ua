@@ -56,7 +56,7 @@ function Login({signIn, currentUser}) {
                 <Typography component="h1" variant="h5">
                     Sign in
                 </Typography>
-                <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate sx={{ mt: 1 }}>
+                <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ mt: 1 }}>
                     <TextField
                         {...register("email")}
                         margin="normal"

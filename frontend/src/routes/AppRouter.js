@@ -9,6 +9,7 @@ import Needs from '../pages/Needs/Needs';
 import Propose from '../pages/Propose/Propose';
 import CreateNeed from '../pages/CreateNeed/CreateNeed';
 import CreatePropose from '../pages/CreatePropose/CreatePropose';
+import ConfirmRegistration from '../pages/ConfirmRegistration/ConfirmRegistration';
 import NotFound from '../pages/NotFound/NotFound';
 
 function AppRouter() {
@@ -35,6 +36,7 @@ function AppRouter() {
                 <Route path="login" element={<Login />} />
                 <Route path="registration" element={<Registration/>} />
                 <Route path="forgot-password" element={<ForgotPass/>} />
+                <Route path="confirm-registration" element={<ConfirmRegistration/>} />
                 <Route path="*" element={<NotFound/>}/>
             </Route>
 
