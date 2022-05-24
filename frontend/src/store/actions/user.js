@@ -68,3 +68,40 @@ export const confirmUser = token => dispatch => {
         }
     }).finally(() => dispatch({type: TYPES.USER_CONFIRMING, payload: false}))
 };
+
+export const forgotPassSendEmail = data => dispatch => {
+    dispatch({type: TYPES.USER_FORGOT_PASS_SENDING, payload: true});
+    api.post('/user/resetPassword', data).then(res => {
+        if (res.status >= 200 && res.status < 300) {
+            if (res.data.success) {
+                dispatch({type: TYPES.FORGOT_PASS_SEND_SUCCESS, payload: true});
+                toast.success(res.data.message);
+            } else {
+                toast.error(res.data.message)
+            }
+
+        }
+    }).finally(() => dispatch({type: TYPES.USER_FORGOT_PASS_SENDING, payload: false}))
+};
+
+export const resetSuccessForgotPass = () => dispatch => {
+    dispatch({type: TYPES.FORGOT_PASS_SEND_SUCCESS, payload: false});
+};
+
+export const saveNewPass = data => dispatch => {
+    dispatch({type: TYPES.RESET_PASS_LOADING, payload: true});
+    api.post('/user/savePassword', data).then(res => {
+        if (res.status >= 200 && res.status < 300) {
+            if (res.data.success) {
+                dispatch({type: TYPES.RESET_PASS_SUCCESS, payload: true});
+                toast.success(res.data.message);
+            } else {
+                toast.error(res.data.message)
+            }
+        }
+    }).finally(() => dispatch({type: TYPES.RESET_PASS_LOADING, payload: false}))
+};
+
+export const resetNewPassPage = () => dispatch => {
+    dispatch({type: TYPES.RESET_PASS_SUCCESS, payload: false});
+};

@@ -6,7 +6,11 @@ const initialState = {
     authLoading: false,
     newUserRegistered: false,
     signingUpOfNewUser: false,
-    userConfirming: true
+    userConfirming: true,
+    forgotPassSending: false,
+    forgotPassSendSuccess: false,
+    resetPassSuccess: false,
+    resetPassLoading: false,
 };
 
 const user = (state = initialState, action) => {
@@ -23,9 +27,17 @@ const user = (state = initialState, action) => {
             return {...state, signingUpOfNewUser: action.payload};
         case TYPES.USER_CONFIRMING:
             return {...state, userConfirming: action.payload};
+        case TYPES.USER_FORGOT_PASS_SENDING:
+            return {...state, forgotPassSending: action.payload};
+        case TYPES.FORGOT_PASS_SEND_SUCCESS:
+            return {...state, forgotPassSendSuccess: action.payload};
+        case TYPES.RESET_PASS_SUCCESS:
+            return {...state, resetPassSuccess: action.payload};
+        case TYPES.RESET_PASS_LOADING:
+            return {...state, resetPassLoading: action.payload};
         default:
             return {...state}
     }
-}
+};
 
 export default user;

@@ -1,5 +1,5 @@
 import React, {useLayoutEffect} from 'react';
-import {Navigate, Link} from "react-router-dom";
+import {Navigate, useLocation, Link} from "react-router-dom";
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -11,41 +11,47 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Copyright from '../../components/Copyright/Copyright';
 import {connect} from 'react-redux';
-import {forgotPassSendEmail, resetSuccessForgotPass} from "../../store/actions/user";
+import {saveNewPass, resetNewPassPage} from "../../store/actions/user";
 import {useForm} from 'react-hook-form';
-import {yupResolver} from '@hookform/resolvers/yup';
+import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import {useSearchParams} from "react-router-dom/index";
 import Preloader from '../../components/Preloader/Preloader';
 
 const schema = yup.object({
-    email: yup.string().email('Invalid Email').required('Please input email'),
+    password: yup.string().required(),
+    confirmPassword: yup.string().oneOf([yup.ref('password'), null], 'Passwords must match'),
 }).required();
 
-function ForgotPass({currentUser, resetComponent, forgotPassSuccess, emailSending, sendEmail}) {
+
+function ResetPassword({currentUser, savePassword, updatePassLoading, passUpdatedSuccess, resetPage}) {
+    const [searchParams] = useSearchParams();
+    const token = searchParams.get('token');
+
+    useLayoutEffect(() => {
+        resetPage();
+    }, []);
+
     const {register, handleSubmit, formState: {errors}, reset} = useForm({
         resolver: yupResolver(schema),
         mode: 'onBlur'
     });
 
-    useLayoutEffect(() => {
-        resetComponent();
-    }, []);
-
     const onSubmit = (data) => {
-        sendEmail(data);
+        savePassword({...data, token});
         reset();
     };
 
     if (currentUser) {
-        return <Navigate to="/" />
+        return <Navigate to='/'  />
     }
 
-    if (emailSending) {
-        return <Preloader/>
+    if (updatePassLoading) {
+        return <Preloader />
     }
 
-    if (forgotPassSuccess) {
-        return <ForgotPassSuccessful/>
+    if (passUpdatedSuccess) {
+        return <ResetPassSuccessful/>
     }
 
     return (
@@ -63,19 +69,30 @@ function ForgotPass({currentUser, resetComponent, forgotPassSuccess, emailSendin
                     <LockOutlinedIcon />
                 </Avatar>
                 <Typography component="h1" variant="h5">
-                    Forgot Password
+                    Reset Password
                 </Typography>
                 <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ mt: 1 }}>
                     <TextField
-                        {...register("email")}
+                        {...register("password")}
                         margin="normal"
                         required
                         fullWidth
-                        id="email"
-                        autoComplete="email"
-                        autoFocus
-                        label={errors.email?.message ||"Email Address"}
-                        error={errors.hasOwnProperty('email')}
+                        label={errors.password?.message ||"Password"}
+                        type="password"
+                        id="password"
+                        autoComplete="current-password"
+                        error={errors.hasOwnProperty('password')}
+                    />
+                    <TextField
+                        {...register("confirmPassword")}
+                        margin="normal"
+                        required
+                        fullWidth
+                        label={errors.confirmPassword?.message ||"Confirm Password"}
+                        type="password"
+                        id="reset-password"
+                        autoComplete="confirm-password"
+                        error={errors.hasOwnProperty('confirmPassword')}
                     />
                     <Button
                         type="submit"
@@ -99,7 +116,7 @@ function ForgotPass({currentUser, resetComponent, forgotPassSuccess, emailSendin
     );
 };
 
-const ForgotPassSuccessful = () => {
+const ResetPassSuccessful = () => {
     return (
         <Container component="main" maxWidth="xs">
             <CssBaseline />
@@ -115,7 +132,7 @@ const ForgotPassSuccessful = () => {
                     <LockOutlinedIcon />
                 </Avatar>
                 <Typography component="h3" variant="h5" sx={{textAlign: 'center'}}>
-                    We send the latter to your email. Move through instruction ti change pass
+                   Password was changed Successfully
                 </Typography>
             </Box>
         </Container>
@@ -125,16 +142,16 @@ const ForgotPassSuccessful = () => {
 const mapStateToProps = ({user}) => {
     return {
         currentUser: user.currentUser,
-        forgotPassSuccess: user.forgotPassSendSuccess,
-        emailSending: user.forgotPassSending
+        updatePassLoading: user.resetPassLoading,
+        passUpdatedSuccess: user.resetPassSuccess
     }
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
     return {
-        sendEmail: data => dispatch(forgotPassSendEmail(data)),
-        resetComponent: () => dispatch(resetSuccessForgotPass()),
+        savePassword: data => dispatch(saveNewPass(data)),
+        resetPage: () => dispatch(resetNewPassPage())
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ForgotPass);
+export default connect(mapStateToProps, mapDispatchToProps)(ResetPassword);

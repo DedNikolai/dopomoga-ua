@@ -168,7 +168,7 @@ const RegistrSuccessful = () => {
             </Box>
         </Container>
     )
-}
+};
 
 const mapStateToProps = ({user}) => {
     return {
