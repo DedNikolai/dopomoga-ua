@@ -2,15 +2,24 @@ import {
     Navigate,
     useLocation,
 } from "react-router-dom";
+import {connect} from 'react-redux';
 
-function RequireAuth({children, auth, ...props}) {
+function RequireAuth({children, currentUser}) {
     const location = useLocation();
 
-    if (!auth) {
+    if (!currentUser) {
         return <Navigate to="/login" state={{from: location}} />
     }
 
     return children;
 };
 
-export default RequireAuth;
+const mapStateToProps = ({user}) => {
+    return {
+        currentUser: user.currentUser,
+    }
+};
+
+export default connect(mapStateToProps)(RequireAuth);
+
+
