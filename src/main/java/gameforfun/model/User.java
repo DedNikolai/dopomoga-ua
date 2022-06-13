@@ -1,7 +1,9 @@
 package gameforfun.model;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
@@ -14,6 +16,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.HashSet;
 import java.util.Set;
@@ -48,4 +51,9 @@ public class User extends DateAudit {
 
   @Column(columnDefinition = "boolean default false")
   private Boolean confirmed = false;
+
+  @OneToMany(mappedBy = "user")
+  @ToString.Exclude
+  @EqualsAndHashCode.Exclude
+  private Set<Need> needs;
 }
