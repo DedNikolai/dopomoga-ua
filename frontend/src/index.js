@@ -9,6 +9,7 @@ import store from './store/store';
 import {ThemeProvider} from '@mui/material/styles';
 import theme from './theme/theme';
 import ToastrMessage from './components/ToastrMessage/ToastrMessage';
+import './index.scss';
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

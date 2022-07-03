@@ -18,11 +18,9 @@ import java.util.Date;
 public class DateAudit {
   @CreatedDate
   @Column(name = "date_created")
-  @Temporal(TemporalType.DATE)
   private Date createdDate;
 
   @LastModifiedDate
   @Column(name = "date_modified")
-  @Temporal(TemporalType.DATE)
   private Date modifiedDate;
 }
