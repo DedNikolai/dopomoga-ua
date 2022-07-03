@@ -2,19 +2,11 @@ package gameforfun.model;
 
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Set;
 
 @Entity
@@ -37,13 +29,15 @@ public class Need extends DateAudit {
   @JoinColumn(name = "user_id")
   private User user;
 
-  @ManyToMany(mappedBy = "needs")
+  @ManyToMany(mappedBy = "needs", fetch = FetchType.EAGER)
+  @ToString.Exclude
+  @EqualsAndHashCode.Exclude
   private Set<NeedCategory> categories;
 
   @Column(name = "is_active")
   private Boolean isActive;
 
-  @Enumerated(EnumType.STRING)
-  @Column(name = "region")
+  @ManyToOne
+  @JoinColumn(name = "region")
   private Region region;
 }

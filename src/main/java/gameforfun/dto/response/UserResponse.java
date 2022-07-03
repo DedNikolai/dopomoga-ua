@@ -12,4 +12,5 @@ public class UserResponse {
   private Set<Role> roles;
   private String firstName;
   private String lastName;
+  private String phone;
 }

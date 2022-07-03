@@ -10,5 +10,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface NeedsRepository extends JpaRepository<Need, Long> {
-  Page<Need> findAllByCategoriesInAndRegionInOrderByCreatedDate(List<NeedCategory> categories, List<Region> regions, Pageable pageable);
+  Page<Need> findDistinctByCategoriesInAndRegionInOrderByCreatedDate(List<NeedCategory> categories, List<Region> regions, Pageable pageable);
 }

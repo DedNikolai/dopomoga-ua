@@ -1,0 +1,2 @@
+export const REGIONS_LOADING = 'REGIONS_LOADING';
+export const SAVE_REGIONS = 'SAVE_REGIONS';

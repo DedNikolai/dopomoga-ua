@@ -43,6 +43,12 @@ public class User extends DateAudit {
   @Column(name = "last_name")
   private String lastName;
 
+  @Column(name = "phone")
+  private String phone;
+
+  @Column(name = "photo")
+  private String photo;
+
   @ElementCollection(fetch = FetchType.EAGER)
   @CollectionTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"))
   @Column(name = "role")

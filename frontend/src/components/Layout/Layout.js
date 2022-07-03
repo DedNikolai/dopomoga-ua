@@ -13,7 +13,6 @@ function Layout({getCurrentUser, currentUserLoading, authLoading}) {
     
     return (
         <Fragment>
-            <Header/>
             {Loader({loading: currentUserLoading || authLoading})(Outlet)}
         </Fragment>
     )

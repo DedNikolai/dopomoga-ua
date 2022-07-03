@@ -12,8 +12,12 @@ import Select from '@mui/material/Select';
 import Checkbox from '@mui/material/Checkbox';
 import Button from '@mui/material/Button';
 import {getAllNeeds} from "../../store/actions/need";
+import {getAllCategories} from "../../store/actions/needCategory";
+import {getAllRegions} from "../../store/actions/region";
 import {connect} from 'react-redux';
 import Preloader from '../../components/Preloader/Preloader';
+import FilterAltIcon from '@mui/icons-material/FilterAlt';
+import FilterAltOffIcon from '@mui/icons-material/FilterAltOff';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -26,24 +30,16 @@ const MenuProps = {
     },
 };
 
-const names = [
-    'Oliver Hansen',
-    'Van Henry',
-    'April Tucker',
-    'Ralph Hubbard',
-    'Omar Alexander',
-    'Carlos Abbott',
-    'Miriam Wagner',
-    'Bradley Wilkerson',
-    'Virginia Andrews',
-    'Kelly Snyder',
-];
-
-
 function Needs(props) {
-    const {needs, needsLoading, getNeeds} = props;
+    const {needs, needsLoading, getNeeds, allCategories, categoriesLoading, 
+        getNeedsCategories, getRegions, allRegions, regionsLoading} = props;
     const [regions, setRegion] = useState([]);
     const [categories, setCategories] = useState([]);
+    const {content = [], number, totalPages, totalElements, size} = needs
+
+    const handleChangePage = (event, page) => {
+        getNeeds(regions, categories, page-1, 1);
+    }
 
     const handleChangeRegion = (event) => {
         const {
@@ -60,24 +56,32 @@ function Needs(props) {
     };
 
     const filterData = () => {
-        console.log(regions, categories)
+       getNeeds(regions, categories,)
     };
 
+    const clearData = () => {
+        setCategories([]);
+        setRegion([]);
+        getNeeds([], [], 0);
+    }
+
     useEffect(() => {
-        getNeeds();
+        getNeeds(regions, categories, 0);
+        getNeedsCategories();
+        getRegions();
     }, []);
 
-    if (needsLoading) {
+    if (needsLoading  || categoriesLoading  || regionsLoading) {
         return <Preloader/>
     }
 
-    console.log(needs);
+    console.log('render')
 
     return (
         <Box sx={{ flexGrow: 1, marginTop: '30px', padding: '0 20px'}}>
             <Box>
                 <Grid container spacing={2}>
-                    <Grid item xs={12} sm={4} md={5}>
+                    <Grid item xs={12} sm={4} md={4}>
                         <FormControl sx={{ m: 1, width: '100%', margin: 0 }} size="small">
                             <InputLabel id="demo-multiple-checkbox-label">Region</InputLabel>
                             <Select
@@ -87,19 +91,19 @@ function Needs(props) {
                                 value={regions}
                                 onChange={handleChangeRegion}
                                 input={<OutlinedInput label="Region" />}
-                                renderValue={(selected) => selected.join(', ')}
+                                renderValue={(selected) => selected.map(item => item.regionName).join(', ')}
                                 MenuProps={MenuProps}
                             >
-                                {names.map((name) => (
-                                    <MenuItem key={name} value={name}>
-                                        <Checkbox checked={regions.indexOf(name) > -1} />
-                                        <ListItemText primary={name} />
+                                {allRegions.map((region) => (
+                                    <MenuItem key={region.id} value={region}>
+                                        <Checkbox checked={regions.some(item => item.id === region.id)} />
+                                        <ListItemText primary={region.regionName} />
                                     </MenuItem>
                                 ))}
                             </Select>
                         </FormControl>
                     </Grid>
-                    <Grid item xs={12} sm={4} md={5}>
+                    <Grid item xs={12} sm={4} md={4}>
                         <FormControl sx={{ m: 1, width: '100%', margin: 0 }} size="small">
                             <InputLabel id="demo-multiple-checkbox-label">Category</InputLabel>
                             <Select
@@ -109,58 +113,90 @@ function Needs(props) {
                                 value={categories}
                                 onChange={handleChangeCategory}
                                 input={<OutlinedInput label="Categories" />}
-                                renderValue={(selected) => selected.join(', ')}
+                                renderValue={(selected) => selected.map(item => item.categoryName).join(', ')}
                                 MenuProps={MenuProps}
                             >
-                                {names.map((name) => (
-                                    <MenuItem key={name} value={name}>
-                                        <Checkbox checked={categories.indexOf(name) > -1} />
-                                        <ListItemText primary={name} />
+                                {allCategories.map((category) => (
+                                    <MenuItem key={category.id} value={category}>
+                                        <Checkbox checked={categories.some(item => item.id === category.id)} />
+                                        <ListItemText primary={category.categoryName} />
                                     </MenuItem>
                                 ))}
                             </Select>
                         </FormControl>
                     </Grid>
-                    <Grid item xs={12} sm={4} md={2}>
-                        <FormControl sx={{ m: 1, width: '100%', margin: 0 }} size="small">
-                            <Button
-                                variant="contained"
-                                size="large"
-                                color="secondary"
-                                onClick={filterData}
-                            >
-                                Filter
-                            </Button>
-                        </FormControl>
+                    <Grid item xs={12} sm={4} md={4} container spacing={2}>
+                        <Grid item xs={8} sm={8} md={8}>
+                                <Button
+                                    variant="contained" 
+                                    disableElevation
+                                    size="large"
+                                    color="secondary"
+                                    onClick={filterData}
+                                    sx={{width: '100%'}}
+                                    endIcon={<FilterAltIcon />}
+                                >
+                                    Filter
+                                </Button>
+                        </Grid>
+                        <Grid item xs={4} sm={4} md={4}>
+                                <Button
+                                    variant="contained" 
+                                    disableElevation
+                                    size="large"
+                                    color="secondary"
+                                    onClick={clearData}
+                                    sx={{width: '100%'}}
+                                    endIcon={<FilterAltOffIcon />}
+                                >
+                                    Clear
+                                </Button>
+                        </Grid>
                     </Grid>
                 </Grid>
             </Box>
             <Box sx={{ marginTop: '30px'}}>
                 <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-                    {Array.from(Array(6)).map((_, index) => (
+                    {content.map((need, index) => (
                         <Grid item xs={12} sm={4} md={4} key={index}>
-                            <NeedItem/>
+                            <NeedItem need={need}/>
                         </Grid>
                     ))}
                 </Grid>
             </Box>
-            <Box sx={{ margin: '30px auto', textAlign: 'center'}}>
-                <BasicPagination />
+            {
+                totalElements > size ?
+                <Box sx={{ margin: '30px auto', textAlign: 'center'}}>
+                <BasicPagination
+                    count={totalPages}
+                    page={number+1} 
+                    onChane={handleChangePage}
+                />
             </Box>
+            :
+            <></>
+            }
+            
         </Box>
     );
 };
 
-const mapStateToProps = ({need}) => {
+const mapStateToProps = ({need, needCategories, region}) => {
     return {
         needs: need.needs,
-        needsLoading: need.needsLoading
+        needsLoading: need.needsLoading,
+        allCategories: needCategories.needsCategories,
+        categoriesLoading: needCategories.needsCategoriesLoading,
+        allRegions: region.regions,
+        regionsLoading: region.regionsLoading
     }
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        getNeeds: (categories, regions) => dispatch(getAllNeeds(categories, regions))
+        getNeeds: (categories, regions, page, size) => dispatch(getAllNeeds(categories, regions, page, size)),
+        getNeedsCategories: () => dispatch(getAllCategories()),
+        getRegions: () => dispatch(getAllRegions())
     }
 };
 

@@ -9,6 +9,7 @@ import gameforfun.model.NeedCategory;
 import gameforfun.model.Region;
 import gameforfun.repository.NeedsCategoryRepository;
 import gameforfun.repository.NeedsRepository;
+import gameforfun.repository.RegionRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -26,6 +27,7 @@ public class NeedServiceImpl implements NeedService {
   private final NeedsRepository needsRepository;
   private final ModelMapper modelMapper;
   private final NeedsCategoryRepository needsCategoryRepository;
+  private final RegionRepository regionRepository;
 
   @Override
   public NeedResponse getNeedById(Long id) {
@@ -35,17 +37,33 @@ public class NeedServiceImpl implements NeedService {
 
   @Override
   public Page<NeedResponse> getNeedsByParams(Pageable pageable, String[] categories, String[] regions) {
-    Set<String> categoriesNamesSet = Set.of(categories);
-    Set<String> regionsSet = Set.of(regions);
-    List<Region> neededRegionsSet = Stream.of(Region.values())
-        .filter(value -> regionsSet.contains(value)).collect(Collectors.toList());
+
+    List<Region> neededRegionsSet;
+    List<NeedCategory> categoriesForSearch;
     List<NeedCategory> allCategories = needsCategoryRepository.findAll();
-    List<NeedCategory> categoriesForSearch = allCategories.stream()
-        .filter(category -> categoriesNamesSet.contains(categories))
-        .collect(Collectors.toList());
+    List<Region> allRegions = regionRepository.findAll();
+
+    if (regions.length == 0) {
+      neededRegionsSet = allRegions;
+    } else {
+      Set<String> regionsSet = Set.of(regions);
+      neededRegionsSet = allRegions.stream()
+              .filter(region -> regionsSet.contains(region.getRegionName())).collect(Collectors.toList());
+    }
+
+    if (categories.length == 0) {
+      categoriesForSearch = allCategories;
+    } else {
+      Set<String> categoriesNamesSet = Set.of(categories);
+      categoriesForSearch = allCategories.stream()
+              .filter(category -> categoriesNamesSet.contains(category.getCategoryName()))
+              .collect(Collectors.toList());
+    }
+
     Page<Need> needs = needsRepository
-        .findAllByCategoriesInAndRegionInOrderByCreatedDate(categoriesForSearch, neededRegionsSet, pageable);
-    return needs.map(need -> modelMapper.map(need, NeedResponse.class));
+        .findDistinctByCategoriesInAndRegionInOrderByCreatedDate(categoriesForSearch, neededRegionsSet, pageable);
+    Page<NeedResponse> needsByParams = needs.map(need -> modelMapper.map(need, NeedResponse.class));
+    return needsByParams;
   }
 
   @Override

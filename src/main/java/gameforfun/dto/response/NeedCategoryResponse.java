@@ -5,5 +5,5 @@ import lombok.Data;
 @Data
 public class NeedCategoryResponse {
   private Long id;
-  private String name;
+  private String categoryName;
 }

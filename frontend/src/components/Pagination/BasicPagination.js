@@ -5,10 +5,6 @@ import Stack from '@mui/material/Stack';
 export default function BasicPagination(props) {
     const {count = 10, page, onChane = () => {}} = props;
     const [defPage, setPage] = React.useState(1);
-    const handleChangePage = (event, value) => {
-        setPage(value);
-        onChane();
-    };
 
     return (
         <Stack spacing={2}>
@@ -18,7 +14,7 @@ export default function BasicPagination(props) {
                 showLastButton
                 count={count}
                 page={page || defPage}
-                onChange={handleChangePage}
+                onChange={onChane}
             />
         </Stack>
     );

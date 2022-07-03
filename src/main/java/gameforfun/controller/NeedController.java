@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,23 +37,26 @@ public class NeedController {
       @RequestParam(value = "categories") String[] categories,
       @RequestParam(value = "regions") String[] regions,
       @PageableDefault Pageable pageable) {
-    Page<NeedResponse> respons = needService.getNeedsByParams(pageable, categories, regions);
-    return ResponseEntity.ok(respons);
+    Page<NeedResponse> response = needService.getNeedsByParams(pageable, categories, regions);
+    return ResponseEntity.ok(response);
   }
 
   @PostMapping
+  @PreAuthorize("hasAuthority('USER')")
   public ResponseEntity<ApiResponse> createNeed(@RequestBody NeedRequest needRequest) {
     ApiResponse response = needService.createNeed(needRequest);
     return ResponseEntity.ok(response);
   }
 
   @PutMapping("{id}")
+  @PreAuthorize("hasAuthority('USER')")
   public ResponseEntity<ApiResponse> updateNeed(@RequestBody NeedRequest needRequest, @PathVariable Long id) {
     ApiResponse response = needService.updateNeed(needRequest, id);
     return ResponseEntity.ok(response);
   }
 
   @DeleteMapping("{id}")
+  @PreAuthorize("hasAuthority('USER')")
   public ResponseEntity<ApiResponse> deleteNeed(@PathVariable Long id) {
     ApiResponse response = needService.deleteNeed(id);
     return ResponseEntity.ok(response);
