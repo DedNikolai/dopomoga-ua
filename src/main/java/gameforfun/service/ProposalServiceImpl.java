@@ -1,14 +1,18 @@
 package gameforfun.service;
 
 import gameforfun.dto.request.NeedRequest;
+import gameforfun.dto.request.ProposalRequest;
 import gameforfun.dto.response.ApiResponse;
 import gameforfun.dto.response.NeedResponse;
+import gameforfun.dto.response.ProposalResponse;
 import gameforfun.exeption.ResourceNotFoundException;
-import gameforfun.model.Need;
 import gameforfun.model.Category;
+import gameforfun.model.Need;
+import gameforfun.model.Proposal;
 import gameforfun.model.Region;
 import gameforfun.repository.CategoryRepository;
 import gameforfun.repository.NeedsRepository;
+import gameforfun.repository.ProposalRepository;
 import gameforfun.repository.RegionRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -22,20 +26,20 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class NeedServiceImpl implements NeedService {
-  private final NeedsRepository needsRepository;
+public class ProposalServiceImpl implements ProposalService {
+  private final ProposalRepository proposalRepository;
   private final ModelMapper modelMapper;
   private final CategoryRepository categoryRepository;
   private final RegionRepository regionRepository;
 
   @Override
-  public NeedResponse getNeedById(Long id) {
-    Need need = needsRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Need", "id", id));
-    return modelMapper.map(need, NeedResponse.class);
+  public ProposalResponse getProposalById(Long id) {
+    Proposal proposal = proposalRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Proposal", "id", id));
+    return modelMapper.map(proposal, ProposalResponse.class);
   }
 
   @Override
-  public Page<NeedResponse> getNeedsByParams(Pageable pageable, String[] categories, String[] regions) {
+  public Page<ProposalResponse> getPropositionsByParams(Pageable pageable, String[] categories, String[] regions) {
 
     List<Region> neededRegionsSet;
     List<Category> categoriesForSearch;
@@ -59,32 +63,32 @@ public class NeedServiceImpl implements NeedService {
               .collect(Collectors.toList());
     }
 
-    Page<Need> needs = needsRepository
+    Page<Proposal> propositions = proposalRepository
         .findDistinctByCategoriesInAndRegionInAndIsActiveTrueOrderByCreatedDate(categoriesForSearch, neededRegionsSet, pageable);
-    Page<NeedResponse> needsByParams = needs.map(need -> modelMapper.map(need, NeedResponse.class));
+    Page<ProposalResponse> needsByParams = propositions.map(proposal -> modelMapper.map(proposal, ProposalResponse.class));
     return needsByParams;
   }
 
   @Override
-  public ApiResponse createNeed(NeedRequest needRequest) {
-    Need need = modelMapper.map(needRequest, Need.class);
-    needsRepository.save(need);
-    return new ApiResponse(true, "Need was created");
+  public ApiResponse createProposal(ProposalRequest proposalRequest) {
+    Proposal proposal = modelMapper.map(proposalRequest, Proposal.class);
+    proposalRepository.save(proposal);
+    return new ApiResponse(true, "Proposal was created");
   }
 
   @Override
-  public ApiResponse updateNeed(NeedRequest needRequest, Long id) {
-    Need need = modelMapper.map(needRequest, Need.class);
-    Need needFromDb = needsRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Need", "id", id));
-    need.setId(needFromDb.getId());
-    needsRepository.save(need);
-    return new ApiResponse(true, "Need aws updated");
+  public ApiResponse updateProposal(ProposalRequest proposalRequest, Long id) {
+    Proposal proposal = modelMapper.map(proposalRequest, Proposal.class);
+    Proposal proposalFromDb = proposalRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Proposal", "id", id));
+    proposal.setId(proposalFromDb.getId());
+    proposalRepository.save(proposal);
+    return new ApiResponse(true, "Proposal aws updated");
   }
 
   @Override
-  public ApiResponse deleteNeed(Long id) {
-    Need needFromDb = needsRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Need", "id", id));
-    needsRepository.delete(needFromDb);
-    return new ApiResponse(true, "Need was deleted");
+  public ApiResponse deleteProposal(Long id) {
+    Proposal proposalFromDB = proposalRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Proposal", "id", id));
+    proposalRepository.delete(proposalFromDB);
+    return new ApiResponse(true, "Proposal was deleted");
   }
 }

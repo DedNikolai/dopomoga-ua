@@ -9,7 +9,7 @@ INSERT INTO users_roles
 VALUES
 (1, 'ADMIN');
 
-INSERT INTO needs_category
+INSERT INTO category
 (id, date_created, date_modified, category_name)
 VALUES
 (1, '2020-01-29', '2020-01-29', 'Category1'),
@@ -30,6 +30,21 @@ VALUES
 
 INSERT INTO categories_needs
 (category_id, need_id)
+VALUES
+(1, 1),
+(2, 1),
+(2, 2),
+(2, 3);
+
+INSERT INTO proposal
+(id, date_created, date_modified, title, description, user_id, is_active, region)
+VALUES
+(1, '2020-01-29 13:10:00', '2020-01-29', 'Proposal #1', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat', 1, true, 1),
+(2, '2020-01-29 13:15:00', '2020-01-29', 'Proposal #2', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat', 2, true, 1),
+(3, '2020-01-29 13:20:00', '2020-01-29', 'Proposal #3', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat', 2, true, 2);
+
+INSERT INTO categories_propositions
+(category_id, proposal_id)
 VALUES
 (1, 1),
 (2, 1),

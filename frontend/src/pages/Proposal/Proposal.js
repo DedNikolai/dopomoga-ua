@@ -11,7 +11,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Select from '@mui/material/Select';
 import Checkbox from '@mui/material/Checkbox';
 import Button from '@mui/material/Button';
-import {getAllNeeds} from "../../store/actions/need";
+import {getAllPropositions} from "../../store/actions/propositions";
 import {getAllCategories} from "../../store/actions/category";
 import {getAllRegions} from "../../store/actions/region";
 import {connect} from 'react-redux';
@@ -30,15 +30,15 @@ const MenuProps = {
     },
 };
 
-function Needs(props) {
-    const {needs, needsLoading, getNeeds, allCategories, categoriesLoading, 
+function Proposal(props) {
+    const {propositions, propositionsLoading, getPropositions, allCategories, categoriesLoading, 
         getCategories, getRegions, allRegions, regionsLoading} = props;
     const [regions, setRegion] = useState([]);
     const [categories, setCategories] = useState([]);
-    const {content = [], number, totalPages, totalElements, size} = needs
+    const {content = [], number, totalPages, totalElements, size} = propositions
 
     const handleChangePage = (event, page) => {
-        getNeeds(regions, categories, page-1, 1);
+        getPropositions(regions, categories, page-1, 1);
     }
 
     const handleChangeRegion = (event) => {
@@ -56,22 +56,22 @@ function Needs(props) {
     };
 
     const filterData = () => {
-       getNeeds(regions, categories,)
+       getAllPropositions(regions, categories,)
     };
 
     const clearData = () => {
         setCategories([]);
         setRegion([]);
-        getNeeds([], [], 0);
+        getPropositions([], [], 0);
     }
 
     useEffect(() => {
-        getNeeds(regions, categories, 0);
+        getPropositions(regions, categories, 0);
         getCategories();
         getRegions();
     }, []);
 
-    if (needsLoading  || categoriesLoading  || regionsLoading) {
+    if (propositionsLoading  || categoriesLoading  || regionsLoading) {
         return <Preloader/>
     }
 
@@ -181,10 +181,10 @@ function Needs(props) {
     );
 };
 
-const mapStateToProps = ({need, categories, region}) => {
+const mapStateToProps = ({propositions, categories, region}) => {
     return {
-        needs: need.needs,
-        needsLoading: need.needsLoading,
+        propositions: propositions.propositions,
+        propositionsLoading: propositions.propositionsLoading,
         allCategories: categories.categories,
         categoriesLoading: categories.categoriesLoading,
         allRegions: region.regions,
@@ -194,10 +194,20 @@ const mapStateToProps = ({need, categories, region}) => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        getNeeds: (categories, regions, page, size) => dispatch(getAllNeeds(categories, regions, page, size)),
+        getPropositions: (categories, regions, page, size) => dispatch(getAllPropositions(categories, regions, page, size)),
         getCategories: () => dispatch(getAllCategories()),
         getRegions: () => dispatch(getAllRegions())
     }
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Needs);
+export default connect(mapStateToProps, mapDispatchToProps)(Proposal);
+
+// export default function Proposal(props) {
+//     useEffect(() => {
+//         console.log('effect')
+//     }, [])
+//     console.log('render');
+//     return (
+//         <h1>Proposition</h1>
+//     )
+// }

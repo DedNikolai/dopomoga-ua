@@ -6,12 +6,12 @@ import Login from '../pages/Login/Login';
 import Registration from '../pages/Registration/Registration';
 import ForgotPass from '../pages/ForgotPass/ForgotPass';
 import Needs from '../pages/Needs/Needs';
-import Propose from '../pages/Propose/Propose';
 import CreateNeed from '../pages/CreateNeed/CreateNeed';
 import CreatePropose from '../pages/CreatePropose/CreatePropose';
 import ConfirmRegistration from '../pages/ConfirmRegistration/ConfirmRegistration';
 import ResstPassword from '../pages/RestPassword/ResetPassword';
 import NotFound from '../pages/NotFound/NotFound';
+import Proposal from "../pages/Proposal/Proposal";
 
 function AppRouter() {
     return (
@@ -26,7 +26,7 @@ function AppRouter() {
                            </RequireAuth>
                        }
                 />
-                <Route path="propose" element={<Propose/>}/>
+                <Route path="propose" element={<Proposal/>}/>
                 <Route path="propose/add-new"
                        element={
                            <RequireAuth>
