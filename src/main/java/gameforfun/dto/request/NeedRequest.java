@@ -10,5 +10,5 @@ public class NeedRequest {
   private String title;
   private String description;
   private UserRequest user;
-  private Set<NeedCategoryRequest> categories;
+  private Set<CategoryRequest> categories;
 }

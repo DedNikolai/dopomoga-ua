@@ -1,7 +1,7 @@
 package gameforfun.controller;
 
-import gameforfun.dto.response.NeedCategoryResponse;
-import gameforfun.service.NeedCategoryService;
+import gameforfun.dto.response.CategoryResponse;
+import gameforfun.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,12 +13,12 @@ import java.util.Set;
 @RestController
 @RequestMapping("api/v1/needs-categories")
 @RequiredArgsConstructor
-public class NeedCategoryController {
-    private final NeedCategoryService needCategoryService;
+public class CategoryController {
+    private final CategoryService needCategoryService;
 
     @GetMapping
-    public ResponseEntity<Set<NeedCategoryResponse>> getAllCategories() {
-        Set<NeedCategoryResponse> categories = needCategoryService.getAllCategories();
+    public ResponseEntity<Set<CategoryResponse>> getAllCategories() {
+        Set<CategoryResponse> categories = needCategoryService.getAllCategories();
         return ResponseEntity.ok(categories);
     }
 }

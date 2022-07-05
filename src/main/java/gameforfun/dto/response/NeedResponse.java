@@ -1,6 +1,5 @@
 package gameforfun.dto.response;
 
-import gameforfun.model.Region;
 import lombok.Data;
 
 import java.util.Date;
@@ -13,6 +12,6 @@ public class NeedResponse {
   private String title;
   private String description;
   private UserResponse user;
-  private Set<NeedCategoryResponse> categories;
+  private Set<CategoryResponse> categories;
   private RegionResponse region;
 }

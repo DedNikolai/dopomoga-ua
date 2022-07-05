@@ -16,10 +16,10 @@ import javax.persistence.Table;
 import java.util.Set;
 
 @Entity
-@Table(name = "needs_category")
+@Table(name = "category")
 @NoArgsConstructor
 @Data
-public class NeedCategory extends DateAudit{
+public class Category extends DateAudit{
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,4 +34,11 @@ public class NeedCategory extends DateAudit{
       inverseJoinColumns = {@JoinColumn(name = "need_id")})
   @ToString.Exclude
   private Set<Need> needs;
+
+  @ManyToMany
+  @JoinTable(name = "categories_propositions",
+          joinColumns = {@JoinColumn(name = "category_id")},
+          inverseJoinColumns = {@JoinColumn(name = "proposal_id")})
+  @ToString.Exclude
+  private Set<Proposal> proposals;
 }

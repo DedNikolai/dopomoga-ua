@@ -10,10 +10,10 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-@Table(name = "needs")
+@Table(name = "proposal")
 @NoArgsConstructor
 @Data
-public class Need extends DateAudit {
+public class Proposal extends DateAudit {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,7 +29,7 @@ public class Need extends DateAudit {
   @JoinColumn(name = "user_id")
   private User user;
 
-  @ManyToMany(mappedBy = "needs", fetch = FetchType.EAGER)
+  @ManyToMany(mappedBy = "proposals", fetch = FetchType.EAGER)
   @ToString.Exclude
   @EqualsAndHashCode.Exclude
   private Set<Category> categories;
