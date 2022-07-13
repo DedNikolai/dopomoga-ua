@@ -3,6 +3,7 @@ package gameforfun.service;
 import gameforfun.dto.request.LoginRequest;
 import gameforfun.dto.request.PasswordRequest;
 import gameforfun.dto.request.SignUpRequest;
+import gameforfun.dto.request.UserRequest;
 import gameforfun.dto.response.ApiResponse;
 import gameforfun.dto.response.JwtAuthenticationResponse;
 import gameforfun.dto.response.UserResponse;
@@ -22,4 +23,8 @@ public interface UserService {
   ApiResponse changePassword(PasswordRequest passwordRequest);
 
   ApiResponse confirmRegistration(String confirmationToken);
+
+  ApiResponse updateUser(UserRequest userRequest);
+
+  ApiResponse updatePhoto(byte[] bytes, String imageName) throws Exception;
 }

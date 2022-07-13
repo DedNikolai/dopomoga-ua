@@ -3,16 +3,13 @@ package gameforfun.service;
 import gameforfun.dto.request.LoginRequest;
 import gameforfun.dto.request.PasswordRequest;
 import gameforfun.dto.request.SignUpRequest;
+import gameforfun.dto.request.UserRequest;
 import gameforfun.dto.response.ApiResponse;
 import gameforfun.dto.response.JwtAuthenticationResponse;
 import gameforfun.dto.response.UserResponse;
-import gameforfun.model.ConfirmationToken;
-import gameforfun.model.PasswordResetToken;
-import gameforfun.model.Role;
-import gameforfun.model.User;
-import gameforfun.repository.ConfirmationTokenRepository;
-import gameforfun.repository.PasswordResetTokenRepository;
-import gameforfun.repository.UserRepository;
+import gameforfun.exeption.ResourceNotFoundException;
+import gameforfun.model.*;
+import gameforfun.repository.*;
 import gameforfun.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -49,6 +46,8 @@ public class UserServiceImpl implements UserService {
   private final Environment env;
   private final ConfirmationTokenRepository confirmationTokenRepository;
   private final ModelMapper modelMapper;
+  private final FileSystemRepository fileSystemRepository;
+  private final UserPhotoRepository userPhotoRepository;
 
   @Override
   public JwtAuthenticationResponse authenticateUser(LoginRequest loginRequest) {
@@ -202,6 +201,35 @@ public class UserServiceImpl implements UserService {
     }
 
     return new ApiResponse(false, "invalid token");
+  }
+
+  @Override
+  public ApiResponse updateUser(UserRequest userRequest) {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    User user = userRepository.findByEmail(authentication.getName()).orElse(null);
+    User updatedUser = modelMapper.map(userRequest, User.class);
+    updatedUser.setId(user.getId());
+    userRepository.save(updatedUser);
+    return new ApiResponse(true, "User was updated");
+  }
+
+  @Override
+  public ApiResponse updatePhoto(byte[] bytes, String imageName) throws Exception {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    User user = userRepository.findByEmail(authentication.getName()).orElse(null);
+    UserPhoto photo = uploadPhoto(bytes, imageName);
+    user.setPhoto(photo);
+    userRepository.save(user);
+    return new ApiResponse(true, "Photo updated");
+  }
+
+  public UserPhoto uploadPhoto(byte[] bytes, String imageName) throws Exception {
+    String location = fileSystemRepository.save(bytes, imageName);
+    UserPhoto photo = new UserPhoto();
+    photo.setName(imageName);
+    photo.setLocation(location);
+
+    return userPhotoRepository.save(photo);
   }
 
   public void changeUserPassword(User user, String password) {

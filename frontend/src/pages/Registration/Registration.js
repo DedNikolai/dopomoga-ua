@@ -109,7 +109,6 @@ function Registration({currentUser, signUp, resetComponent, userSigningUp, newUs
                                 {...register("password")}
                                 required
                                 fullWidth
-                                label="Password"
                                 type="password"
                                 id="password"
                                 autoComplete="new-password"

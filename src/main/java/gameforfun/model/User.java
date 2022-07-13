@@ -5,19 +5,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import javax.persistence.CollectionTable;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -46,9 +34,6 @@ public class User extends DateAudit {
   @Column(name = "phone")
   private String phone;
 
-  @Column(name = "photo")
-  private String photo;
-
   @ElementCollection(fetch = FetchType.EAGER)
   @CollectionTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"))
   @Column(name = "role")
@@ -62,4 +47,10 @@ public class User extends DateAudit {
   @ToString.Exclude
   @EqualsAndHashCode.Exclude
   private Set<Need> needs;
+
+  @OneToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "photo_id")
+  @ToString.Exclude
+  @EqualsAndHashCode.Exclude
+  private UserPhoto photo;
 }

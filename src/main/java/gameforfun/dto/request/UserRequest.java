@@ -1,6 +1,7 @@
 package gameforfun.dto.request;
 
 import gameforfun.model.Role;
+import gameforfun.model.UserPhoto;
 import lombok.Data;
 
 import java.util.Set;
@@ -12,4 +13,6 @@ public class UserRequest {
   private Set<Role> roles;
   private String firstName;
   private String lastName;
+  private String phone;
+  private UserPhoto photo;
 }

@@ -105,3 +105,22 @@ export const saveNewPass = data => dispatch => {
 export const resetNewPassPage = () => dispatch => {
     dispatch({type: TYPES.RESET_PASS_SUCCESS, payload: false});
 };
+
+export const updateUserAvatar = (file) => dispatch => {
+    api.post('/user/image-update', file).then(res => {
+        if (res.status >= 200 && res.status < 300) {
+            toast.success(res.data.message);
+            dispatch(getCurrentUser())
+        }
+    })
+}
+
+export const updateUser = (user) => dispatch => {
+    api.post('/user/update', user).then(res => {
+        if (res.status >= 200 && res.status < 300) {
+            toast.success(res.data.message);
+            dispatch(getCurrentUser())
+        }
+    })
+
+}
