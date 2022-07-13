@@ -20,7 +20,7 @@ import AuthMenu from '../AuthMenu/AuthMenu';
 const settings = [
     {
         name: 'Профіль',
-        link: '/profile'
+        link: '/profile/'
     },
 
     {
@@ -29,7 +29,7 @@ const settings = [
     }
 ];
 
-function UserMenu({signOut}) {
+function UserMenu({signOut, currentUser}) {
     const [anchorElUser, setAnchorElUser] = React.useState(null);
 
     const handleOpenUserMenu = (event) => {
@@ -50,7 +50,7 @@ function UserMenu({signOut}) {
         <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar alt="Remy Sharp" src="#" />
+                    <Avatar alt="Remy Sharp" src={currentUser.photo.location} />
                 </IconButton>
             </Tooltip>
             <Menu
@@ -80,6 +80,16 @@ function UserMenu({signOut}) {
                         )
                     }
 
+                    if (setting.link === '/profile/') {
+                        return (
+                            <Link to={setting.link + currentUser.id} key={setting.link} variant="body2">
+                                <MenuItem onClick={handleCloseUserMenu}>
+                                    <Typography textAlign="center">{setting.name}</Typography>
+                                </MenuItem>
+                            </Link>
+                        )
+                    }
+
                     return (
                         <Link to={setting.link} key={setting.link} variant="body2">
                             <MenuItem onClick={handleCloseUserMenu}>
@@ -93,8 +103,10 @@ function UserMenu({signOut}) {
     )
 }
 
-const mapStatetoProps = ({}) => {
-    return {}
+const mapStatetoProps = ({user}) => {
+    return {
+        currentUser: user.currentUser
+    }
 };
 
 const mapDispatchToProps = dispatch => {

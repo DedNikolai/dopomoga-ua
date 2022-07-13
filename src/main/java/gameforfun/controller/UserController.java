@@ -1,22 +1,15 @@
 package gameforfun.controller;
 
 
-import gameforfun.dto.request.LoginRequest;
-import gameforfun.dto.request.PasswordRequest;
-import gameforfun.dto.request.ResetPasswordRequest;
-import gameforfun.dto.request.SignUpRequest;
+import gameforfun.dto.request.*;
 import gameforfun.dto.response.ApiResponse;
 import gameforfun.dto.response.UserResponse;
 import gameforfun.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -64,6 +57,18 @@ public class UserController {
   @PostMapping("/user/savePassword")
   public ResponseEntity<ApiResponse> savePassword(@RequestBody PasswordRequest passwordRequest) {
     ApiResponse response = userService.changePassword(passwordRequest);
+    return ResponseEntity.ok(response);
+  }
+
+  @PostMapping("/user/update")
+  public ResponseEntity<ApiResponse> updateUser(@RequestBody UserRequest request) {
+    ApiResponse response = userService.updateUser(request);
+    return ResponseEntity.ok(response);
+  }
+
+  @PostMapping("/user/image-update")
+  public ResponseEntity<ApiResponse> uploadImage(@RequestParam MultipartFile image) throws Exception {
+    ApiResponse response = userService.updatePhoto(image.getBytes(), image.getOriginalFilename());
     return ResponseEntity.ok(response);
   }
 }

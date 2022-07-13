@@ -56,7 +56,7 @@ function Proposal(props) {
     };
 
     const filterData = () => {
-       getAllPropositions(regions, categories,)
+       getPropositions(regions, categories, 9)
     };
 
     const clearData = () => {

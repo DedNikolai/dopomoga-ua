@@ -35,7 +35,7 @@ export default function NeedItem({need}) {
             <CardHeader
                 avatar={
                     <CustomAvatar
-                        image={need.user.photo}
+                        image={need.user.photo.location}
                         name={need.user.firstName + ' ' + need.user.lastName}
                     />
                 }

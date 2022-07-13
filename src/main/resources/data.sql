@@ -1,8 +1,14 @@
-INSERT INTO users
-(id, date_created, date_modified, email, password, confirmed, first_name, last_name, phone)
+INSERT INTO user_photo
+(id, date_created, date_modified, photo_name, location)
 VALUES
-(1, '2020-01-29', '2020-01-29', 'test@gmail.com', '$2a$04$kDaKwBckpCiw/PFvV4qpqOdMl9oypQVKaXvANn.oeKC9xrGiYdfmO', true, 'Test', 'Testovich', '063-123-45-67'),
-(2, '2020-01-29', '2020-01-29', 'nikolai.blashchuk@gmail.com', '$2a$04$kDaKwBckpCiw/PFvV4qpqOdMl9oypQVKaXvANn.oeKC9xrGiYdfmO', true, 'Nick', 'Blashchuk', '063-621-37-29');
+(1, '2020-01-29', '2020-01-29', 'photo1', 'https://childdevelopment.com.au/wp-content/uploads/what-is-child-development.jpg'),
+(2, '2020-01-29', '2020-01-29', 'photo2', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhsPurdrBuEZegVOC7f70_TMTqb-owyXms4g&usqp=CAU');
+
+INSERT INTO users
+(id, date_created, date_modified, email, password, confirmed, first_name, last_name, phone, photo_id)
+VALUES
+(1, '2020-01-29', '2020-01-29', 'test@gmail.com', '$2a$04$kDaKwBckpCiw/PFvV4qpqOdMl9oypQVKaXvANn.oeKC9xrGiYdfmO', true, 'Test', 'Testovich', '063-123-45-67', 1),
+(2, '2020-01-29', '2020-01-29', 'nikolai.blashchuk@gmail.com', '$2a$04$kDaKwBckpCiw/PFvV4qpqOdMl9oypQVKaXvANn.oeKC9xrGiYdfmO', true, 'Nick', 'Blashchuk', '063-621-37-29', 2);
 
 INSERT INTO users_roles
 (user_id, role)

@@ -7,7 +7,6 @@ import Loader from '../Loader/Loader';
 
 function Layout({getCurrentUser, currentUserLoading, authLoading}) {
     useEffect(() => {
-        console.log("load current user");
         getCurrentUser();
     }, [getCurrentUser]);
     

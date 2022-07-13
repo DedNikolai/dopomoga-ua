@@ -1,6 +1,7 @@
 package gameforfun.dto.response;
 
 import gameforfun.model.Role;
+import gameforfun.model.UserPhoto;
 import lombok.Data;
 
 import java.util.Set;
@@ -13,4 +14,5 @@ public class UserResponse {
   private String firstName;
   private String lastName;
   private String phone;
+  private UserPhoto photo;
 }

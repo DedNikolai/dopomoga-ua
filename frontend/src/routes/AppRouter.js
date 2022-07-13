@@ -12,12 +12,20 @@ import ConfirmRegistration from '../pages/ConfirmRegistration/ConfirmRegistratio
 import ResstPassword from '../pages/RestPassword/ResetPassword';
 import NotFound from '../pages/NotFound/NotFound';
 import Proposal from "../pages/Proposal/Proposal";
+import Profile from "../pages/Profile/Profile";
 
 function AppRouter() {
     return (
         <Routes>
             <Route path="/" element={<Layout/>}>
                 <Route index path="/" element={<Home/>}/>
+                <Route path="profile/:id"
+                       element={
+                           <RequireAuth>
+                               <Profile/>
+                           </RequireAuth>
+                       }
+                />
                 <Route path="needs" element={<Needs/>}/>
                 <Route path="needs/add-new"
                        element={
