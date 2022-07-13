@@ -7,13 +7,17 @@ import gameforfun.exeption.ResourceNotFoundException;
 import gameforfun.model.Need;
 import gameforfun.model.Category;
 import gameforfun.model.Region;
+import gameforfun.model.User;
 import gameforfun.repository.CategoryRepository;
 import gameforfun.repository.NeedsRepository;
 import gameforfun.repository.RegionRepository;
+import gameforfun.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,6 +31,7 @@ public class NeedServiceImpl implements NeedService {
   private final ModelMapper modelMapper;
   private final CategoryRepository categoryRepository;
   private final RegionRepository regionRepository;
+  private final UserRepository userRepository;
 
   @Override
   public NeedResponse getNeedById(Long id) {
@@ -86,5 +91,13 @@ public class NeedServiceImpl implements NeedService {
     Need needFromDb = needsRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Need", "id", id));
     needsRepository.delete(needFromDb);
     return new ApiResponse(true, "Need was deleted");
+  }
+
+  @Override
+  public Page<NeedResponse> getNeedsByCurrentUser(Pageable pageable) {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    User user = userRepository.findByEmail(authentication.getName()).orElse(null);
+    Page<Need> needs = needsRepository.findAllByUser(user, pageable);
+    return needs.map(need -> modelMapper.map(need, NeedResponse.class));
   }
 }

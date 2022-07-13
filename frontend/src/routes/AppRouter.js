@@ -13,6 +13,7 @@ import ResstPassword from '../pages/RestPassword/ResetPassword';
 import NotFound from '../pages/NotFound/NotFound';
 import Proposal from "../pages/Proposal/Proposal";
 import Profile from "../pages/Profile/Profile";
+import CurrentUserNeeds from "../pages/CurrentUserNeeds/CurrentUserNeeds";
 
 function AppRouter() {
     return (
@@ -31,6 +32,13 @@ function AppRouter() {
                        element={
                            <RequireAuth>
                                <CreateNeed/>
+                           </RequireAuth>
+                       }
+                />
+                <Route path="needs/user/:id"
+                       element={
+                           <RequireAuth>
+                               <CurrentUserNeeds/>
                            </RequireAuth>
                        }
                 />

@@ -61,4 +61,12 @@ public class NeedController {
     ApiResponse response = needService.deleteNeed(id);
     return ResponseEntity.ok(response);
   }
+
+  @PreAuthorize("hasAuthority('USER')")
+  @GetMapping("/current-user")
+  public ResponseEntity<Page<NeedResponse>> getNeeddsByCurrentUser(@PageableDefault Pageable pageable) {
+    Page<NeedResponse> needs = needService.getNeedsByCurrentUser(pageable);
+    return ResponseEntity.ok(needs);
+
+  }
 }

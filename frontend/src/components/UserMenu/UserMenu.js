@@ -20,7 +20,12 @@ import AuthMenu from '../AuthMenu/AuthMenu';
 const settings = [
     {
         name: 'Профіль',
-        link: '/profile/'
+        link: '/profile'
+    },
+
+    {
+        name: 'Moї потреби',
+        link: '/needs/user'
     },
 
     {
@@ -80,9 +85,19 @@ function UserMenu({signOut, currentUser}) {
                         )
                     }
 
-                    if (setting.link === '/profile/') {
+                    if (setting.link === '/profile') {
                         return (
-                            <Link to={setting.link + currentUser.id} key={setting.link} variant="body2">
+                            <Link to={setting.link + '/' + currentUser.id} key={setting.link} variant="body2">
+                                <MenuItem onClick={handleCloseUserMenu}>
+                                    <Typography textAlign="center">{setting.name}</Typography>
+                                </MenuItem>
+                            </Link>
+                        )
+                    }
+
+                    if (setting.link === '/needs/user') {
+                        return (
+                            <Link to={setting.link + '/' + currentUser.id} key={setting.link} variant="body2">
                                 <MenuItem onClick={handleCloseUserMenu}>
                                     <Typography textAlign="center">{setting.name}</Typography>
                                 </MenuItem>
