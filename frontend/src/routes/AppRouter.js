@@ -35,7 +35,7 @@ function AppRouter() {
                            </RequireAuth>
                        }
                 />
-                <Route path="needs/user/:id"
+                <Route path="profile/:id/needs"
                        element={
                            <RequireAuth>
                                <CurrentUserNeeds/>

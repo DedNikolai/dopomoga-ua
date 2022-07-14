@@ -30,6 +30,7 @@ public class UserController {
     return ResponseEntity.ok(userService.registerUser(request, signUpRequest));
   }
 
+  @PreAuthorize("hasAuthority('USER')")
   @GetMapping("users/current")
   public ResponseEntity<UserResponse> getCurrentUser() {
     return ResponseEntity.ok(userService.getCurrentUser());

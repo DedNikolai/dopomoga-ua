@@ -13,7 +13,8 @@ VALUES
 INSERT INTO users_roles
 (user_id, role)
 VALUES
-(1, 'ADMIN');
+(1, 'ADMIN'),
+(2, 'USER');
 
 INSERT INTO category
 (id, date_created, date_modified, category_name)

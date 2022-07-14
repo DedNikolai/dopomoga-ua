@@ -41,6 +41,14 @@ public class NeedController {
     return ResponseEntity.ok(response);
   }
 
+  @GetMapping("current")
+  @PreAuthorize("hasAuthority('USER')")
+  public ResponseEntity<Page<NeedResponse>> getNeedsByCurrentUser(@PageableDefault Pageable pageable) {
+    Page<NeedResponse> needs = needService.getNeedsByCurrentUser(pageable);
+    return ResponseEntity.ok(needs);
+
+  }
+
   @PostMapping
   @PreAuthorize("hasAuthority('USER')")
   public ResponseEntity<ApiResponse> createNeed(@RequestBody NeedRequest needRequest) {
@@ -60,13 +68,5 @@ public class NeedController {
   public ResponseEntity<ApiResponse> deleteNeed(@PathVariable Long id) {
     ApiResponse response = needService.deleteNeed(id);
     return ResponseEntity.ok(response);
-  }
-
-  @PreAuthorize("hasAuthority('USER')")
-  @GetMapping("/current-user")
-  public ResponseEntity<Page<NeedResponse>> getNeeddsByCurrentUser(@PageableDefault Pageable pageable) {
-    Page<NeedResponse> needs = needService.getNeedsByCurrentUser(pageable);
-    return ResponseEntity.ok(needs);
-
   }
 }
