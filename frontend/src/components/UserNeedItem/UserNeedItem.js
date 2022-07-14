@@ -1,43 +1,25 @@
 import * as React from 'react';
-import {styled} from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
-import Collapse from '@mui/material/Collapse';
-import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import CustomAvatar from '../CustomAvatar/CustomAvatar'
+import EditIcon from '@mui/icons-material/Edit';
+import {Link} from "react-router-dom";
+import { connect } from 'react-redux';
 
-const ExpandMore = styled((props) => {
-    const { ...other } = props;
-    return (
-        <IconButton {...other} />
-    )
-})(({ theme }) => ({
-    marginLeft: 'auto',
-    fontSize: '14px',
-    transition: theme.transitions.create('transform', {
-        duration: theme.transitions.duration.shortest,
-    }),
-}));
-
-export default function UserNeedItem({need}) {
-    const [expanded, setExpanded] = React.useState(false);
-
-    const handleExpandClick = () => {
-        setExpanded(!expanded);
-    };
+function UserNeedItem({need, user}) {
 
     return (
         <Card>
             <CardHeader
                 avatar={
-                    <CustomAvatar
-                        image={need.user.photo.location}
-                        name={need.user.firstName + ' ' + need.user.lastName}
-                    />
+                    <Link to={`/profile/${user.id}/needs/${need.id}`} variant="body2" style={{color: 'inherit'}}>
+                        <EditIcon
+                            fontSize='large'
+                            sx={{cursor: 'pointer'}}
+                        />
+                    </Link>
                 }
                 action={
                     <Typography paragraph>
@@ -56,28 +38,20 @@ export default function UserNeedItem({need}) {
                 <Typography variant="body2" color="text.secondary">
                     {need.categories.map(item => item.categoryName).join(', ')}
                 </Typography>
-                <ExpandMore
-                    onClick={handleExpandClick}
-                    aria-expanded={expanded}
-                    aria-label="show more"
-                >
-
-                    <ExpandMoreIcon />
-                </ExpandMore>
             </CardActions>
-            <Collapse in={expanded} timeout="auto" unmountOnExit>
-                <CardContent>
-                    <Typography paragraph>
-                        {`Name: ${need.user.firstName + ' ' + need.user.lastName}`}
-                    </Typography>
-                    <Typography paragraph>
-                        {`Email: ${need.user.email}`}
-                    </Typography>
-                    <Typography paragraph>
-                        {`Phone: ${need.user.phone}`}
-                    </Typography>
-                </CardContent>
-            </Collapse>
         </Card>
     );
-}
+};
+
+const mapStateToProps = ({user}) => {
+    return {
+       user: user.currentUser
+    }
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(UserNeedItem);

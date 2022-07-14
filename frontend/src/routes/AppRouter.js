@@ -14,6 +14,7 @@ import NotFound from '../pages/NotFound/NotFound';
 import Proposal from "../pages/Proposal/Proposal";
 import Profile from "../pages/Profile/Profile";
 import CurrentUserNeeds from "../pages/CurrentUserNeeds/CurrentUserNeeds";
+import EditNeed from "../pages/EditNeed/EditNeed";
 
 function AppRouter() {
     return (
@@ -28,7 +29,14 @@ function AppRouter() {
                        }
                 />
                 <Route path="needs" element={<Needs/>}/>
-                <Route path="needs/add-new"
+                <Route path="profile/:id/needs/:needId"
+                       element={
+                           <RequireAuth>
+                               <EditNeed/>
+                           </RequireAuth>
+                       }
+                />
+                <Route path="profile/:id/needs/create"
                        element={
                            <RequireAuth>
                                <CreateNeed/>
@@ -42,6 +50,7 @@ function AppRouter() {
                            </RequireAuth>
                        }
                 />
+            
                 <Route path="propose" element={<Proposal/>}/>
                 <Route path="propose/add-new"
                        element={
