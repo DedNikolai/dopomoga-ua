@@ -1,5 +1,6 @@
 import * as TYPES from '../constants/need';
 import api from '../api/FetchData';
+import { stepClasses } from '@mui/material';
 
 export const getAllNeeds = (regions, categories, page, size) => dispatch => {
     const regionsParams = regions.length ? regions.map(region => region.regionName).join(',') : '';
@@ -24,3 +25,8 @@ export const getUserNeeds = (page, size) => dispatch => {
         dispatch({type: TYPES.USER_NEEDS_LOADING, payload: false})
     })
 }
+
+export const createNeed = (data, setCreated) => {
+    console.log(data)
+    // setCreated(true);
+};
