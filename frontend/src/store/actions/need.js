@@ -1,6 +1,6 @@
 import * as TYPES from '../constants/need';
 import api from '../api/FetchData';
-import { stepClasses } from '@mui/material';
+import { toast } from 'react-toastify';
 
 export const getAllNeeds = (regions, categories, page, size) => dispatch => {
     const regionsParams = regions.length ? regions.map(region => region.regionName).join(',') : '';
@@ -27,6 +27,10 @@ export const getUserNeeds = (page, size) => dispatch => {
 }
 
 export const createNeed = (data, setCreated) => {
-    console.log(data)
-    // setCreated(true);
+    api.post('/needs', data).then(res => {
+        if (res.status >= 200 && res.status < 300) {
+            setCreated(true);
+            toast.success('Потребу створено');
+        }
+    })
 };

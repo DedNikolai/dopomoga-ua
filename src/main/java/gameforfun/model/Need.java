@@ -29,9 +29,12 @@ public class Need extends DateAudit {
   @JoinColumn(name = "user_id")
   private User user;
 
-  @ManyToMany(mappedBy = "needs", fetch = FetchType.EAGER)
+  @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
   @ToString.Exclude
   @EqualsAndHashCode.Exclude
+  @JoinTable(name = "categories_needs",
+          joinColumns = {@JoinColumn(name = "need_id")},
+          inverseJoinColumns = {@JoinColumn(name = "category_id")})
   private Set<Category> categories;
 
   @Column(name = "is_active")

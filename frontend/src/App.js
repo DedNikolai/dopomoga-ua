@@ -10,7 +10,6 @@ function App() {
       <AppRouter />
    </Fragment>
   )
-  // return <AppRouter />
 }
 
 export default App;

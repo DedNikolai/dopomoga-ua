@@ -1,5 +1,4 @@
 import {Fragment, useEffect} from 'react';
-import Header from '../Header/Header';
 import {Outlet} from "react-router-dom";
 import {connect} from 'react-redux';
 import {getCurrentUser} from "../../store/actions/user";
