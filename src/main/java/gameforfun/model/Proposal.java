@@ -27,6 +27,8 @@ public class Proposal extends DateAudit {
 
   @ManyToOne
   @JoinColumn(name = "user_id")
+  @ToString.Exclude
+  @EqualsAndHashCode.Exclude
   private User user;
 
   @ManyToMany(mappedBy = "proposals", fetch = FetchType.EAGER)
@@ -39,5 +41,7 @@ public class Proposal extends DateAudit {
 
   @ManyToOne
   @JoinColumn(name = "region")
+  @ToString.Exclude
+  @EqualsAndHashCode.Exclude
   private Region region;
 }

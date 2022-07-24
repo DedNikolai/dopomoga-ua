@@ -1,6 +1,7 @@
 import * as TYPES from '../constants/need';
 import api from '../api/FetchData';
 import { toast } from 'react-toastify';
+import { ListItem } from '@mui/material';
 
 export const getAllNeeds = (regions, categories, page, size) => dispatch => {
     const regionsParams = regions.length ? regions.map(region => region.regionName).join(',') : '';
@@ -34,3 +35,17 @@ export const createNeed = (data, setCreated) => {
         }
     })
 };
+
+export const getNeedById = (id, loading, setNeed) => {
+    loading(true)
+    api.get(`/needs/${id}`).then(res => {
+        if (res.status == 200) {
+            loading(false);
+            setNeed(res.data);
+        }
+    })
+}
+
+export const updateNeed = data => dispatch => {
+    console.log(data)
+}

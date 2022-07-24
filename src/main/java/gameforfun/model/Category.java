@@ -1,6 +1,7 @@
 package gameforfun.model;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
@@ -22,6 +23,7 @@ public class Category extends DateAudit{
 
   @ManyToMany(mappedBy = "categories", cascade = CascadeType.ALL)
   @ToString.Exclude
+  @EqualsAndHashCode.Exclude
   private Set<Need> needs;
 
   @ManyToMany
@@ -29,5 +31,6 @@ public class Category extends DateAudit{
           joinColumns = {@JoinColumn(name = "category_id")},
           inverseJoinColumns = {@JoinColumn(name = "proposal_id")})
   @ToString.Exclude
+  @EqualsAndHashCode.Exclude
   private Set<Proposal> proposals;
 }

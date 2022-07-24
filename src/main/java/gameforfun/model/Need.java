@@ -27,6 +27,8 @@ public class Need extends DateAudit {
 
   @ManyToOne
   @JoinColumn(name = "user_id")
+  @ToString.Exclude
+  @EqualsAndHashCode.Exclude
   private User user;
 
   @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -42,5 +44,7 @@ public class Need extends DateAudit {
 
   @ManyToOne
   @JoinColumn(name = "region")
+  @ToString.Exclude
+  @EqualsAndHashCode.Exclude
   private Region region;
 }
