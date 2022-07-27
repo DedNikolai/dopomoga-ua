@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useMemo} from 'react';
+import React, {useState, useEffect} from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
@@ -33,25 +33,29 @@ const MenuProps = {
 };
 
 function EditNeed(props) {
-    const {allCategories, categoriesLoading,
+    const {allCategories, categoriesLoading, submitForm,
         getCategories, getRegions, allRegions, regionsLoading} = props;
     const theme = useTheme();
     const [needLoading, setNeedLoading] = useState(true);
-    const {handleSubmit, control, reset, setValue} = useForm();
+    const {handleSubmit, control, reset} = useForm();
     const { errors } = useFormState({ 
         control
     })
-    const {id} = useParams();    
+    const {needId} = useParams();
+
+    const categories = allCategories.map(category => category.categoryName);
 
     useEffect(() => {
         getCategories();
         getRegions();
-        getNeedById(id, setNeedLoading, reset);
+        getNeedById(needId, setNeedLoading, reset);
     }, []);
 
     const onSubmit = (data) => {
-        console.log(data)
-        updateNeed(data);
+        const {categories} = data;
+        const set = new Set(categories);
+        data.categories = allCategories.filter(category => set.has(category.categoryName));
+        submitForm(data, needId, setNeedLoading, reset);
     };
 
     if (needLoading || regionsLoading || categoriesLoading) {
@@ -146,15 +150,15 @@ function EditNeed(props) {
                                                 error={!!errors.categories?.message}
                                                 multiple
                                                 input={<OutlinedInput error={!!errors.categories?.message} label="Категорія" />}
-                                                renderValue={(selected) => selected.map(item => item.categoryName).join(', ')}
+                                                renderValue={(selected) => selected.join(', ')}
                                                 MenuProps={MenuProps}
                                                 onChange={onChange}
 
                                             >
-                                                {allCategories.map((category) => (
-                                                    <MenuItem key={category.id} value={category}>
-                                                        <Checkbox checked={value && value.some(item => item.id === category.id)} />
-                                                        <ListItemText primary={category.categoryName} />
+                                                {categories.map((category) => (
+                                                    <MenuItem key={category} value={category}>
+                                                        <Checkbox checked={value.some(item => item === category)} />
+                                                        <ListItemText primary={category} />
                                                     </MenuItem>
                                                 ))}
                                             </Select>              
@@ -224,6 +228,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         getCategories: () => dispatch(getAllCategories()),
         getRegions: () => dispatch(getAllRegions()),
+        submitForm: (data, id, loading, reset) => dispatch(updateNeed(data, id, loading, reset))
     }
 }
 

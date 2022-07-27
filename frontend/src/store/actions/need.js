@@ -41,11 +41,19 @@ export const getNeedById = (id, loading, setNeed) => {
     api.get(`/needs/${id}`).then(res => {
         if (res.status == 200) {
             loading(false);
-            setNeed(res.data);
+            const need = res.data;
+            const {categories} = need;
+            need.categories = categories.map(category => category.categoryName)
+            setNeed(need);
         }
     })
 }
 
-export const updateNeed = data => dispatch => {
-    console.log(data)
+export const updateNeed = (data, id, loading, setNeed) => dispatch => {
+    api.put(`/needs/${id}`, data).then(res => {
+        if (res.status >= 200 && res.status < 300) {
+            toast.success(res.data.message);
+            getNeedById(id, loading, setNeed)
+        }
+    })
 }

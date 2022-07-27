@@ -89,10 +89,14 @@ public class NeedServiceImpl implements NeedService {
   }
 
   @Override
+  @Transactional
   public ApiResponse updateNeed(NeedRequest needRequest, Long id) {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    User user = userRepository.findByEmail(authentication.getName()).orElse(null);
     Need need = modelMapper.map(needRequest, Need.class);
     Need needFromDb = needsRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Need", "id", id));
     need.setId(needFromDb.getId());
+    need.setUser(user);
     needsRepository.save(need);
     return new ApiResponse(true, "Need aws updated");
   }
