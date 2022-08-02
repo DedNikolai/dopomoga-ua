@@ -31,7 +31,7 @@ public class Need extends DateAudit {
   @EqualsAndHashCode.Exclude
   private User user;
 
-  @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+  @ManyToMany(fetch = FetchType.EAGER)
   @ToString.Exclude
   @EqualsAndHashCode.Exclude
   @JoinTable(name = "categories_needs",

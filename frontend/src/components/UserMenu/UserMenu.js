@@ -23,6 +23,11 @@ const settings = [
     },
 
     {
+        name: 'Moя допомога',
+        link: '/proposal'
+    },
+
+    {
         name: 'Вийти',
         link: ''
     }
@@ -89,7 +94,7 @@ function UserMenu({signOut, currentUser}) {
                         )
                     }
 
-                    if (setting.link === '/needs') {
+                    if (setting.link === '/needs' || setting.link === '/proposal') {
                         return (
                             <Link to={'/profile/' + currentUser.id + setting.link} key={setting.link} variant="body2">
                                 <MenuItem onClick={handleCloseUserMenu}>

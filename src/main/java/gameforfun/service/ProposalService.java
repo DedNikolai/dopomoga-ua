@@ -16,4 +16,6 @@ public interface ProposalService {
   ApiResponse updateProposal(ProposalRequest proposalRequest, Long id);
 
   ApiResponse deleteProposal(Long id);
+
+  Page<ProposalResponse> getProposalsByCurrentUser(Pageable pageable);
 }

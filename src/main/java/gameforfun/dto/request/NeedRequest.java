@@ -14,4 +14,5 @@ public class NeedRequest {
   private UserRequest user;
   private Set<CategoryRequest> categories;
   private RegionRequest region;
+  private Boolean isActive;
 }
