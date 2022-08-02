@@ -47,7 +47,7 @@ export default function NeedItem({need}) {
                 title={need.title}
                 subheader={need.createdDate.slice(0, 10)}
             />
-            <CardContent>
+            <CardContent style={{height: '120px'}}>
                 <Typography variant="body2" color="text.secondary">
                     {need.description}
                 </Typography>

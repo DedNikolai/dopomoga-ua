@@ -1,26 +1,25 @@
 import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
-import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import {Link} from "react-router-dom";
 import {userSignOut} from '../../store/actions/user';
 import {connect} from 'react-redux';
-import AuthMenu from '../AuthMenu/AuthMenu';
 
 
 const settings = [
     {
         name: 'Профіль',
-        link: '/profile/'
+        link: '/profile'
+    },
+
+    {
+        name: 'Moї потреби',
+        link: '/needs'
     },
 
     {
@@ -80,9 +79,19 @@ function UserMenu({signOut, currentUser}) {
                         )
                     }
 
-                    if (setting.link === '/profile/') {
+                    if (setting.link === '/profile') {
                         return (
-                            <Link to={setting.link + currentUser.id} key={setting.link} variant="body2">
+                            <Link to={setting.link + '/' + currentUser.id} key={setting.link} variant="body2">
+                                <MenuItem onClick={handleCloseUserMenu}>
+                                    <Typography textAlign="center">{setting.name}</Typography>
+                                </MenuItem>
+                            </Link>
+                        )
+                    }
+
+                    if (setting.link === '/needs') {
+                        return (
+                            <Link to={'/profile/' + currentUser.id + setting.link} key={setting.link} variant="body2">
                                 <MenuItem onClick={handleCloseUserMenu}>
                                     <Typography textAlign="center">{setting.name}</Typography>
                                 </MenuItem>

@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from 'react';
-import {Navigate} from "react-router-dom";
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
@@ -7,7 +6,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import {connect} from 'react-redux';
-import {createNeed} from "../../store/actions/need";
+import {getNeedById, updateNeed} from "../../store/actions/need";
 import {useForm, Controller, useFormState} from 'react-hook-form';
 import Preloader from '../../components/Preloader/Preloader';
 import MenuItem from '@mui/material/MenuItem';
@@ -20,6 +19,7 @@ import InputLabel from '@mui/material/InputLabel';
 import {getAllCategories} from "../../store/actions/category";
 import {getAllRegions} from "../../store/actions/region";
 import { useTheme } from '@mui/material/styles';
+import {useParams} from "react-router";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -32,41 +32,33 @@ const MenuProps = {
     },
 };
 
-function CreateNeed(props) {
-    const {allCategories, categoriesLoading, 
-        getCategories, getRegions, allRegions, regionsLoading, user} = props;
-    const [createed, setCreated] = useState(false);
-    const [creating, setCreating] = useState(false);
-    const {handleSubmit, reset, control} = useForm({
-        defaultValues: {
-            title: '',
-            description: '',
-            region: '',
-            categories: []
-        }
-    });
+function EditNeed(props) {
+    const {allCategories, categoriesLoading, submitForm,
+        getCategories, getRegions, allRegions, regionsLoading} = props;
     const theme = useTheme();
-
+    const [needLoading, setNeedLoading] = useState(true);
+    const {handleSubmit, control, reset} = useForm();
     const { errors } = useFormState({ 
         control
     })
+    const {needId} = useParams();
+
+    const categories = allCategories.map(category => category.categoryName);
 
     useEffect(() => {
         getCategories();
         getRegions();
+        getNeedById(needId, setNeedLoading, reset);
     }, []);
 
     const onSubmit = (data) => {
-        setCreating(true);
-        createNeed(data, setCreated);
-        reset();
+        const {categories} = data;
+        const set = new Set(categories);
+        data.categories = allCategories.filter(category => set.has(category.categoryName));
+        submitForm(data, needId, setNeedLoading, reset);
     };
 
-    if (createed) {
-        return <Navigate to={`/profile/${user.id}/needs`} />
-    }
-
-    if (creating || regionsLoading || categoriesLoading) {
+    if (needLoading || regionsLoading || categoriesLoading) {
         return <Preloader />
     }
 
@@ -84,7 +76,7 @@ function CreateNeed(props) {
                 }}
             >
                 <Typography component="h1" variant="h5">
-                    Створити Потребу
+                    Змінити Потребу
                 </Typography>
                 <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ mt: 3 }}>
                     <Grid container spacing={2}>
@@ -119,7 +111,7 @@ function CreateNeed(props) {
                                     required: 'Ведить опис',
                                     validate: value => {
                                         if(value.length < 20) return 'Занаддо коротко'
-                                        if(value.length > 200) return 'Занаддо довго'
+                                        if(value.length > 250) return 'Занаддо довго'
                                     }
                                 }}
                                 render={({
@@ -133,13 +125,13 @@ function CreateNeed(props) {
                                         label={errors.description?.message ||"Опис"}
                                         error={!!errors.description?.message}
                                         multiline
-                                        rows={4}
+                                        rows={6}
                                     />
                                 )}
                             />
                         </Grid>
                         <Grid item xs={12}>
-                        <Controller
+                                 <Controller
                                     control={control}
                                     name="categories"
                                     rules={{ 
@@ -152,21 +144,21 @@ function CreateNeed(props) {
                                             <InputLabel error={!!errors.categories?.message}>Категорія</InputLabel>
                                             <Select
                                                 name="categories"
-                                                value={value}
+                                                value={value || []}
                                                 id="categories"
                                                 label={errors?.categories?.message || "Категорія"}
                                                 error={!!errors.categories?.message}
                                                 multiple
                                                 input={<OutlinedInput error={!!errors.categories?.message} label="Категорія" />}
-                                                renderValue={(selected) => selected.map(item => item.categoryName).join(', ')}
+                                                renderValue={(selected) => selected.join(', ')}
                                                 MenuProps={MenuProps}
                                                 onChange={onChange}
 
                                             >
-                                                {allCategories.map((category) => (
-                                                    <MenuItem key={category.id} value={category}>
-                                                        <Checkbox checked={value.some(item => item.id === category.id)} />
-                                                        <ListItemText primary={category.categoryName} />
+                                                {categories.map((category) => (
+                                                    <MenuItem key={category} value={category}>
+                                                        <Checkbox checked={value.some(item => item === category)} />
+                                                        <ListItemText primary={category} />
                                                     </MenuItem>
                                                 ))}
                                             </Select>              
@@ -175,7 +167,7 @@ function CreateNeed(props) {
                                 />              
                         </Grid>
                         <Grid item xs={12}>
-                                    <Controller 
+                                    <Controller
                                         control={control}
                                         name="region"
                                         rules={{
@@ -223,21 +215,21 @@ function CreateNeed(props) {
     );
 };
 
-const mapStateToProps = ({user, categories, region}) => {
+const mapStateToProps = ({categories, region}) => {
     return {
-        user: user.currentUser,
         allCategories: categories.categories,
         categoriesLoading: categories.categoriesLoading,
         allRegions: region.regions,
-        regionsLoading: region.regionsLoading
+        regionsLoading: region.regionsLoading,
     }
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
         getCategories: () => dispatch(getAllCategories()),
-        getRegions: () => dispatch(getAllRegions())
+        getRegions: () => dispatch(getAllRegions()),
+        submitForm: (data, id, loading, reset) => dispatch(updateNeed(data, id, loading, reset))
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(CreateNeed);
+export default connect(mapStateToProps, mapDispatchToProps)(EditNeed);

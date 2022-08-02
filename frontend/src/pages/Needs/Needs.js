@@ -75,8 +75,6 @@ function Needs(props) {
         return <Preloader/>
     }
 
-    console.log('render')
-
     return (
         <Box sx={{ flexGrow: 1, marginTop: '30px', padding: '0 20px'}}>
             <Box>

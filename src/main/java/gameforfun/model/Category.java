@@ -1,18 +1,11 @@
 package gameforfun.model;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Set;
 
 @Entity
@@ -28,11 +21,9 @@ public class Category extends DateAudit{
   @Column(name = "category_name")
   private String categoryName;
 
-  @ManyToMany
-  @JoinTable(name = "categories_needs",
-      joinColumns = {@JoinColumn(name = "category_id")},
-      inverseJoinColumns = {@JoinColumn(name = "need_id")})
+  @ManyToMany(mappedBy = "categories", cascade = CascadeType.ALL)
   @ToString.Exclude
+  @EqualsAndHashCode.Exclude
   private Set<Need> needs;
 
   @ManyToMany
@@ -40,5 +31,6 @@ public class Category extends DateAudit{
           joinColumns = {@JoinColumn(name = "category_id")},
           inverseJoinColumns = {@JoinColumn(name = "proposal_id")})
   @ToString.Exclude
+  @EqualsAndHashCode.Exclude
   private Set<Proposal> proposals;
 }

@@ -41,6 +41,14 @@ public class NeedController {
     return ResponseEntity.ok(response);
   }
 
+  @GetMapping("current")
+  @PreAuthorize("hasAuthority('USER')")
+  public ResponseEntity<Page<NeedResponse>> getNeedsByCurrentUser(@PageableDefault Pageable pageable) {
+    Page<NeedResponse> needs = needService.getNeedsByCurrentUser(pageable);
+    return ResponseEntity.ok(needs);
+
+  }
+
   @PostMapping
   @PreAuthorize("hasAuthority('USER')")
   public ResponseEntity<ApiResponse> createNeed(@RequestBody NeedRequest needRequest) {
