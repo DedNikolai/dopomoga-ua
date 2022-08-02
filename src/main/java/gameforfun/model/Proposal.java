@@ -31,9 +31,12 @@ public class Proposal extends DateAudit {
   @EqualsAndHashCode.Exclude
   private User user;
 
-  @ManyToMany(mappedBy = "proposals", fetch = FetchType.EAGER)
+  @ManyToMany(fetch = FetchType.EAGER)
   @ToString.Exclude
   @EqualsAndHashCode.Exclude
+  @JoinTable(name = "categories_propositions",
+      joinColumns = {@JoinColumn(name = "proposal_id")},
+      inverseJoinColumns = {@JoinColumn(name = "category_id")})
   private Set<Category> categories;
 
   @Column(name = "is_active")

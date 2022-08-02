@@ -1,7 +1,6 @@
 import * as TYPES from '../constants/need';
 import api from '../api/FetchData';
-import { toast } from 'react-toastify';
-import { ListItem } from '@mui/material';
+import {toast} from 'react-toastify';
 
 export const getAllNeeds = (regions, categories, page, size) => dispatch => {
     const regionsParams = regions.length ? regions.map(region => region.regionName).join(',') : '';
@@ -25,7 +24,7 @@ export const getUserNeeds = (page, size) => dispatch => {
     }).finally(() => {
         dispatch({type: TYPES.USER_NEEDS_LOADING, payload: false})
     })
-}
+};
 
 export const createNeed = (data, setCreated) => {
     api.post('/needs', data).then(res => {
@@ -39,7 +38,7 @@ export const createNeed = (data, setCreated) => {
 export const getNeedById = (id, loading, setNeed) => {
     loading(true)
     api.get(`/needs/${id}`).then(res => {
-        if (res.status == 200) {
+        if (res.status === 200) {
             loading(false);
             const need = res.data;
             const {categories} = need;
@@ -49,7 +48,7 @@ export const getNeedById = (id, loading, setNeed) => {
     })
 }
 
-export const updateNeed = (data, id, loading, setNeed) => dispatch => {
+export const updateNeed = (data, id, loading, setNeed) => {
     api.put(`/needs/${id}`, data).then(res => {
         if (res.status >= 200 && res.status < 300) {
             toast.success(res.data.message);

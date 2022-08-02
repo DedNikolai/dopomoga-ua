@@ -14,7 +14,9 @@ import NotFound from '../pages/NotFound/NotFound';
 import Proposal from "../pages/Proposal/Proposal";
 import Profile from "../pages/Profile/Profile";
 import CurrentUserNeeds from "../pages/CurrentUserNeeds/CurrentUserNeeds";
+import CurrentUserProposal from "../pages/CurrentUserProposal/CurrentUserProposal";
 import EditNeed from "../pages/EditNeed/EditNeed";
+import EditProposal from "../pages/EditProposal/EditProposal";
 
 function AppRouter() {
     return (
@@ -36,6 +38,13 @@ function AppRouter() {
                            </RequireAuth>
                        }
                 />
+                <Route path="profile/:id/proposal/:proposalId"
+                       element={
+                           <RequireAuth>
+                               <EditProposal/>
+                           </RequireAuth>
+                       }
+                />
                 <Route path="profile/:id/needs/create"
                        element={
                            <RequireAuth>
@@ -43,10 +52,25 @@ function AppRouter() {
                            </RequireAuth>
                        }
                 />
+                <Route path="profile/:id/proposal/create"
+                       element={
+                           <RequireAuth>
+                               <CreatePropose/>
+                           </RequireAuth>
+                       }
+                />
                 <Route path="profile/:id/needs"
                        element={
                            <RequireAuth>
                                <CurrentUserNeeds/>
+                           </RequireAuth>
+                       }
+                />
+
+                <Route path="profile/:id/proposal"
+                       element={
+                           <RequireAuth>
+                               <CurrentUserProposal/>
                            </RequireAuth>
                        }
                 />

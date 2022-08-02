@@ -26,10 +26,7 @@ public class Category extends DateAudit{
   @EqualsAndHashCode.Exclude
   private Set<Need> needs;
 
-  @ManyToMany
-  @JoinTable(name = "categories_propositions",
-          joinColumns = {@JoinColumn(name = "category_id")},
-          inverseJoinColumns = {@JoinColumn(name = "proposal_id")})
+  @ManyToMany(mappedBy = "categories", cascade = CascadeType.ALL)
   @ToString.Exclude
   @EqualsAndHashCode.Exclude
   private Set<Proposal> proposals;

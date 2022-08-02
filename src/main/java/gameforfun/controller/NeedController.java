@@ -46,7 +46,6 @@ public class NeedController {
   public ResponseEntity<Page<NeedResponse>> getNeedsByCurrentUser(@PageableDefault Pageable pageable) {
     Page<NeedResponse> needs = needService.getNeedsByCurrentUser(pageable);
     return ResponseEntity.ok(needs);
-
   }
 
   @PostMapping
