@@ -20,6 +20,7 @@ import {getAllCategories} from "../../store/actions/category";
 import {getAllRegions} from "../../store/actions/region";
 import { useTheme } from '@mui/material/styles';
 import {useParams} from "react-router";
+import FormControlLabel from '@mui/material/FormControlLabel';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -33,7 +34,7 @@ const MenuProps = {
 };
 
 function EditNeed(props) {
-    const {allCategories, categoriesLoading, submitForm,
+    const {allCategories, categoriesLoading,
         getCategories, getRegions, allRegions, regionsLoading} = props;
     const theme = useTheme();
     const [needLoading, setNeedLoading] = useState(true);
@@ -55,7 +56,7 @@ function EditNeed(props) {
         const {categories} = data;
         const set = new Set(categories);
         data.categories = allCategories.filter(category => set.has(category.categoryName));
-        submitForm(data, needId, setNeedLoading, reset);
+        updateNeed(data, needId, setNeedLoading, reset);
     };
 
     if (needLoading || regionsLoading || categoriesLoading) {
@@ -201,13 +202,33 @@ function EditNeed(props) {
                                
                         </Grid>
                     </Grid>
+                    <Grid item xs={12} sm={12}>
+                        <Controller
+                            control={control}
+                            name="isActive"
+                            render={({
+                                         field: { onChange, value},
+                                     }) => (
+                                <FormControlLabel
+                                    control={
+                                        <Checkbox
+                                            checked={value}
+                                            onChange={onChange}
+                                            color="success"
+                                        />
+                                    }
+                                    label="Активна"
+                                />
+                            )}
+                        />
+                    </Grid>
                     <Button
                         type="submit"
                         fullWidth
                         variant="contained"
                         sx={{ mt: 3, mb: 2 }}
                     >
-                        Створити
+                        Зберегти
                     </Button>
                 </Box>
             </Box>
@@ -228,7 +249,6 @@ const mapDispatchToProps = (dispatch) => {
     return {
         getCategories: () => dispatch(getAllCategories()),
         getRegions: () => dispatch(getAllRegions()),
-        submitForm: (data, id, loading, reset) => dispatch(updateNeed(data, id, loading, reset))
     }
 }
 

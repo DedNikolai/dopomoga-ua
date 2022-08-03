@@ -7,8 +7,13 @@ import Typography from '@mui/material/Typography';
 import EditIcon from '@mui/icons-material/Edit';
 import {Link} from "react-router-dom";
 import { connect } from 'react-redux';
+import CheckCircleOutlineRoundedIcon from '@mui/icons-material/CheckCircleOutlineRounded';
+import HighlightOffRoundedIcon from '@mui/icons-material/HighlightOffRounded';
+import Grid from '@mui/material/Grid';
+import { useTheme } from '@mui/material/styles';
 
 function UserNeedItem({need, user}) {
+    const theme = useTheme();
 
     return (
         <Card>
@@ -34,10 +39,22 @@ function UserNeedItem({need, user}) {
                     {need.description}
                 </Typography>
             </CardContent>
-            <CardActions disableSpacing>
+            <CardActions disableSpacing sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
                 <Typography variant="body2" color="text.secondary">
                     {need.categories.map(item => item.categoryName).join(', ')}
                 </Typography>
+                {
+                    need.isActive ?
+                        <Grid variant="body2" color={theme.palette.primary.green} sx={{display: 'flex', alignItems: 'center'}}>
+                            <Typography sx={{marginRight: '10px'}}>Активна</Typography>
+                            <Typography><CheckCircleOutlineRoundedIcon/></Typography>
+                        </Grid>
+                        :
+                        <Grid variant="body2" color={theme.palette.primary.red} sx={{display: 'flex', alignItems: 'center'}}>
+                            <Typography sx={{marginRight: '10px'}}>Зупинено</Typography>
+                            <Typography><HighlightOffRoundedIcon/></Typography>
+                        </Grid>
+                }
             </CardActions>
         </Card>
     );

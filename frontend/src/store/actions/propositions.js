@@ -46,7 +46,7 @@ export const getProposalById = (id, loading, setProposal) => {
             setProposal(need);
         }
     })
-}
+};
 
 export const updateProposal= (data, id, loading, setProposal) => {
     api.put(`/propositions/${id}`, data).then(res => {
@@ -56,4 +56,4 @@ export const updateProposal= (data, id, loading, setProposal) => {
             getProposalById(id, loading, setProposal)
         }
     })
-}
+};
