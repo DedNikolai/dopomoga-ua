@@ -14,4 +14,5 @@ public class NeedResponse {
   private UserResponse user;
   private Set<CategoryResponse> categories;
   private RegionResponse region;
+  private Boolean isActive;
 }

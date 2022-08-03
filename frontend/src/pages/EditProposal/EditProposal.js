@@ -20,6 +20,7 @@ import {getAllCategories} from "../../store/actions/category";
 import {getAllRegions} from "../../store/actions/region";
 import { useTheme } from '@mui/material/styles';
 import {useParams} from "react-router";
+import FormControlLabel from '@mui/material/FormControlLabel';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -200,6 +201,26 @@ function EditProposal(props) {
                                     />          
                                
                         </Grid>
+                    </Grid>
+                    <Grid item xs={12} sm={12}>
+                        <Controller
+                            control={control}
+                            name="isActive"
+                            render={({
+                                         field: { onChange, value},
+                                     }) => (
+                                <FormControlLabel
+                                    control={
+                                        <Checkbox
+                                            checked={value}
+                                            onChange={onChange}
+                                            color="success"
+                                        />
+                                    }
+                                    label="Активна"
+                                />
+                            )}
+                        />
                     </Grid>
                     <Button
                         type="submit"
