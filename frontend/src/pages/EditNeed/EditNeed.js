@@ -6,7 +6,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import {connect} from 'react-redux';
-import {getNeedById, updateNeed} from "../../store/actions/need";
+import {getNeedById, updateNeed, deleteNeed} from "../../store/actions/need";
 import {useForm, Controller, useFormState} from 'react-hook-form';
 import Preloader from '../../components/Preloader/Preloader';
 import MenuItem from '@mui/material/MenuItem';
@@ -21,6 +21,8 @@ import {getAllRegions} from "../../store/actions/region";
 import { useTheme } from '@mui/material/styles';
 import {useParams} from "react-router";
 import FormControlLabel from '@mui/material/FormControlLabel';
+import DeleteForeverRoundedIcon from '@mui/icons-material/DeleteForeverRounded';
+import {Navigate} from "react-router-dom";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -33,16 +35,33 @@ const MenuProps = {
     },
 };
 
+const classes = {
+    cardHeader: {
+        width: '100%',
+        display: 'flex',
+        justifyContent: 'space-between'
+    },
+
+    deleteIcon: {
+        color: '#ff9800',
+        fontSize: '28px',
+        cursor: 'pointer'
+    },
+
+};
+
 function EditNeed(props) {
-    const {allCategories, categoriesLoading,
+    const {allCategories, categoriesLoading, user,
         getCategories, getRegions, allRegions, regionsLoading} = props;
-    const theme = useTheme();
     const [needLoading, setNeedLoading] = useState(true);
+    const [deleted, setDeleted] = useState(false);
+    const [deleting, setDeleting] = useState(false);
     const {handleSubmit, control, reset} = useForm();
     const { errors } = useFormState({ 
         control
     })
     const {needId} = useParams();
+    const theme = useTheme();
 
     const categories = allCategories.map(category => category.categoryName);
 
@@ -59,8 +78,12 @@ function EditNeed(props) {
         updateNeed(data, needId, setNeedLoading, reset);
     };
 
-    if (needLoading || regionsLoading || categoriesLoading) {
+    if (needLoading || regionsLoading || categoriesLoading || deleting) {
         return <Preloader />
+    }
+
+    if (deleted) {
+        return <Navigate to={`/profile/${user.id}/needs`}  />
     }
 
     return (
@@ -76,9 +99,17 @@ function EditNeed(props) {
                     boxShadow: theme.boxShadow
                 }}
             >
-                <Typography component="h1" variant="h5">
-                    Змінити Потребу
-                </Typography>
+                <Grid variant="h5" sx={classes.cardHeader}>
+                    <Typography component="h1" variant="h5">
+                        Змінити Потребу
+                    </Typography>
+                    <Typography>
+                       <DeleteForeverRoundedIcon
+                           sx={classes.deleteIcon}
+                           onClick={() => deleteNeed(needId, setDeleted, setDeleting)}
+                       />
+                    </Typography>
+                </Grid>
                 <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ mt: 3 }}>
                     <Grid container spacing={2}>
                         <Grid item xs={12} sm={12}>
@@ -236,12 +267,13 @@ function EditNeed(props) {
     );
 };
 
-const mapStateToProps = ({categories, region}) => {
+const mapStateToProps = ({categories, region, user}) => {
     return {
         allCategories: categories.categories,
         categoriesLoading: categories.categoriesLoading,
         allRegions: region.regions,
         regionsLoading: region.regionsLoading,
+        user: user.currentUser
     }
 };
 

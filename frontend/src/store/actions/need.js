@@ -46,7 +46,7 @@ export const getNeedById = (id, loading, setNeed) => {
             setNeed(need);
         }
     })
-}
+};
 
 export const updateNeed = (data, id, loading, setNeed) => {
     api.put(`/needs/${id}`, data).then(res => {
@@ -55,4 +55,17 @@ export const updateNeed = (data, id, loading, setNeed) => {
             getNeedById(id, loading, setNeed)
         }
     })
-}
+};
+
+export const deleteNeed = (id, deleted, deleting) => {
+    deleting(true);
+    api.deleteApi(`/needs/${id}`).then(res => {
+        if (res.status >= 200 && res.status < 300) {
+            deleted(true);
+            deleting(false);
+            toast.success(res.data.message);
+        }
+    })
+};
+
+
