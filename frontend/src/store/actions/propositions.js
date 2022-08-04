@@ -57,3 +57,14 @@ export const updateProposal= (data, id, loading, setProposal) => {
         }
     })
 };
+
+export const deleteProposal = (id, deleted, deleting) => {
+    deleting(true);
+    api.deleteApi(`/propositions/${id}`).then(res => {
+        if (res.status >= 200 && res.status < 300) {
+            deleted(true);
+            deleting(false);
+            toast.success(res.data.message);
+        }
+    })
+};
