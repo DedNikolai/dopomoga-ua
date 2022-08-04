@@ -1,4 +1,5 @@
 import * as TYPES from '../constants/need';
+import * as MODAL_TYPES from '../constants/modal';
 import api from '../api/FetchData';
 import {toast} from 'react-toastify';
 
@@ -66,6 +67,12 @@ export const deleteNeed = (id, deleted, deleting) => {
             toast.success(res.data.message);
         }
     })
+};
+
+export const openDeleteModal = (id, deleted, deleting) => dispatch => {
+    dispatch({type: MODAL_TYPES.OPEN_MODAL})
+    dispatch({type: MODAL_TYPES.SET_MODAL_TEXT, payload: 'Видалити Потребу?'});
+    dispatch({type: MODAL_TYPES.SET_MODAL_FUNC, payload: () => deleteNeed(id, deleted, deleting)})
 };
 
 

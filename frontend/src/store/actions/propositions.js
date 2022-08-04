@@ -1,6 +1,8 @@
 import * as TYPES from '../constants/propositions';
+import * as MODAL_TYPES from '../constants/modal';
 import api from '../api/FetchData';
 import {toast} from 'react-toastify';
+import {deleteNeed} from "./need";
 
 export const getAllPropositions = (regions, categories, page, size) => dispatch => {
     const regionsParams = regions.length ? regions.map(region => region.regionName).join(',') : '';
@@ -67,4 +69,10 @@ export const deleteProposal = (id, deleted, deleting) => {
             toast.success(res.data.message);
         }
     })
+};
+
+export const openDeleteModal = (id, deleted, deleting) => dispatch => {
+    dispatch({type: MODAL_TYPES.OPEN_MODAL})
+    dispatch({type: MODAL_TYPES.SET_MODAL_TEXT, payload: 'Видалити Домопогу?'});
+    dispatch({type: MODAL_TYPES.SET_MODAL_FUNC, payload: () => deleteProposal(id, deleted, deleting)})
 };

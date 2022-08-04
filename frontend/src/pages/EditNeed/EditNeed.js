@@ -6,7 +6,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import {connect} from 'react-redux';
-import {getNeedById, updateNeed, deleteNeed} from "../../store/actions/need";
+import {updateNeed, getNeedById, openDeleteModal} from "../../store/actions/need";
 import {useForm, Controller, useFormState} from 'react-hook-form';
 import Preloader from '../../components/Preloader/Preloader';
 import MenuItem from '@mui/material/MenuItem';
@@ -51,7 +51,7 @@ const classes = {
 };
 
 function EditNeed(props) {
-    const {allCategories, categoriesLoading, user,
+    const {allCategories, categoriesLoading, user, deleteNeed,
         getCategories, getRegions, allRegions, regionsLoading} = props;
     const [needLoading, setNeedLoading] = useState(true);
     const [deleted, setDeleted] = useState(false);
@@ -281,6 +281,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         getCategories: () => dispatch(getAllCategories()),
         getRegions: () => dispatch(getAllRegions()),
+        deleteNeed: (id, deleted, deleting) => dispatch(openDeleteModal(id, deleted, deleting))
     }
 }
 
