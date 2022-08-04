@@ -6,7 +6,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import {connect} from 'react-redux';
-import {getProposalById, updateProposal, deleteProposal} from "../../store/actions/propositions";
+import {getProposalById, updateProposal, openDeleteModal} from "../../store/actions/propositions";
 import {useForm, Controller, useFormState} from 'react-hook-form';
 import Preloader from '../../components/Preloader/Preloader';
 import MenuItem from '@mui/material/MenuItem';
@@ -23,7 +23,6 @@ import {useParams} from "react-router";
 import FormControlLabel from '@mui/material/FormControlLabel';
 import DeleteForeverRoundedIcon from '@mui/icons-material/DeleteForeverRounded';
 import {Navigate} from "react-router-dom";
-import {deleteNeed} from "../../store/actions/need";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -52,7 +51,7 @@ const classes = {
 };
 
 function EditProposal(props) {
-    const {allCategories, categoriesLoading, user,
+    const {allCategories, categoriesLoading, user, deleteProposal,
         getCategories, getRegions, allRegions, regionsLoading} = props;
     const theme = useTheme();
     const [proposalLoading, setProposalLoading] = useState(true);
@@ -282,6 +281,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         getCategories: () => dispatch(getAllCategories()),
         getRegions: () => dispatch(getAllRegions()),
+        deleteProposal: (id, deleted, deleting) => dispatch(openDeleteModal(id, deleted, deleting))
     }
 }
 
