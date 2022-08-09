@@ -35,6 +35,10 @@ function Login({signIn, currentUser}) {
         reset();
     };
 
+    if (hasAuthority(currentUser, 'ADMIN')) {
+        return <Navigate to='/admin'  />
+    }
+
     if (currentUser) {
         return <Navigate to={fromPage}  />
     }
@@ -118,3 +122,8 @@ const mapDispatchToProps = dispatch => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
+
+const hasAuthority = (user, authirity) => {
+    const set = new Set(user?.roles);
+    return set.has(authirity);
+};
