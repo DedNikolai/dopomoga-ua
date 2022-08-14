@@ -1,5 +1,6 @@
 import {Route, Routes,} from "react-router-dom";
 import Layout from '../components/Layout/Layout';
+import AdminLayout from "../components/AdminLayout/AdminLayout";
 import RequireAuth from '../components/RequireAuth/RequireAuth';
 import Home from '../pages/Home/Home';
 import Login from '../pages/Login/Login';
@@ -17,6 +18,13 @@ import CurrentUserNeeds from "../pages/CurrentUserNeeds/CurrentUserNeeds";
 import CurrentUserProposal from "../pages/CurrentUserProposal/CurrentUserProposal";
 import EditNeed from "../pages/EditNeed/EditNeed";
 import EditProposal from "../pages/EditProposal/EditProposal";
+import AdminHome from '../pages/Admin/Home/Home';
+import AdminNeeds from '../pages/Admin/Needs/Needs';
+import AdminCategories from '../pages/Admin/Categories/Categories';
+import AdminHelps from "../pages/Admin/Hepls/Helps";
+import AdminRegions from "../pages/Admin/Regions/Regions";
+import AdminUsers from "../pages/Admin/Users/Users";
+import ProtectedRouter from "../components/ProtectedRouter/ProtectedRouter";
 
 function AppRouter() {
     return (
@@ -89,6 +97,20 @@ function AppRouter() {
                 <Route path="confirm-registration" element={<ConfirmRegistration/>} />
                 <Route path="reset-password" element={<ResstPassword/>} />
                 <Route path="*" element={<NotFound/>}/>
+            </Route>
+            <Route path="/admin" 
+                   element={
+                        <ProtectedRouter>
+                             <AdminLayout />
+                        </ProtectedRouter>
+                       
+                   }>
+                <Route index path="/admin" element={<AdminHome/>}/>
+                <Route path="categories" element={<AdminCategories />} />
+                <Route path="helps" element={<AdminHelps/>} />
+                <Route path="needs" element={<AdminNeeds/>} />
+                <Route path="regions" element={<AdminRegions/>} />
+                <Route path="users" element={<AdminUsers/>} />
             </Route>
 
         </Routes>

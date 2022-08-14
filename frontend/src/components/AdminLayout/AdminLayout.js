@@ -1,5 +1,5 @@
-import * as React from 'react';
-import { styled, createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
+import React from 'react';
+import { styled, ThemeProvider, useTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiDrawer from '@mui/material/Drawer';
 import Box from '@mui/material/Box';
@@ -14,8 +14,10 @@ import Container from '@mui/material/Container';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import { mainListItems, secondaryListItems } from './ListItems/LisrItems';
-import AdminRouter from '../../routes/AdminRouter'
+import { mainListItems, secondaryListItems } from '../ListItems/LisrItems';
+import {Outlet} from "react-router-dom";
+import {connect} from 'react-redux';
+import Loader from '../Loader/Loader';
 
 
 const drawerWidth = 240;
@@ -65,7 +67,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 );
 
 
-function DashboardContent() {
+function AdminLayout({currentUserLoading, authLoading}) {
   const mdTheme = useTheme();
   
   const [open, setOpen] = React.useState(true);
@@ -145,7 +147,7 @@ function DashboardContent() {
         >
           <Toolbar />
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            <AdminRouter />
+            {Loader({loading: currentUserLoading || authLoading})(Outlet)}
           </Container>
         </Box>
       </Box>
@@ -153,6 +155,13 @@ function DashboardContent() {
   );
 }
 
-export default function Admin() {
-  return <DashboardContent />;
-}
+const mapStateToProps = ({user}) => {
+    return {
+        currentUserLoading: user.currentUserLoading,
+        authLoading: user.authLoading
+    }
+};
+
+
+export default connect(mapStateToProps)(AdminLayout);
+
