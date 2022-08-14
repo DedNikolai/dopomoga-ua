@@ -3,14 +3,17 @@ import {Outlet} from "react-router-dom";
 import {connect} from 'react-redux';
 import {getCurrentUser} from "../../store/actions/user";
 import Loader from '../Loader/Loader';
+import Header from '../Header/Header';
 
-function Layout({getCurrentUser, currentUserLoading, authLoading}) {
+
+function Layout({getCurrentUser, currentUserLoading, authLoading, currentUser}) {
     useEffect(() => {
         getCurrentUser();
     }, [getCurrentUser]);
     
     return (
         <Fragment>
+            <Header/>
             {Loader({loading: currentUserLoading || authLoading})(Outlet)}
         </Fragment>
     )
@@ -19,7 +22,8 @@ function Layout({getCurrentUser, currentUserLoading, authLoading}) {
 const mapStateToProps = ({user}) => {
     return {
         currentUserLoading: user.currentUserLoading,
-        authLoading: user.authLoading
+        authLoading: user.authLoading,
+        currentUser: user.currentUser
     }
 };
 
@@ -30,4 +34,9 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Layout);
+
+const hasAuthority = (user, authirity) => {
+    const set = new Set(user?.roles);
+    return set.has(authirity);
+};
 

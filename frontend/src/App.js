@@ -1,14 +1,12 @@
-import AppRouter from './routes/AppRouter';
 import {Fragment} from 'react';
-import Header from './components/Header/Header';
 import Modal from './components/Modal/Modal';
+import AppRouter from './routes/AppRouter';
 
 
 function App() {
   return (
    <Fragment>
       <Modal/>
-      <Header/>
       <AppRouter />
    </Fragment>
   )

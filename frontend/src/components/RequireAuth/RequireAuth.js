@@ -7,7 +7,10 @@ import {connect} from 'react-redux';
 function RequireAuth({children, currentUser}) {
     const location = useLocation();
 
-    if (!currentUser) {
+    if (!hasAuthority(currentUser, 'USER')) {
+        if (hasAuthority(currentUser, 'ADMIN')) {
+            return <Navigate to='/' />
+        }
         return <Navigate to="/login" state={{from: location}} />
     }
 
@@ -21,5 +24,10 @@ const mapStateToProps = ({user}) => {
 };
 
 export default connect(mapStateToProps)(RequireAuth);
+
+const hasAuthority = (user, authirity) => {
+    const set = new Set(user?.roles);
+    return set.has(authirity);
+};
 
 
