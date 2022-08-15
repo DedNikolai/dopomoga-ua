@@ -52,7 +52,7 @@ public class ProposalServiceImpl implements ProposalService {
     } else {
       Set<String> regionsSet = Set.of(regions);
       neededRegionsSet = allRegions.stream()
-              .filter(region -> regionsSet.contains(region.getRegionName())).collect(Collectors.toList());
+          .filter(region -> regionsSet.contains(region.getRegionName())).collect(Collectors.toList());
     }
 
     if (categories.length == 0) {
@@ -60,14 +60,14 @@ public class ProposalServiceImpl implements ProposalService {
     } else {
       Set<String> categoriesNamesSet = Set.of(categories);
       categoriesForSearch = allCategories.stream()
-              .filter(category -> categoriesNamesSet.contains(category.getCategoryName()))
-              .collect(Collectors.toList());
+          .filter(category -> categoriesNamesSet.contains(category.getCategoryName()))
+          .collect(Collectors.toList());
     }
 
-    Page<Proposal> propositions = proposalRepository
+    Page<Proposal> proposals = proposalRepository
         .findDistinctByCategoriesInAndRegionInAndIsActiveTrueOrderByCreatedDate(categoriesForSearch, neededRegionsSet, pageable);
-    Page<ProposalResponse> needsByParams = propositions.map(proposal -> modelMapper.map(proposal, ProposalResponse.class));
-    return needsByParams;
+    Page<ProposalResponse> proposalsByParams = proposals.map(need -> modelMapper.map(need, ProposalResponse.class));
+    return proposalsByParams;
   }
 
   @Override

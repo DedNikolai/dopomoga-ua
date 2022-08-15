@@ -18,6 +18,7 @@ import { mainListItems, secondaryListItems } from '../ListItems/LisrItems';
 import {Outlet} from "react-router-dom";
 import {connect} from 'react-redux';
 import Loader from '../Loader/Loader';
+import AdminMenu from '../AdminMenu/AdminMenu';
 
 
 const drawerWidth = 240;
@@ -106,11 +107,12 @@ function AdminLayout({currentUserLoading, authLoading}) {
             >
               Dashboard
             </Typography>
-            <IconButton color="inherit">
-              <Badge badgeContent={4} color="secondary">
+            <IconButton color="inherit" sx={{marginRight: '10px'}}>
+              <Badge badgeContent={4} color="success">
                 <NotificationsIcon />
               </Badge>
             </IconButton>
+            <AdminMenu/>
           </Toolbar>
         </AppBar>
         <Drawer variant="permanent" open={open}>

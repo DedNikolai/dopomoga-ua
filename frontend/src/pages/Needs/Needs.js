@@ -1,7 +1,7 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useMemo} from 'react';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
-import NeedItem from '../../components/NeedItem/NeedItem';
+import NeedsLis from '../../components/NeedsList/NeedsList';
 import BasicPagination from '../../components/Pagination/BasicPagination';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
@@ -35,7 +35,9 @@ function Needs(props) {
         getCategories, getRegions, allRegions, regionsLoading} = props;
     const [regions, setRegion] = useState([]);
     const [categories, setCategories] = useState([]);
-    const {content = [], number, totalPages, totalElements, size} = needs
+    const {content = [], number, totalPages, totalElements, size} = needs;
+
+    const allNeeds = useMemo(() => content, [needs]);
 
     const handleChangePage = (event, page) => {
         getNeeds(regions, categories, page-1, 1);
@@ -154,13 +156,7 @@ function Needs(props) {
                 </Grid>
             </Box>
             <Box sx={{ marginTop: '30px'}}>
-                <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-                    {content.map((need, index) => (
-                        <Grid item xs={12} sm={4} md={4} key={index}>
-                            <NeedItem need={need}/>
-                        </Grid>
-                    ))}
-                </Grid>
+                <NeedsLis needs={allNeeds}/>
             </Box>
             {
                 totalElements > size ?
