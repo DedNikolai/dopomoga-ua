@@ -13,6 +13,7 @@ import {Link} from "react-router-dom";
 import {connect} from 'react-redux';
 import AuthMenu from '../AuthMenu/AuthMenu';
 import UserMenu from '../UserMenu/UserMenu';
+import AdminMenu from '../AdminMenu/AdminMenu';
 
 const pages = [
     {
@@ -111,7 +112,7 @@ const Header = ({currentUser}) => {
                             </Link>
                         ))}
                     </Box>
-                    {!!currentUser ? <UserMenu/> : <AuthMenu/>}
+                    {!!currentUser ? hasAuthority(currentUser, 'USER') ? <UserMenu/> : <AdminMenu /> : <AuthMenu/>}
                 </Toolbar>
             </Container>
         </AppBar>
@@ -125,3 +126,8 @@ const mapStatetoProps = ({user}) => {
 };
 
 export default connect(mapStatetoProps)(Header);
+
+const hasAuthority = (user, authirity) => {
+    const set = new Set(user?.roles);
+    return set.has(authirity);
+};

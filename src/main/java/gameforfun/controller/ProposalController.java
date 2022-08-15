@@ -34,7 +34,7 @@ public class ProposalController {
 
   @GetMapping("current")
   @PreAuthorize("hasAuthority('USER')")
-  public ResponseEntity<Page<ProposalResponse>> getNeedsByCurrentUser(@PageableDefault Pageable pageable) {
+  public ResponseEntity<Page<ProposalResponse>> getProposalsByCurrentUser(@PageableDefault Pageable pageable) {
     Page<ProposalResponse> proposals = proposalService.getProposalsByCurrentUser(pageable);
     return ResponseEntity.ok(proposals);
   }

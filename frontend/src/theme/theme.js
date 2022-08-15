@@ -30,6 +30,17 @@ const theme = createTheme({
             },
           },
         },
+
+        MuiBadge: {
+            styleOverrides: {
+                // Name of the slot
+                badge: {
+                    // Some CSS
+                    color: '#fff',
+                },
+            },
+        },
+
       },
 });
 

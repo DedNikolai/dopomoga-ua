@@ -25,4 +25,9 @@ public class Region extends DateAudit {
   @EqualsAndHashCode.Exclude
   private Set<Need> needs;
 
+  @OneToMany(mappedBy = "region")
+  @ToString.Exclude
+  @EqualsAndHashCode.Exclude
+  private Set<Proposal> proposals;
+
 }

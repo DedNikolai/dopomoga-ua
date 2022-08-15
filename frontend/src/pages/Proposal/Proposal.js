@@ -1,7 +1,6 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
-import NeedItem from '../../components/NeedItem/NeedItem';
 import BasicPagination from '../../components/Pagination/BasicPagination';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputLabel from '@mui/material/InputLabel';
@@ -18,6 +17,7 @@ import {connect} from 'react-redux';
 import Preloader from '../../components/Preloader/Preloader';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import FilterAltOffIcon from '@mui/icons-material/FilterAltOff';
+import NeedsLis from '../../components/NeedsList/NeedsList';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -36,10 +36,11 @@ function Proposal(props) {
     const [regions, setRegion] = useState([]);
     const [categories, setCategories] = useState([]);
     const {content = [], number, totalPages, totalElements, size} = propositions
+    const allProposals = useMemo(() => content, [propositions]);
 
     const handleChangePage = (event, page) => {
         getPropositions(regions, categories, page-1, 1);
-    }
+    };
 
     const handleChangeRegion = (event) => {
         const {
@@ -56,7 +57,7 @@ function Proposal(props) {
     };
 
     const filterData = () => {
-       getPropositions(regions, categories, 9)
+       getPropositions(regions, categories, 0)
     };
 
     const clearData = () => {
@@ -154,13 +155,7 @@ function Proposal(props) {
                 </Grid>
             </Box>
             <Box sx={{ marginTop: '30px'}}>
-                <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-                    {content.map((need, index) => (
-                        <Grid item xs={12} sm={4} md={4} key={index}>
-                            <NeedItem need={need}/>
-                        </Grid>
-                    ))}
-                </Grid>
+                <NeedsLis needs={allProposals}/>
             </Box>
             {
                 totalElements > size ?
@@ -200,12 +195,3 @@ const mapDispatchToProps = dispatch => {
 
 export default connect(mapStateToProps, mapDispatchToProps)(Proposal);
 
-// export default function Proposal(props) {
-//     useEffect(() => {
-//         console.log('effect')
-//     }, [])
-//     console.log('render');
-//     return (
-//         <h1>Proposition</h1>
-//     )
-// }
