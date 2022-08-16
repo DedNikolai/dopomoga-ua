@@ -3,7 +3,6 @@ import NeedItem from '../../components/NeedItem/NeedItem';
 import Grid from '@mui/material/Grid';
 
 function NeedsList({needs}) {
-    console.log('render')
     return (
         <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
             {
