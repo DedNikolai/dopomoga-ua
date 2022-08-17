@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useEffect} from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -9,16 +9,20 @@ import Paper from '@mui/material/Paper';
 import TableFooter from '@mui/material/TableFooter';
 import TablePagination from '@mui/material/TablePagination';
 import CategoryItem from '../../../components/CategoryItem/CategoryItem';
+import {connect} from 'react-redux';
+import {getAllCategories} from "../../../store/actions/category";
+import Preloader from '../../../components/Preloader/Preloader';
 
-const rows = [
-    {categoryName: 'Category Name'},
-    {categoryName: 'Category Name'},
-    {categoryName: 'Category Name'},
-    {categoryName: 'Category Name'},
-    {categoryName: 'Category Name'}
-];
+function Categories(props) {
+  const {allCategories = {}, categoriesLoading, getCategories} = props;
+  const {content = [], number, totalPages, totalElements} = allCategories
 
-export default function Calories() {
+  useEffect(() => {
+      getCategories();
+  }, []);
+
+  if (categoriesLoading) return <Preloader/>
+
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 800 }} aria-label="simple table">
@@ -31,8 +35,8 @@ export default function Calories() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row, index) => (
-            <CategoryItem category={row} key={index} />
+          {content.map((row) => (
+            <CategoryItem category={row} key={row.id} />
           ))}
         </TableBody>
         <TableFooter>
@@ -40,7 +44,7 @@ export default function Calories() {
             <TablePagination
               rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
               colSpan={3}
-              count={rows.length}
+              count={totalElements}
               rowsPerPage={10}
               page={0}
               SelectProps={{
@@ -57,3 +61,18 @@ export default function Calories() {
     </TableContainer>
   );
 }
+
+const mapStateToProps = ({categories}) => {
+    return {
+        allCategories: categories.categories,
+        categoriesLoading: categories.categoriesLoading,
+    }
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        getCategories: () => dispatch(getAllCategories()),
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Categories);

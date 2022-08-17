@@ -51,8 +51,9 @@ const classes = {
 };
 
 function EditProposal(props) {
-    const {allCategories, categoriesLoading, user, deleteProposal,
+    const {categoriesFromDb, categoriesLoading, user, deleteProposal,
         getCategories, getRegions, allRegions, regionsLoading} = props;
+    const allCategories = categoriesFromDb.content;
     const theme = useTheme();
     const [proposalLoading, setProposalLoading] = useState(true);
     const [deleted, setDeleted] = useState(false);
@@ -269,7 +270,7 @@ function EditProposal(props) {
 
 const mapStateToProps = ({categories, region, user}) => {
     return {
-        allCategories: categories.categories,
+        categoriesFromDb: categories.categories,
         categoriesLoading: categories.categoriesLoading,
         allRegions: region.regions,
         regionsLoading: region.regionsLoading,
@@ -279,7 +280,7 @@ const mapStateToProps = ({categories, region, user}) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        getCategories: () => dispatch(getAllCategories()),
+        getCategories: (page, size) => dispatch(getAllCategories(page, size)),
         getRegions: () => dispatch(getAllRegions()),
         deleteProposal: (id, deleted, deleting) => dispatch(openDeleteModal(id, deleted, deleting))
     }

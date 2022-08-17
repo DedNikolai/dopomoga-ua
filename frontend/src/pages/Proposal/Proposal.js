@@ -31,12 +31,13 @@ const MenuProps = {
 };
 
 function Proposal(props) {
-    const {propositions, propositionsLoading, getPropositions, allCategories, categoriesLoading, 
+    const {propositions, propositionsLoading, getPropositions, categoriesFromDb, categoriesLoading,
         getCategories, getRegions, allRegions, regionsLoading} = props;
     const [regions, setRegion] = useState([]);
     const [categories, setCategories] = useState([]);
     const {content = [], number, totalPages, totalElements, size} = propositions
     const allProposals = useMemo(() => content, [propositions]);
+    const allCategories = categoriesFromDb.content;
 
     const handleChangePage = (event, page) => {
         getPropositions(regions, categories, page-1, 1);
@@ -178,7 +179,7 @@ const mapStateToProps = ({propositions, categories, region}) => {
     return {
         propositions: propositions.propositions,
         propositionsLoading: propositions.propositionsLoading,
-        allCategories: categories.categories,
+        categoriesFromDb: categories.categories,
         categoriesLoading: categories.categoriesLoading,
         allRegions: region.regions,
         regionsLoading: region.regionsLoading
@@ -188,7 +189,7 @@ const mapStateToProps = ({propositions, categories, region}) => {
 const mapDispatchToProps = dispatch => {
     return {
         getPropositions: (categories, regions, page, size) => dispatch(getAllPropositions(categories, regions, page, size)),
-        getCategories: () => dispatch(getAllCategories()),
+        getCategories: (page, size) => dispatch(getAllCategories(page, size)),
         getRegions: () => dispatch(getAllRegions())
     }
 };
