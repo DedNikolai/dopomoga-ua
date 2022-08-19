@@ -20,6 +20,7 @@ INSERT INTO category
 (id, date_created, date_modified, category_name)
 VALUES
 (1, '2020-01-29', '2020-01-29', 'Category1'),
+(3, '2020-01-29', '2020-01-29', 'Category3'),
 (2, '2020-01-29', '2020-01-29', 'Category2');
 
 INSERT INTO region

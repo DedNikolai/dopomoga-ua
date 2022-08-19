@@ -10,4 +10,6 @@ public interface CategoryService {
     Page<CategoryResponse> getAllCategories(Pageable pageable);
 
     ApiResponse updateCategory(Long id, CategoryRequest category);
+
+    ApiResponse deleteCategory(Long id);
 }

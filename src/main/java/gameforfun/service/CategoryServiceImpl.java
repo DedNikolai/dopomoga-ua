@@ -32,4 +32,15 @@ public class CategoryServiceImpl implements CategoryService {
         categoryRepository.save(category);
         return new ApiResponse(true, "Категорію Оновлено");
     }
+
+    @Override
+    public ApiResponse deleteCategory(Long id) {
+        Category category = categoryRepository.findFirstByIdAndNeeds_EmptyAndProposals_Empty(id);
+        if (category == null) {
+            return new  ApiResponse(false, "Категорію не можна видалити є звязані єлементи");
+        }
+
+        categoryRepository.delete(category);
+        return new ApiResponse(true, "Категорію видилено");
+    }
 }

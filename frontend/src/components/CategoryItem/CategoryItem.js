@@ -9,9 +9,9 @@ import {useForm, Controller, useFormState} from 'react-hook-form';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import {connect} from 'react-redux';
-import {updateCategory} from "../../store/actions/category";
+import {updateCategory, deleteCategory} from "../../store/actions/category";
 
-function CategoryItem({category, update}) {
+function CategoryItem({category, update, deleteItem}) {
     const [edit, setEdit] = useState(false);
     const {handleSubmit, control, reset, getValues} = useForm();
     const { errors } = useFormState({ 
@@ -64,7 +64,7 @@ function CategoryItem({category, update}) {
 
                 }
               <TableCell align="center"><SaveIcon onClick={handleSubmit(onSubmit)} /></TableCell>
-              <TableCell align="center"><DeleteOutlineIcon /></TableCell>
+              <TableCell align="center"><DeleteOutlineIcon onClick={() => deleteItem(category.id)}/></TableCell>
             </TableRow>    
     )
 };
@@ -77,7 +77,8 @@ const mapStateToProps = () => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        update: (id, data) => dispatch(updateCategory(id, data))
+        update: (id, data) => dispatch(updateCategory(id, data)),
+        deleteItem: id => dispatch(deleteCategory(id))
     }
 };
 
