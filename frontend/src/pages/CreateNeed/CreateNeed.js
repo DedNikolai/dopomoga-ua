@@ -33,10 +33,11 @@ const MenuProps = {
 };
 
 function CreateNeed(props) {
-    const {allCategories, categoriesLoading, 
+    const {categoriesFromDb, categoriesLoading,
         getCategories, getRegions, allRegions, regionsLoading, user} = props;
     const [createed, setCreated] = useState(false);
     const [creating, setCreating] = useState(false);
+    const allCategories = categoriesFromDb.content;
     const {handleSubmit, reset, control} = useForm({
         defaultValues: {
             title: '',
@@ -226,7 +227,7 @@ function CreateNeed(props) {
 const mapStateToProps = ({user, categories, region}) => {
     return {
         user: user.currentUser,
-        allCategories: categories.categories,
+        categoriesFromDb: categories.categories,
         categoriesLoading: categories.categoriesLoading,
         allRegions: region.regions,
         regionsLoading: region.regionsLoading
@@ -235,7 +236,7 @@ const mapStateToProps = ({user, categories, region}) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        getCategories: () => dispatch(getAllCategories()),
+        getCategories: (page, size) => dispatch(getAllCategories(page, size)),
         getRegions: () => dispatch(getAllRegions())
     }
 }

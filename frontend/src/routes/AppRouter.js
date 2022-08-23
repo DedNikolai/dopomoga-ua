@@ -24,6 +24,7 @@ import AdminCategories from '../pages/Admin/Categories/Categories';
 import AdminHelps from "../pages/Admin/Hepls/Helps";
 import AdminRegions from "../pages/Admin/Regions/Regions";
 import AdminUsers from "../pages/Admin/Users/Users";
+import CreteCategory from "../pages/Admin/CreateCategory/CreateCategory";
 import ProtectedRouter from "../components/ProtectedRouter/ProtectedRouter";
 
 function AppRouter() {
@@ -111,6 +112,7 @@ function AppRouter() {
                 <Route path="needs" element={<AdminNeeds/>} />
                 <Route path="regions" element={<AdminRegions/>} />
                 <Route path="users" element={<AdminUsers/>} />
+                <Route path="category/create" element={<CreteCategory/>} />
             </Route>
 
         </Routes>

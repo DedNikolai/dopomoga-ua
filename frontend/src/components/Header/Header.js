@@ -17,6 +17,11 @@ import AdminMenu from '../AdminMenu/AdminMenu';
 
 const pages = [
     {
+        name: 'Про роект',
+        link: '/project'
+    },
+
+    {
         name: 'Допомога',
         link: '/propose'
     },
@@ -24,6 +29,11 @@ const pages = [
     {
         name: 'Потреба',
         link: '/needs'
+    },
+
+    {
+        name: 'Політика Конфіденційності',
+        link: '/privace-policy'
     }
 ];
 
@@ -105,7 +115,7 @@ const Header = ({currentUser}) => {
                             <Link to={page.link} variant="body2" key={page.name}>
                                 <Button
                                     onClick={handleCloseNavMenu}
-                                    sx={{ my: 2, color: 'white', display: 'block' }}
+                                    sx={{ my: 1, color: 'white', display: 'block', mx: '10px' }}
                                 >
                                     {page.name}
                                 </Button>
