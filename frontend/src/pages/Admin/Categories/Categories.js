@@ -19,13 +19,18 @@ import {Link} from "react-router-dom";
 
 function Categories(props) {
   const {allCategories = {}, categoriesLoading, getCategories} = props;
-  const {content = [], number, totalPages, totalElements} = allCategories
+  const {content = [], number, totalElements} = allCategories;
+  const size = 10;
+
+  const changePage = (event, page) => {
+      getCategories(page, size);
+  };
 
   useEffect(() => {
-      getCategories();
+      getCategories(0, size);
   }, []);
 
-  if (categoriesLoading) return <Preloader/>
+  if (categoriesLoading) return <Preloader/>;
 
   return (
       <Box sx={{ flexGrow: 1, marginTop: '30px', padding: '0 20px'}}>
@@ -68,18 +73,12 @@ function Categories(props) {
                       <TableFooter>
                           <TableRow>
                               <TablePagination
-                                  rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
-                                  colSpan={3}
+                                  rowsPerPageOptions={[-1]}
+                                  colSpan={4}
                                   count={totalElements}
-                                  rowsPerPage={10}
-                                  page={0}
-                                  SelectProps={{
-                                      inputProps: {
-                                          'aria-label': 'rows per page',
-                                      },
-                                      native: true,
-                                  }}
-                                  onPageChange={() => {}}
+                                  rowsPerPage={size}
+                                  page={number}
+                                  onPageChange={changePage}
                               />
                           </TableRow>
                       </TableFooter>
@@ -100,7 +99,7 @@ const mapStateToProps = ({categories}) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        getCategories: () => dispatch(getAllCategories()),
+        getCategories: (page, size) => dispatch(getAllCategories(page, size)),
     }
 };
 

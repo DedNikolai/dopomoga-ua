@@ -12,4 +12,6 @@ public interface CategoryService {
     ApiResponse updateCategory(Long id, CategoryRequest category);
 
     ApiResponse deleteCategory(Long id);
+
+    ApiResponse createCategory(CategoryRequest category);
 }

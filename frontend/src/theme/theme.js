@@ -41,6 +41,16 @@ const theme = createTheme({
             },
         },
 
+        MuiSvgIcon: {
+            styleOverrides: {
+                // Name of the slot
+                root: {
+                    // Some CSS
+                    cursor: 'pointer',
+                },
+            },
+        },
+
       },
 });
 

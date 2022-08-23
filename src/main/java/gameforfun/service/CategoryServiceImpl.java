@@ -43,4 +43,14 @@ public class CategoryServiceImpl implements CategoryService {
         categoryRepository.delete(category);
         return new ApiResponse(true, "Категорію видилено");
     }
+
+    @Override
+    public ApiResponse createCategory(CategoryRequest request) {
+        Category category = modelMapper.map(request, Category.class);
+        Category createdCategory = categoryRepository.save(category);
+        if (createdCategory.getId() != null) {
+            return new ApiResponse(true, "Категорію створено");
+        }
+        return new ApiResponse(false, "Категорію не створено");
+    }
 }
