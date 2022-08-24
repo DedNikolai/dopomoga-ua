@@ -32,12 +32,13 @@ const MenuProps = {
 
 function Proposal(props) {
     const {propositions, propositionsLoading, getPropositions, categoriesFromDb, categoriesLoading,
-        getCategories, getRegions, allRegions, regionsLoading} = props;
+        getCategories, getRegions, regionsFromDb, regionsLoading} = props;
     const [regions, setRegion] = useState([]);
     const [categories, setCategories] = useState([]);
     const {content = [], number, totalPages, totalElements, size} = propositions
     const allProposals = useMemo(() => content, [propositions]);
     const allCategories = categoriesFromDb.content;
+    const allRegions = regionsFromDb.content;
 
     const handleChangePage = (event, page) => {
         getPropositions(regions, categories, page-1, 1);
@@ -69,8 +70,8 @@ function Proposal(props) {
 
     useEffect(() => {
         getPropositions(regions, categories, 0);
-        getCategories();
-        getRegions();
+        getCategories(0, 100);
+        getRegions(0, 100);
     }, []);
 
     if (propositionsLoading  || categoriesLoading  || regionsLoading) {
@@ -181,7 +182,7 @@ const mapStateToProps = ({propositions, categories, region}) => {
         propositionsLoading: propositions.propositionsLoading,
         categoriesFromDb: categories.categories,
         categoriesLoading: categories.categoriesLoading,
-        allRegions: region.regions,
+        regionsFromDb: region.regions,
         regionsLoading: region.regionsLoading
     }
 };
@@ -190,7 +191,7 @@ const mapDispatchToProps = dispatch => {
     return {
         getPropositions: (categories, regions, page, size) => dispatch(getAllPropositions(categories, regions, page, size)),
         getCategories: (page, size) => dispatch(getAllCategories(page, size)),
-        getRegions: () => dispatch(getAllRegions())
+        getRegions: (page, size) => dispatch(getAllRegions(page, size))
     }
 };
 

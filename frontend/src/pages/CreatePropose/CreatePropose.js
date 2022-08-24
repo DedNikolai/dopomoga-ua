@@ -33,11 +33,12 @@ const MenuProps = {
 };
 
 function CreateProposal(props) {
-    const {categoriesFromDb, categoriesLoading,
-        getCategories, getRegions, allRegions, regionsLoading, user} = props;
+    const {categoriesFromDb, categoriesLoading, regions,
+        getCategories, getRegions, regionsLoading, user} = props;
     const [createed, setCreated] = useState(false);
     const [creating, setCreating] = useState(false);
     const allCategories = categoriesFromDb.content;
+    const allRegions = regions.content;
     const {handleSubmit, reset, control} = useForm({
         defaultValues: {
             title: '',
@@ -53,8 +54,8 @@ function CreateProposal(props) {
     })
 
     useEffect(() => {
-        getCategories();
-        getRegions();
+        getCategories(0, 100);
+        getRegions(0, 100);
     }, []);
 
     const onSubmit = (data) => {
@@ -229,7 +230,7 @@ const mapStateToProps = ({user, categories, region}) => {
         user: user.currentUser,
         categoriesFromDb: categories.categories,
         categoriesLoading: categories.categoriesLoading,
-        allRegions: region.regions,
+        regions: region.regions,
         regionsLoading: region.regionsLoading
     }
 };
@@ -237,7 +238,7 @@ const mapStateToProps = ({user, categories, region}) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         getCategories: (page, size) => dispatch(getAllCategories(page, size)),
-        getRegions: () => dispatch(getAllRegions())
+        getRegions: (page, size) => dispatch(getAllRegions(page, size))
     }
 }
 

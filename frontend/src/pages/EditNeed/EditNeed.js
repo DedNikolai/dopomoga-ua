@@ -52,8 +52,9 @@ const classes = {
 
 function EditNeed(props) {
     const {categoriesFromDb, categoriesLoading, user, deleteNeed,
-        getCategories, getRegions, allRegions, regionsLoading} = props;
+        getCategories, getRegions, regions, regionsLoading} = props;
     const allCategories = categoriesFromDb.content;
+    const allRegions = regions.content;
     const [needLoading, setNeedLoading] = useState(true);
     const [deleted, setDeleted] = useState(false);
     const [deleting, setDeleting] = useState(false);
@@ -67,8 +68,8 @@ function EditNeed(props) {
     const categories = allCategories.map(category => category.categoryName);
 
     useEffect(() => {
-        getCategories();
-        getRegions();
+        getCategories(0, 100);
+        getRegions(0, 100);
         getNeedById(needId, setNeedLoading, reset);
     }, []);
 
@@ -272,7 +273,7 @@ const mapStateToProps = ({categories, region, user}) => {
     return {
         categoriesFromDb: categories.categories,
         categoriesLoading: categories.categoriesLoading,
-        allRegions: region.regions,
+        regions: region.regions,
         regionsLoading: region.regionsLoading,
         user: user.currentUser
     }
@@ -281,7 +282,7 @@ const mapStateToProps = ({categories, region, user}) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         getCategories: (page, size) => dispatch(getAllCategories(page, size)),
-        getRegions: () => dispatch(getAllRegions()),
+        getRegions: (page, size) => dispatch(getAllRegions(page, size)),
         deleteNeed: (id, deleted, deleting) => dispatch(openDeleteModal(id, deleted, deleting))
     }
 }
