@@ -32,11 +32,12 @@ const MenuProps = {
 
 function Needs(props) {
     const {needs, needsLoading, getNeeds, categoriesFromDb, categoriesLoading,
-        getCategories, getRegions, allRegions, regionsLoading} = props;
+        getCategories, getRegions, regionsFromDb, regionsLoading} = props;
     const [regions, setRegion] = useState([]);
     const [categories, setCategories] = useState([]);
     const {content = [], number, totalPages, totalElements, size} = needs;
     const allCategories = categoriesFromDb.content;
+    const allRegions = regionsFromDb.content;
 
     const allNeeds = useMemo(() => content, [needs]);
 
@@ -71,7 +72,7 @@ function Needs(props) {
     useEffect(() => {
         getNeeds(regions, categories, 0);
         getCategories(0, 100);
-        getRegions();
+        getRegions(0, 100);
     }, []);
 
     if (needsLoading  || categoriesLoading  || regionsLoading) {
@@ -182,7 +183,7 @@ const mapStateToProps = ({need, categories, region}) => {
         needsLoading: need.needsLoading,
         categoriesFromDb: categories.categories,
         categoriesLoading: categories.categoriesLoading,
-        allRegions: region.regions,
+        regionsFromDb: region.regions,
         regionsLoading: region.regionsLoading
     }
 };
@@ -191,7 +192,7 @@ const mapDispatchToProps = dispatch => {
     return {
         getNeeds: (categories, regions, page, size) => dispatch(getAllNeeds(categories, regions, page, size)),
         getCategories: (page, size) => dispatch(getAllCategories(page, size)),
-        getRegions: () => dispatch(getAllRegions())
+        getRegions: (page, size) => dispatch(getAllRegions(page, size))
     }
 };
 
