@@ -11,6 +11,8 @@ const initialState = {
     forgotPassSendSuccess: false,
     resetPassSuccess: false,
     resetPassLoading: false,
+    allUsers: {},
+    allUsersLoading: true
 };
 
 const user = (state = initialState, action) => {
@@ -35,6 +37,10 @@ const user = (state = initialState, action) => {
             return {...state, resetPassSuccess: action.payload};
         case TYPES.RESET_PASS_LOADING:
             return {...state, resetPassLoading: action.payload};
+        case TYPES.USERS_LOADING:
+            return {...state, allUsersLoading: action.payload};
+        case TYPES.SAVE_USERS:
+            return {...state, allUsers: action.payload};
         default:
             return {...state}
     }

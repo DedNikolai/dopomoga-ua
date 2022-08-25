@@ -7,6 +7,8 @@ import gameforfun.dto.request.UserRequest;
 import gameforfun.dto.response.ApiResponse;
 import gameforfun.dto.response.JwtAuthenticationResponse;
 import gameforfun.dto.response.UserResponse;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -27,4 +29,6 @@ public interface UserService {
   ApiResponse updateUser(UserRequest userRequest);
 
   ApiResponse updatePhoto(byte[] bytes, String imageName) throws Exception;
+
+  Page<UserResponse> getUsers(Pageable pageable);
 }
