@@ -9,11 +9,9 @@ import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-import Badge from '@mui/material/Badge';
 import Container from '@mui/material/Container';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import NotificationsIcon from '@mui/icons-material/Notifications';
 import { mainListItems, secondaryListItems } from '../ListItems/LisrItems';
 import {Outlet} from "react-router-dom";
 import {connect} from 'react-redux';
@@ -105,13 +103,13 @@ function AdminLayout({currentUserLoading, authLoading}) {
               noWrap
               sx={{ flexGrow: 1 }}
             >
-              Dashboard
+              Адміністратор
             </Typography>
-            <IconButton color="inherit" sx={{marginRight: '10px'}}>
+            {/* <IconButton color="inherit" sx={{marginRight: '10px'}}>
               <Badge badgeContent={4} color="success">
                 <NotificationsIcon />
               </Badge>
-            </IconButton>
+            </IconButton> */}
             <AdminMenu/>
           </Toolbar>
         </AppBar>

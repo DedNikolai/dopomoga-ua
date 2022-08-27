@@ -7,14 +7,23 @@ import gameforfun.dto.request.UserRequest;
 import gameforfun.dto.response.ApiResponse;
 import gameforfun.dto.response.JwtAuthenticationResponse;
 import gameforfun.dto.response.UserResponse;
-import gameforfun.exeption.ResourceNotFoundException;
-import gameforfun.model.*;
-import gameforfun.repository.*;
+import gameforfun.model.ConfirmationToken;
+import gameforfun.model.PasswordResetToken;
+import gameforfun.model.Role;
+import gameforfun.model.User;
+import gameforfun.model.UserPhoto;
+import gameforfun.repository.ConfirmationTokenRepository;
+import gameforfun.repository.FileSystemRepository;
+import gameforfun.repository.PasswordResetTokenRepository;
+import gameforfun.repository.UserPhotoRepository;
+import gameforfun.repository.UserRepository;
 import gameforfun.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.MessageSource;
 import org.springframework.core.env.Environment;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -221,6 +230,12 @@ public class UserServiceImpl implements UserService {
     user.setPhoto(photo);
     userRepository.save(user);
     return new ApiResponse(true, "Photo updated");
+  }
+
+  @Override
+  public Page<UserResponse> getUsers(String params, Pageable pageable) {
+    Page<User> users = userRepository.findAllByParams(params, pageable);
+    return users.map(user -> modelMapper.map(user, UserResponse.class));
   }
 
   public UserPhoto uploadPhoto(byte[] bytes, String imageName) throws Exception {

@@ -124,3 +124,12 @@ export const updateUser = (user) => dispatch => {
     })
 
 }
+
+export const getAllUsers = (params, page, size) => dispatch => {
+    dispatch({type: TYPES.USERS_LOADING, payload: true});
+    api.get(`/user?param=${params}&page=${page}&size=${size}`).then(res => {
+        if (res.status >= 200 && res.status < 300) {
+            dispatch({type: TYPES.SAVE_USERS, payload: res.data})
+        }
+    }).finally(() => dispatch({type: TYPES.USERS_LOADING, payload: false}))
+};
