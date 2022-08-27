@@ -29,29 +29,23 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function Search(props) {
-    const {onClick, searchParam, setSearchParam, search} = props
+    const {search, searchRef} = props
     const classes = useStyles();
 
-    const onChange = e => {
-        setSearchParam(e.target.value);
-        search(e.target.value)
-    }
-
     const clearSearch = () => {
-        setSearchParam('');
-        search('')
+        document.body.querySelector('#search').value = '';
     }
 
     return (
         <Paper component="form" className={classes.root}>
             <InputBase
+                id='search'
+                inputRef={searchRef}
                 className={classes.input}
                 placeholder="Пошук"
                 inputProps={{ 'aria-label': 'search google maps' }}
-                onChange={onChange}
-                value={searchParam}
             />
-            <IconButton type="submit" className={classes.iconButton} aria-label="search">
+            <IconButton className={classes.iconButton} aria-label="search" onClick={search}>
                 <SearchIcon />
             </IconButton>
             <Divider className={classes.divider} orientation="vertical" />

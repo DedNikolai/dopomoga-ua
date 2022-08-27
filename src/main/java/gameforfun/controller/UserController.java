@@ -34,8 +34,10 @@ public class UserController {
 
   @GetMapping("user")
   @PreAuthorize("hasAuthority('ADMIN')")
-  public ResponseEntity<Page<UserResponse>> getAllUsers(@PageableDefault Pageable pageable) {
-    Page<UserResponse> response = userService.getUsers(pageable);
+  public ResponseEntity<Page<UserResponse>> getAllUsers(
+          @RequestParam(name = "param", required = false) String param,
+          @PageableDefault Pageable pageable) {
+    Page<UserResponse> response = userService.getUsers(param, pageable);
     return ResponseEntity.ok(response);
   }
 

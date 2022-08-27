@@ -125,9 +125,9 @@ export const updateUser = (user) => dispatch => {
 
 }
 
-export const getAllUsers = (page, size) => dispatch => {
+export const getAllUsers = (params, page, size) => dispatch => {
     dispatch({type: TYPES.USERS_LOADING, payload: true});
-    api.get(`/user?page=${page}&size=${size}`).then(res => {
+    api.get(`/user?param=${params}&page=${page}&size=${size}`).then(res => {
         if (res.status >= 200 && res.status < 300) {
             dispatch({type: TYPES.SAVE_USERS, payload: res.data})
         }

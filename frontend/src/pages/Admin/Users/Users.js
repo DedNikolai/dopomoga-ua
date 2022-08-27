@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useMemo, useRef} from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -8,26 +8,26 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import TableFooter from '@mui/material/TableFooter';
 import TablePagination from '@mui/material/TablePagination';
-import UserItem from '../../../components/UserItem/UserItem';
 import {connect} from 'react-redux';
 import {getAllUsers} from "../../../store/actions/user";
 import Preloader from '../../../components/Preloader/Preloader';
 import Search from '../../../components/Search/Search';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
+import UsersList from '../../../components/UsersList/UsresList'
 
 function Users(props) {
     const {users = {}, usersLoading, getUsers} = props;
-    const {content = [], number, totalElements} = users;
+    const {content = [], number, totalElements} = useMemo(() => users, [users]);
     const size = 10;
-    const [param, setParam] = useState('');
+    const searchRef = useRef('');
 
     const changePage = (event, page) => {
-        getUsers(page, size);
+        getUsers(searchRef.current.value, page, size);
     };
 
     useEffect(() => {
-        getUsers(0, size);
+        getUsers('' , 0, size);
     }, []);
 
     if (usersLoading) return <Preloader/>;
@@ -39,11 +39,12 @@ function Users(props) {
                     <Grid item xs={6} sm={6} md={6}>
                         <h1>Користувачі</h1>
                     </Grid>
-                    <Grid item xs={6} sm={6} md={6} sx={{textAlign: 'end'}}>
+                    <Grid item xs={6} sm={6} md={6} sx={{display: 'flex', justifyContent: 'end'}}>
                         <Search
-                            searchParam={param}
-                            setSearchParam={value => setParam(value)}
-                            search={(param) => console.log(param)}
+                            searchParam={searchRef}
+                            setSearchParam={() => {}}
+                            search={() => getUsers(searchRef.current.value , 0, size)}
+                            searchRef={searchRef}
                         />
                     </Grid>
                 </Grid>
@@ -62,9 +63,7 @@ function Users(props) {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {content.map((row) => (
-                                <UserItem user={row} key={row.id} />
-                            ))}
+                            <UsersList users={content}/>
                         </TableBody>
                         <TableFooter>
                             <TableRow>
@@ -95,7 +94,7 @@ const mapStateToProps = ({user}) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        getUsers: (page, size) => dispatch(getAllUsers(page, size)),
+        getUsers: (params, page, size) => dispatch(getAllUsers(params, page, size)),
     }
 };
 

@@ -233,8 +233,8 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public Page<UserResponse> getUsers(Pageable pageable) {
-    Page<User> users = userRepository.findAll(pageable);
+  public Page<UserResponse> getUsers(String params, Pageable pageable) {
+    Page<User> users = userRepository.findAllByParams(params, pageable);
     return users.map(user -> modelMapper.map(user, UserResponse.class));
   }
 

@@ -51,7 +51,7 @@ function AdminMenu({signOut, currentUser}) {
             <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                     <Avatar alt="Remy Sharp"
-                            sx={{backgroundColor: theme.palette.secondary.main}}
+                            sx={{backgroundColor: theme.palette.primary.green}}
                             childre='ADMIN'
                     />
                 </IconButton>
