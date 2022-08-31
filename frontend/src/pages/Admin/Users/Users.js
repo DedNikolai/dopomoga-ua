@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useMemo, useRef} from 'react';
+import React, {useEffect, useMemo, useRef} from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -31,7 +31,7 @@ function Users(props) {
     }, []);
 
     if (usersLoading) return <Preloader/>;
-    console.log(content)
+
     return (
         <Box sx={{ flexGrow: 1, marginTop: '30px', padding: '0 20px'}}>
             <Box>
@@ -60,6 +60,8 @@ function Users(props) {
                                 <TableCell align="center">Ім'я</TableCell>
                                 <TableCell align="center">Прізвище</TableCell>
                                 <TableCell align="center">Телефон</TableCell>
+                                <TableCell align="center">Потреби</TableCell>
+                                <TableCell align="center">Допомоги</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>

@@ -18,4 +18,6 @@ public interface NeedService {
   ApiResponse deleteNeed(Long id);
 
   Page<NeedResponse> getNeedsByCurrentUser(Pageable pageable);
+
+  Page<NeedResponse> findNeedsByUser(Long userId, Pageable pageable);
 }

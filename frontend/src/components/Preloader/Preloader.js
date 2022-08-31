@@ -1,8 +1,15 @@
+import * as React from 'react';
+import Stack from '@mui/material/Stack';
+import CircularProgress from '@mui/material/CircularProgress';
 
-function Preloader() {
+export default function Preloader() {
     return (
-        <h1>Loading.....</h1>
-    )
-};
-
-export default Preloader;
+        <Stack
+            sx={{ color: 'grey.500', width: '100%', height: '50vh', justifyContent: 'center', alignItems: 'center'}}
+            spacing={4}
+            direction="row"
+        >
+            <CircularProgress />
+        </Stack>
+    );
+}
