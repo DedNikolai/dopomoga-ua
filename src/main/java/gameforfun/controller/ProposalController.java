@@ -68,4 +68,11 @@ public class ProposalController {
     ApiResponse response = proposalService.deleteProposal(id);
     return ResponseEntity.ok(response);
   }
+
+  @GetMapping("user/{id}")
+  @PreAuthorize("hasAuthority('ADMIN')")
+  public ResponseEntity<Page<ProposalResponse>> getPproposalsByUser(@PathVariable Long id,  @PageableDefault Pageable pageable) {
+    Page<ProposalResponse> proposals = proposalService.findUserProposals(id, pageable);
+    return ResponseEntity.ok(proposals);
+  }
 }

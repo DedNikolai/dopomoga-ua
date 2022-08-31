@@ -63,9 +63,16 @@ public class NeedController {
   }
 
   @DeleteMapping("{id}")
-  @PreAuthorize("hasAuthority('USER')")
+  @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
   public ResponseEntity<ApiResponse> deleteNeed(@PathVariable Long id) {
     ApiResponse response = needService.deleteNeed(id);
+    return ResponseEntity.ok(response);
+  }
+
+  @GetMapping("user/{id}")
+  @PreAuthorize("hasAuthority('ADMIN')")
+  public ResponseEntity<Page<NeedResponse>> getNeedsByUser(@PathVariable Long id, @PageableDefault Pageable pageable) {
+    Page<NeedResponse> response = needService.findNeedsByUser(id, pageable);
     return ResponseEntity.ok(response);
   }
 }

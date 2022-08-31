@@ -31,4 +31,6 @@ public interface UserService {
   ApiResponse updatePhoto(byte[] bytes, String imageName) throws Exception;
 
   Page<UserResponse> getUsers(String params, Pageable pageable);
+
+  UserResponse getUserById(Long id);
 }

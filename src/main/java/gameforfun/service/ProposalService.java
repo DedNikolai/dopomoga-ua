@@ -18,4 +18,6 @@ public interface ProposalService {
   ApiResponse deleteProposal(Long id);
 
   Page<ProposalResponse> getProposalsByCurrentUser(Pageable pageable);
+
+  Page<ProposalResponse> findUserProposals(Long userId, Pageable pageable);
 }

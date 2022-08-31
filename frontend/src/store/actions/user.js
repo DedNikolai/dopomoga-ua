@@ -133,3 +133,12 @@ export const getAllUsers = (params, page, size) => dispatch => {
         }
     }).finally(() => dispatch({type: TYPES.USERS_LOADING, payload: false}))
 };
+
+export const getUserById = id => dispatch => {
+    dispatch({type: TYPES.USER_BY_ID_LOADING, payload: true})
+    api.get(`/user/${id}`).then(res => {
+        if (res.status >= 200 && res.status < 300) {
+            dispatch({type: TYPES.SAVE_USER_BY_ID, payload: res.data})
+        }
+    }).finally(() => dispatch({type: TYPES.USER_BY_ID_LOADING, payload: false}))
+}

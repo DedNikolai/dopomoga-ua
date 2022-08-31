@@ -71,7 +71,7 @@ function Users(props) {
                             <TableRow>
                                 <TablePagination
                                     rowsPerPageOptions={[-1]}
-                                    colSpan={6}
+                                    colSpan={8}
                                     count={totalElements}
                                     rowsPerPage={size}
                                     page={number}

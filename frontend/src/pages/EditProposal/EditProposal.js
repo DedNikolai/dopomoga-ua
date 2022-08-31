@@ -53,7 +53,7 @@ const classes = {
 function EditProposal(props) {
     const {categoriesFromDb, categoriesLoading, user, deleteProposal,
         getCategories, getRegions, regions, regionsLoading} = props;
-    const allCategories = categoriesFromDb.content;
+    const allCategories = categoriesFromDb.content || [];
     const allRegions = regions.content;
     const theme = useTheme();
     const [proposalLoading, setProposalLoading] = useState(true);

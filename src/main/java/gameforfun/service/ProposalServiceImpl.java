@@ -113,4 +113,11 @@ public class ProposalServiceImpl implements ProposalService {
     Page<Proposal> proposals = proposalRepository.findAllByUser(user, pageable);
     return proposals.map(proposal -> modelMapper.map(proposal, ProposalResponse.class));
   }
+
+  @Override
+  public Page<ProposalResponse> findUserProposals(Long userId, Pageable pageable) {
+    User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "id", userId));
+    Page<Proposal> proposals = proposalRepository.findAllByUser(user, pageable);
+    return proposals.map(proposal -> modelMapper.map(proposal, ProposalResponse.class));
+  }
 }
