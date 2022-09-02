@@ -63,7 +63,7 @@ public class ProposalController {
   }
 
   @DeleteMapping("{id}")
-  @PreAuthorize("hasAuthority('USER')")
+  @PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
   public ResponseEntity<ApiResponse> deleteProposal(@PathVariable Long id) {
     ApiResponse response = proposalService.deleteProposal(id);
     return ResponseEntity.ok(response);
