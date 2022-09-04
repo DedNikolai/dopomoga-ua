@@ -4,9 +4,10 @@ import {connect} from 'react-redux';
 import {getCurrentUser} from "../../store/actions/user";
 import Loader from '../Loader/Loader';
 import Header from '../Header/Header';
+import Box from '@mui/material/Box';
 
 
-function Layout({getCurrentUser, currentUserLoading, authLoading, currentUser}) {
+function Layout({getCurrentUser, currentUserLoading, authLoading}) {
     useEffect(() => {
         getCurrentUser();
     }, [getCurrentUser]);
@@ -14,7 +15,9 @@ function Layout({getCurrentUser, currentUserLoading, authLoading, currentUser}) 
     return (
         <Fragment>
             <Header/>
-            {Loader({loading: currentUserLoading || authLoading})(Outlet)}
+            <Box sx={{padding: '0 20px 30px'}}>
+                {Loader({loading: currentUserLoading || authLoading})(Outlet)}
+            </Box>
         </Fragment>
     )
 };
@@ -23,7 +26,6 @@ const mapStateToProps = ({user}) => {
     return {
         currentUserLoading: user.currentUserLoading,
         authLoading: user.authLoading,
-        currentUser: user.currentUser
     }
 };
 

@@ -26,11 +26,11 @@ function CurentUserNeeds(props) {
     }
 
     return (
-        <Box sx={{ flexGrow: 1, marginTop: '30px', padding: '0 20px'}}>
+        <Box sx={{ flexGrow: 1, marginTop: '30px'}}>
             <Box>
                 <Grid container spacing={2}>
                     <Grid item xs={6} sm={6} md={6}>
-                        <h1>My Needs</h1>
+                        <h1>Мої потреби</h1>
                     </Grid>
                     <Grid item xs={6} sm={6} md={6} sx={{textAlign: 'end'}}>
                         <Link to={`/profile/${user.id}/needs/create`} variant="body2">

@@ -27,7 +27,7 @@ function CurrentUserProposal(props) {
     }
 
     return (
-        <Box sx={{ flexGrow: 1, marginTop: '30px', padding: '0 20px'}}>
+        <Box sx={{ flexGrow: 1, marginTop: '30px'}}>
         <Box>
             <Grid container spacing={2}>
                 <Grid item xs={6} sm={6} md={6}>
@@ -42,7 +42,7 @@ function CurrentUserProposal(props) {
                                 color="secondary"
                                 onClick={() => {}}
                             >
-                                Add new need
+                                Створити
                             </Button>
                     </Link>
                 </Grid>

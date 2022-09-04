@@ -51,7 +51,7 @@ function UserMenu({signOut, currentUser}) {
     };
 
     return (
-        <Box sx={{ flexGrow: 0 }}>
+        <Box sx={{ flexGrow: 0, marginLeft: '20px' }}>
             <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                     <Avatar alt="Remy Sharp" src={currentUser.photo.location} />
