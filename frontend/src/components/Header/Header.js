@@ -17,7 +17,7 @@ import AdminMenu from '../AdminMenu/AdminMenu';
 
 const pages = [
     {
-        name: 'Про роект',
+        name: 'Проект',
         link: '/project'
     },
 
@@ -32,7 +32,7 @@ const pages = [
     },
 
     {
-        name: 'Політика Конфіденційності',
+        name: 'Конфіденційність',
         link: '/privace-policy'
     }
 ];
@@ -59,7 +59,7 @@ const Header = ({currentUser}) => {
                             component="div"
                             sx={{ mr: 2, display: { xs: 'none', md: 'flex' }, color: '#fff' }}
                         >
-                            DOPOMOGA UA
+                            DOPOMOGA-UA
                         </Typography>
                     </Link>
                     <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -107,7 +107,7 @@ const Header = ({currentUser}) => {
                             component="div"
                             sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' }, color: '#fff' }}
                         >
-                            DOPOMOGA UA
+                            DOPOMOGA-UA
                         </Typography>
                     </Link>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex'}, justifyContent: 'center' }}>

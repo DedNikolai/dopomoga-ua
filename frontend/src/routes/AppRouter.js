@@ -28,6 +28,8 @@ import CreateCategory from "../pages/Admin/CreateCategory/CreateCategory";
 import CreateRegion from "../pages/Admin/CreateRegion/CreateRegion";
 import UserNeeds from "../pages/Admin/UserNeeds/UserNeeds";
 import UserHelps from "../pages/Admin/UserHelps/UserHelps";
+import Project from "../pages/Project/Project";
+import Policy from "../pages/Policy/Policy";
 import ProtectedRouter from "../components/ProtectedRouter/ProtectedRouter";
 
 function AppRouter() {
@@ -95,6 +97,8 @@ function AppRouter() {
                            </RequireAuth>
                        }
                 />
+                <Route path="project" element={<Project />} />
+                <Route path="privace-policy" element={<Policy />} />
                 <Route path="login" element={<Login />} />
                 <Route path="registration" element={<Registration/>} />
                 <Route path="forgot-password" element={<ForgotPass/>} />

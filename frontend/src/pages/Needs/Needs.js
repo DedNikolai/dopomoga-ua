@@ -80,8 +80,9 @@ function Needs(props) {
     }
 
     return (
-        <Box sx={{ flexGrow: 1, marginTop: '30px', padding: '0 20px'}}>
-            <Box>
+        <Box sx={{ flexGrow: 1, marginTop: '20px'}}>
+            <h1>Знайти потребу</h1>
+            <Box sx={{ marginTop: '20px'}}>
                 <Grid container spacing={2}>
                     <Grid item xs={12} sm={4} md={4}>
                         <FormControl sx={{ m: 1, width: '100%', margin: 0 }} size="small">
@@ -128,7 +129,7 @@ function Needs(props) {
                         </FormControl>
                     </Grid>
                     <Grid item xs={12} sm={4} md={4} container spacing={2}>
-                        <Grid item xs={8} sm={8} md={8}>
+                        <Grid item xs={6} sm={6} md={6}>
                                 <Button
                                     variant="contained" 
                                     disableElevation
@@ -141,7 +142,7 @@ function Needs(props) {
                                     Filter
                                 </Button>
                         </Grid>
-                        <Grid item xs={4} sm={4} md={4}>
+                        <Grid item xs={6} sm={6} md={6}>
                                 <Button
                                     variant="contained" 
                                     disableElevation
