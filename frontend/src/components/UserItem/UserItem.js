@@ -2,6 +2,8 @@ import React from "react";
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 import Avatar from '@mui/material/Avatar';
+import SearchIcon from '@mui/icons-material/Search';
+import {Link} from "react-router-dom";
 
 function UserItem({user}) {
     const {id, email, firstName, lastName, phone, photo} = user;
@@ -18,6 +20,8 @@ function UserItem({user}) {
             <TableCell align="center">{firstName}</TableCell>
             <TableCell align="center">{lastName}</TableCell>
             <TableCell align="center">{phone}</TableCell>
+            <TableCell align="center"><Link to={`/admin/users/${id}/needs`}><SearchIcon/></Link></TableCell>
+            <TableCell align="center"><Link to={`/admin/users/${id}/helps`}><SearchIcon/></Link></TableCell>
         </TableRow>
     )
 };

@@ -15,12 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -38,6 +33,13 @@ public class UserController {
           @RequestParam(name = "param", required = false) String param,
           @PageableDefault Pageable pageable) {
     Page<UserResponse> response = userService.getUsers(param, pageable);
+    return ResponseEntity.ok(response);
+  }
+
+  @GetMapping("user/{id}")
+  @PreAuthorize("hasAuthority('ADMIN')")
+  public ResponseEntity<UserResponse> getUserById(@PathVariable Long id) {
+    UserResponse response = userService.getUserById(id);
     return ResponseEntity.ok(response);
   }
 

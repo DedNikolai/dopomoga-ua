@@ -7,6 +7,7 @@ import gameforfun.dto.request.UserRequest;
 import gameforfun.dto.response.ApiResponse;
 import gameforfun.dto.response.JwtAuthenticationResponse;
 import gameforfun.dto.response.UserResponse;
+import gameforfun.exeption.ResourceNotFoundException;
 import gameforfun.model.ConfirmationToken;
 import gameforfun.model.PasswordResetToken;
 import gameforfun.model.Role;
@@ -236,6 +237,12 @@ public class UserServiceImpl implements UserService {
   public Page<UserResponse> getUsers(String params, Pageable pageable) {
     Page<User> users = userRepository.findAllByParams(params, pageable);
     return users.map(user -> modelMapper.map(user, UserResponse.class));
+  }
+
+  @Override
+  public UserResponse getUserById(Long id) {
+    User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User", "id", id));
+    return  modelMapper.map(user, UserResponse.class);
   }
 
   public UserPhoto uploadPhoto(byte[] bytes, String imageName) throws Exception {

@@ -15,3 +15,6 @@ export const RESET_PASS_LOADING = 'RESET_PASS_LOADING';
 
 export const USERS_LOADING = 'USERS_LOADING';
 export const SAVE_USERS = 'SAVE_USERS';
+
+export const USER_BY_ID_LOADING = 'USER_BY_ID_LOADING';
+export const SAVE_USER_BY_ID = 'SAVE_USER_BY_ID';

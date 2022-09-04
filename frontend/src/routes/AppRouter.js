@@ -26,6 +26,8 @@ import AdminRegions from "../pages/Admin/Regions/Regions";
 import AdminUsers from "../pages/Admin/Users/Users";
 import CreateCategory from "../pages/Admin/CreateCategory/CreateCategory";
 import CreateRegion from "../pages/Admin/CreateRegion/CreateRegion";
+import UserNeeds from "../pages/Admin/UserNeeds/UserNeeds";
+import UserHelps from "../pages/Admin/UserHelps/UserHelps";
 import ProtectedRouter from "../components/ProtectedRouter/ProtectedRouter";
 
 function AppRouter() {
@@ -113,6 +115,8 @@ function AppRouter() {
                 <Route path="needs" element={<AdminNeeds/>} />
                 <Route path="regions" element={<AdminRegions/>} />
                 <Route path="users" element={<AdminUsers/>} />
+                <Route path="users/:id/needs" element={<UserNeeds/>} />
+                <Route path="users/:id/helps" element={<UserHelps/>} />
                 <Route path="category/create" element={<CreateCategory/>} />
                 <Route path="region/create" element={<CreateRegion/>} />
             </Route>

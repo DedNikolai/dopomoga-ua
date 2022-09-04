@@ -12,7 +12,9 @@ const initialState = {
     resetPassSuccess: false,
     resetPassLoading: false,
     allUsers: {},
-    allUsersLoading: true
+    allUsersLoading: true,
+    userById: null,
+    userByIdLoading: true,
 };
 
 const user = (state = initialState, action) => {
@@ -41,6 +43,10 @@ const user = (state = initialState, action) => {
             return {...state, allUsersLoading: action.payload};
         case TYPES.SAVE_USERS:
             return {...state, allUsers: action.payload};
+        case TYPES.USER_BY_ID_LOADING:
+            return {...state, userByIdLoading: action.payload};
+        case TYPES.SAVE_USER_BY_ID:
+            return {...state, userById: action.payload};
         default:
             return {...state}
     }

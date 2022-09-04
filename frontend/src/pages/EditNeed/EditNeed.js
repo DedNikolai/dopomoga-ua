@@ -53,7 +53,7 @@ const classes = {
 function EditNeed(props) {
     const {categoriesFromDb, categoriesLoading, user, deleteNeed,
         getCategories, getRegions, regions, regionsLoading} = props;
-    const allCategories = categoriesFromDb.content;
+    const allCategories = categoriesFromDb.content || [];
     const allRegions = regions.content;
     const [needLoading, setNeedLoading] = useState(true);
     const [deleted, setDeleted] = useState(false);

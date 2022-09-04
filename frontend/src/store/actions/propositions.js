@@ -2,7 +2,7 @@ import * as TYPES from '../constants/propositions';
 import * as MODAL_TYPES from '../constants/modal';
 import api from '../api/FetchData';
 import {toast} from 'react-toastify';
-import {deleteNeed} from "./need";
+import {deleteNeed, getNeedsByUserId} from "./need";
 
 export const getAllPropositions = (regions, categories, page, size) => dispatch => {
     const regionsParams = regions.length ? regions.map(region => region.regionName).join(',') : '';
@@ -75,4 +75,30 @@ export const openDeleteModal = (id, deleted, deleting) => dispatch => {
     dispatch({type: MODAL_TYPES.OPEN_MODAL})
     dispatch({type: MODAL_TYPES.SET_MODAL_TEXT, payload: 'Видалити Домопогу?'});
     dispatch({type: MODAL_TYPES.SET_MODAL_FUNC, payload: () => deleteProposal(id, deleted, deleting)})
+};
+
+export const getHelpsByUserId = (id, page, size) => dispatch => {
+    dispatch({type: TYPES.USER_PROPOSALS_LOADING, payload: true});
+    api.get(`/propositions/user/${id}?page=${page}&size=${size}`).then(res => {
+        if (res.status === 200) {
+            dispatch({type: TYPES.SAVE_USER_PROPOSALS, payload: res.data})
+        }
+    }).finally(() => {
+        dispatch({type: TYPES.USER_PROPOSALS_LOADING, payload: false})
+    })
+};
+
+export const deleteHelpByAdmin = (id, userId, size) => dispatch => {
+    api.deleteApi(`/propositions/${id}`).then(res => {
+        if (res.status >= 200 && res.status < 300) {
+            dispatch(getHelpsByUserId(userId, 0, size));
+            toast.success(res.data.message);
+        }
+    })
+};
+
+export const openAdminDeleteModal = (id, userId, size) => dispatch => {
+    dispatch({type: MODAL_TYPES.OPEN_MODAL});
+    dispatch({type: MODAL_TYPES.SET_MODAL_TEXT, payload: 'Видалити Потребу?'});
+    dispatch({type: MODAL_TYPES.SET_MODAL_FUNC, payload: () => dispatch(deleteHelpByAdmin(id, userId, 0, size))})
 };

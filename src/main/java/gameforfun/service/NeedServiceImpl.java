@@ -120,4 +120,11 @@ public class NeedServiceImpl implements NeedService {
     Page<Need> needs = needsRepository.findAllByUser(user, pageable);
     return needs.map(need -> modelMapper.map(need, NeedResponse.class));
   }
+
+  @Override
+  public Page<NeedResponse> findNeedsByUser(Long userId, Pageable pageable) {
+    User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "id", userId));
+    Page<Need> needs = needsRepository.findAllByUser(user, pageable);
+    return needs.map(need -> modelMapper.map(need, NeedResponse.class));
+  }
 }
