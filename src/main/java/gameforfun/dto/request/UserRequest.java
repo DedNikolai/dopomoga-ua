@@ -4,6 +4,7 @@ import gameforfun.model.Role;
 import gameforfun.model.UserPhoto;
 import lombok.Data;
 
+import java.util.Date;
 import java.util.Set;
 
 @Data
@@ -15,4 +16,7 @@ public class UserRequest {
   private String lastName;
   private String phone;
   private UserPhoto photo;
+  private Date createdDate;
+  private Date modifiedDate;
+  private Boolean confirmed;
 }

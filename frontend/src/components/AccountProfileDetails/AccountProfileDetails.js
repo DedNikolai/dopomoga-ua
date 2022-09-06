@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {
   CardContent,
   CardHeader,
@@ -7,34 +7,22 @@ import {
 } from '@material-ui/core';
 import Card from '@mui/material/Card';
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import { connect } from 'react-redux';
 import {updateUser} from "../../store/actions/user";
 import {useParams} from "react-router";
-import { Navigate } from 'react-router-dom';
-import {useForm} from 'react-hook-form';
-import {yupResolver} from '@hookform/resolvers/yup';
-import * as yup from 'yup';
-
-const schema = yup.object({
-    email: yup.string().email('Invalid Email').required('Please input email'),
-    firstName: yup.string().required('Please input firstName').min(2, 'To short').max(20, 'To long'),
-    lastName: yup.string().required('Please input lastName').min(2, 'To short').max(20, 'To long'),
-    phone: yup.string().required('Please input phone')
-}).required();
+import {useForm, Controller, useFormState} from 'react-hook-form';
 
 const AccountProfileDetails = ({profile, editProfile}) => {
-  const {firstName, lastName, phone, email} = profile;
   const params = useParams();
-  const id = +params.id;
-  const [created, setCreated] = useState(false);
 
-  const {register, handleSubmit, formState: {errors}, reset} = useForm({
-    resolver: yupResolver(schema),
-    mode: 'onBlur'
-    });
+  const {handleSubmit, control, reset} = useForm({
+    defaultValues: {...profile}
+  });
+    const { errors } = useFormState({ 
+        control
+    })
 
     const onSubmit = (data) => {
         editProfile(data);
@@ -42,15 +30,15 @@ const AccountProfileDetails = ({profile, editProfile}) => {
 
     return (
         <form
-        autoComplete="off"
-        noValidate
-        onSubmit={handleSubmit(onSubmit)}
+            autoComplete="off"
+            noValidate
+            onSubmit={handleSubmit(onSubmit)}
         >
         <Card>
             <CardHeader
-            subheader="The information can be edited"
-            title={firstName + ' ' + lastName}
-            />
+                subheader="The information can be edited"
+                title={profile.firstName + ' ' + profile.lastName}
+                />
             <Divider />
             <CardContent>
             <Grid
@@ -62,67 +50,104 @@ const AccountProfileDetails = ({profile, editProfile}) => {
                 md={6}
                 xs={12}
                 >
-                <TextField
-                    {...register("firstName")}
-                    required
-                    fullWidth
-                    id="firstName"
-                    label={errors.firstName?.message ||"FirstName"}
-                    error={errors.hasOwnProperty('firstName')}
-                    variant='outlined'
-                    defaultValue={firstName}
-                />
+                    <Controller 
+                        control={control}
+                        name="firstName"
+                        rules={{ 
+                                required: 'Введіть імя'
+                                }}
+                                render={({
+                                field: { onChange, value},
+                                }) => (
+                                    <TextField
+                                        value={value}
+                                        onChange={onChange}
+                                        fullWidth
+                                        id="firstName"
+                                        autoFocus
+                                        label={errors.firstName?.message ||"Імя"}
+                                        error={!!errors.firstName?.message}
+                                    /> 
+                                )}
+                     />
                 </Grid>
                 <Grid
                 item
                 md={6}
                 xs={12}
                 >
-                <TextField
-                {...register("lastName")}
-                required
-                fullWidth
-                id="lastName"
-                autoComplete="family-name"
-                label={errors.lastName?.message ||"Last Name"}
-                error={errors.hasOwnProperty('lastName')}
-                variant='outlined'
-                defaultValue={lastName}
-                />
+                    <Controller 
+                        control={control}
+                        name="lastName"
+                        rules={{ 
+                                required: 'Введіть прізвище'
+                                }}
+                                render={({
+                                field: { onChange, value},
+                                }) => (
+                                    <TextField
+                                        value={value}
+                                        onChange={onChange}
+                                        fullWidth
+                                        id="lastName"
+                                        autoFocus
+                                        label={errors.lastName?.message ||"Прізвище"}
+                                        error={!!errors.lastName?.message}
+                                    /> 
+                                )}
+                     />
                 </Grid>
                 <Grid
                 item
                 md={6}
                 xs={12}
                 >
-                <TextField
-                    {...register("email")}
-                    required
-                    fullWidth
-                    id="email"
-                    autoComplete="email"
-                    label={errors.email?.message ||"Email Address"}
-                    error={errors.hasOwnProperty('email')}
-                    variant='outlined'
-                    defaultValue={email}
-                />
+                    <Controller 
+                        control={control}
+                        name="email"
+                        rules={{ 
+                                required: 'Введіть enail'
+                                }}
+                                render={({
+                                field: { onChange, value},
+                                }) => (
+                                    <TextField
+                                        value={value}
+                                        onChange={onChange}
+                                        fullWidth
+                                        id="email"
+                                        autoFocus
+                                        label={errors.email?.message ||"Імя"}
+                                        error={!!errors.email?.message}
+                                    /> 
+                                )}
+                     />
                 </Grid>
                 <Grid
                 item
                 md={6}
                 xs={12}
                 >
-                <TextField
-                    {...register("phone")}
-                    required
-                    fullWidth
-                    id="pnone"
-                    autoComplete="phone"
-                    label={errors.phone?.message ||"Phone"}
-                    error={errors.hasOwnProperty('phone')}
-                    variant='outlined'
-                    defaultValue={phone}
-                />
+                    <Controller 
+                        control={control}
+                        name="phone"
+                        rules={{ 
+                                required: 'Введіть телефон'
+                                }}
+                                render={({
+                                field: { onChange, value},
+                                }) => (
+                                    <TextField
+                                        value={value}
+                                        onChange={onChange}
+                                        fullWidth
+                                        id="phone"
+                                        autoFocus
+                                        label={errors.phone?.message ||"Імя"}
+                                        error={!!errors.phone?.message}
+                                    /> 
+                                )}
+                     />
                 </Grid>
             </Grid>
             </CardContent>
