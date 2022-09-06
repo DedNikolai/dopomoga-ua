@@ -219,6 +219,7 @@ public class UserServiceImpl implements UserService {
     User user = userRepository.findByEmail(authentication.getName()).orElse(null);
     User updatedUser = modelMapper.map(userRequest, User.class);
     updatedUser.setId(user.getId());
+    updatedUser.setPassword(user.getPassword());
     userRepository.save(updatedUser);
     return new ApiResponse(true, "User was updated");
   }

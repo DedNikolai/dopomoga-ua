@@ -85,12 +85,14 @@ public class UserController {
   }
 
   @PostMapping("/user/update")
+  @PreAuthorize("hasAuthority('USER')")
   public ResponseEntity<ApiResponse> updateUser(@RequestBody UserRequest request) {
     ApiResponse response = userService.updateUser(request);
     return ResponseEntity.ok(response);
   }
 
   @PostMapping("/user/image-update")
+  @PreAuthorize("hasAuthority('USER')")
   public ResponseEntity<ApiResponse> uploadImage(@RequestParam MultipartFile image) throws Exception {
     ApiResponse response = userService.updatePhoto(image.getBytes(), image.getOriginalFilename());
     return ResponseEntity.ok(response);
