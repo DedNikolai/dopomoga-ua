@@ -1,7 +1,7 @@
 # Read Me First
 The following was discovered as part of building this project:
 
-* The original package name 'game-for-fun' is invalid and this project uses 'gameforfun' instead.
+* The original package name 'game-for-fun' is invalid and this project uses 'dopomogaua' instead.
 
 # Getting Started
 

@@ -8,10 +8,10 @@
 		<version>2.6.6</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>game-for-fun</groupId>
-	<artifactId>game-for-fun</artifactId>
+	<groupId>dopomoga-ua</groupId>
+	<artifactId>dopomoga-ua</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>game-for-fun</name>
+	<name>dopomoga-ua</name>
 	<description>Game project for Spring Boot</description>
 
 	<properties>
@@ -79,10 +79,10 @@
 			<artifactId>spring-boot-starter-mail</artifactId>
 		</dependency>
 
-		<dependency>
-			<groupId>org.flywaydb</groupId>
-			<artifactId>flyway-core</artifactId>
-		</dependency>
+		<!--<dependency>-->
+			<!--<groupId>org.flywaydb</groupId>-->
+			<!--<artifactId>flyway-core</artifactId>-->
+		<!--</dependency>-->
 
 		<dependency>
 		<groupId>org.springframework.boot</groupId>
@@ -128,15 +128,66 @@
 					</excludes>
 				</configuration>
 			</plugin>
+
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
+                <groupId>com.github.eirslett</groupId>
+                <artifactId>frontend-maven-plugin</artifactId>
+                <version>1.6</version>
                 <configuration>
-                    <source>9</source>
-                    <target>9</target>
+                    <workingDirectory>frontend</workingDirectory>
+                    <installDirectory>target</installDirectory>
                 </configuration>
+                <executions>
+                    <execution>
+                        <id>install node and npm</id>
+                        <goals>
+                            <goal>install-node-and-npm</goal>
+                        </goals>
+                        <configuration>
+                            <nodeVersion>v14.17.0</nodeVersion>
+                            <npmVersion>6.14.13</npmVersion>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>npm install</id>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>install</arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>npm run build</id>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>run build</arguments>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
-        </plugins>
+
+			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>generate-resources</phase>
+						<configuration>
+							<target>
+								<copy todir="${project.build.directory}/classes/public">
+									<fileset dir="${project.basedir}/frontend/build"/>
+								</copy>
+							</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
 	</build>
 
 </project>
