@@ -1,0 +1,1 @@
+web: java -jar target/dopomoga-ua-0.0.1-SNAPSHOT.jar
