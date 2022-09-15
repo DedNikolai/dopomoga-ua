@@ -10,7 +10,7 @@ import java.util.Date;
 @Repository
 public class FileSystemRepository {
 
-    String RESOURCES_DIR = "/img";
+    String RESOURCES_DIR = "img";
 
 //    String RESOURCES_DIR = "D:\\IT\\Projects\\help-ua\\img\\";
 
