@@ -10,10 +10,9 @@ import java.util.Date;
 @Repository
 public class FileSystemRepository {
 
-//    String RESOURCES_DIR = FileSystemRepository.class.getResource("/img")
-//            .getPath();
+    String RESOURCES_DIR = "/img";
 
-    String RESOURCES_DIR = "D:\\IT\\Projects\\help-ua\\img\\";
+//    String RESOURCES_DIR = "D:\\IT\\Projects\\help-ua\\img\\";
 
 
     public String save(byte[] content, String imageName) throws Exception {
