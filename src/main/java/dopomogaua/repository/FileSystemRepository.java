@@ -16,7 +16,7 @@ public class FileSystemRepository {
 
 
     public String save(byte[] content, String imageName) throws Exception {
-        Path newFile = Paths.get(RESOURCES_DIR + new Date().getTime() + "-" + imageName);
+        Path newFile = Paths.get(RESOURCES_DIR + "/" + imageName);
         Files.createDirectories(newFile.getParent());
 
         Files.write(newFile, content);
