@@ -16,7 +16,8 @@ import java.util.Set;
 @NoArgsConstructor
 public class User extends DateAudit {
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @SequenceGenerator(name = "userIdSeq", sequenceName = "user_id_seq", allocationSize = 1)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "userIdSeq")
   private Long id;
 
   @Column(name = "email")

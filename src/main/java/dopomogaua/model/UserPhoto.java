@@ -11,7 +11,8 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class UserPhoto extends DateAudit {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(name = "userPhotoIdSeq", sequenceName = "user_photo_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "userPhotoIdSeq")
     private Long id;
 
     @Column(name = "photo_name")

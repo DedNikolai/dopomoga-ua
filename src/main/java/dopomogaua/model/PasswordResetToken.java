@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -21,7 +22,8 @@ public class PasswordResetToken {
   private static final int EXPIRATION = 60 * 24;
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @SequenceGenerator(name = "passwordResetTokenIdSeq", sequenceName = "password_reset_token_id_seq", allocationSize = 1)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "passwordResetTokenIdSeq")
   private Long id;
 
   private String token;
