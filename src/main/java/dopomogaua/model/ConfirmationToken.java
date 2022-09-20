@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.util.Date;
@@ -22,7 +23,8 @@ import java.util.UUID;
 public class ConfirmationToken {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @SequenceGenerator(name = "confirmationTokenIdSeq", sequenceName = "confirmation_token_id_seq", allocationSize = 1)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "confirmationTokenIdSeq")
   @Column(name="token_id")
   private Long tokenid;
 

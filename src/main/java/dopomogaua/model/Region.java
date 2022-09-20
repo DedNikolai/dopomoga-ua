@@ -14,7 +14,8 @@ import java.util.Set;
 @Data
 public class Region extends DateAudit {
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @SequenceGenerator(name = "regionIdSeq", sequenceName = "region_id_seq", allocationSize = 1)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "regionIdSeq")
   private Long id;
 
   @Column(name = "region_name")

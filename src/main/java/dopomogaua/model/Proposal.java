@@ -16,7 +16,8 @@ import java.util.Set;
 public class Proposal extends DateAudit {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @SequenceGenerator(name = "proposalIdSeq", sequenceName = "proposal_id_seq", allocationSize = 1)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "proposalIdSeq")
   private Long id;
 
   @Column(name = "title")
