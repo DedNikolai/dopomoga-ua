@@ -13,7 +13,7 @@ import PropTypes from 'prop-types';
 function AccountProfile ({profile, updateAvatar}) {
   const [avatarImg, setAavatarImg] = useState(null);
   const [newAvatar, setNewAvatar] = useState(null);
-  
+  console.log(profile)
   const loadPhoto = () => {
     document.querySelector('#avatar_img').click();
   };
