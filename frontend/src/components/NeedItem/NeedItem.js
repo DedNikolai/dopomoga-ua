@@ -8,7 +8,9 @@ import Collapse from '@mui/material/Collapse';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import CustomAvatar from '../CustomAvatar/CustomAvatar'
+import CustomAvatar from '../CustomAvatar/CustomAvatar';
+import Button from '@mui/material/Button';
+import {Link} from "react-router-dom";
 
 const ExpandMore = styled((props) => {
     const { ...other } = props;
@@ -75,6 +77,17 @@ export default function NeedItem({need}) {
                     </Typography>
                     <Typography paragraph>
                         {`Phone: ${need.user.phone}`}
+                    </Typography>
+                    <Typography paragraph>
+                        <Link to={`/profile/chat/user/${need.user.id}`}>
+                            <Button
+                                variant="contained"
+                                disableElevation
+                                color="secondary"
+                            >
+                                Чат
+                            </Button>
+                        </Link>
                     </Typography>
                 </CardContent>
             </Collapse>

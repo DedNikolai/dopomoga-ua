@@ -28,6 +28,11 @@ const settings = [
     },
 
     {
+        name: 'Mої чати',
+        link: '/profile/chats'
+    },
+
+    {
         name: 'Вийти',
         link: ''
     }
