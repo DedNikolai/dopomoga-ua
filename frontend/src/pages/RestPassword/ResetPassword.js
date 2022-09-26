@@ -1,5 +1,5 @@
 import React, {useLayoutEffect} from 'react';
-import {Navigate, useLocation, Link} from "react-router-dom";
+import {Navigate, Link, useSearchParams} from "react-router-dom";
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -15,7 +15,6 @@ import {saveNewPass, resetNewPassPage} from "../../store/actions/user";
 import {useForm} from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import {useSearchParams} from "react-router-dom/index";
 import Preloader from '../../components/Preloader/Preloader';
 
 const schema = yup.object({
