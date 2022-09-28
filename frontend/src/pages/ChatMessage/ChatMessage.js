@@ -1,4 +1,4 @@
-import React, {useRef, useEffect, useLayoutEffect} from 'react';
+import React, {useRef, useState, useEffect, useLayoutEffect} from 'react';
 import {makeStyles} from '@mui/styles';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
@@ -8,6 +8,7 @@ import List from '@mui/material/List';
 import Fab from '@mui/material/Fab';
 import SendIcon from '@mui/icons-material/Send';
 import Message from '../../components/Message/Message';
+import ArrowCircleDownIcon from '@mui/icons-material/ArrowCircleDown';
 
 const scrollStyles = {
     "&::-webkit-scrollbar": {
@@ -17,7 +18,16 @@ const scrollStyles = {
       "&::-webkit-scrollbar-thumb": {
         backgroundColor: "#01579b",
       }
-}
+};
+
+const scrollCursorStyles = {
+   fontSize: '50px',
+   position: 'fixed',
+   bottom: '25vh',
+   right: '100px',
+   opacity: '0.5'
+};
+
 
 const mockMessages = [
     {
@@ -110,7 +120,7 @@ const mockMessages = [
         }
 
     },
-]
+];
 
 const useStyles = makeStyles({
     table: {
@@ -135,14 +145,25 @@ const useStyles = makeStyles({
 const Chat = ({messages}) => {
     const classes = useStyles();
     const messagesEndRef = useRef(null);
+    const [scrollIcon, toggleScrollIcon] = useState(false);
 
     const scrollToBottom = () => {
-        messagesEndRef.current?.scrollIntoView({ behavior: "auto" })
-      }
+        messagesEndRef.current?.scrollIntoView({ behavior: "auto" });
+      };
     
       useLayoutEffect(() => {
         scrollToBottom()
       }, [messages]);
+
+      useEffect(() => {
+          const scroller = document.querySelector('.MuiList-root');
+          scroller.addEventListener('scroll', () => {
+              console.log(scroller.scrollHeight, scroller.scrollTop, scroller.clientHeight)
+              if (scroller.scrollHeight > scroller.scrollTop + scroller.clientHeight + 100) {
+                  toggleScrollIcon(true);
+              }
+          });
+      }, []);
     
 
     return (
@@ -150,9 +171,20 @@ const Chat = ({messages}) => {
             <h1>Чат</h1>
             <Grid container component={Paper} className={classes.chatSection}>
                 <Grid item xs={12}>
-                    <List className={classes.messageArea} sx={scrollStyles}>
+                    <List
+                        className={classes.messageArea}
+                        sx={scrollStyles}
+                        // onScroll={() => toggleScrollIcon(true)}
+                    >
                         {mockMessages.map(item => <Message message={item} key={item.id} />)}
                         <div ref={messagesEndRef} />
+                        {scrollIcon &&
+                            <ArrowCircleDownIcon
+                                onClick={scrollToBottom}
+                                color="primary"
+                                sx={scrollCursorStyles}
+                            />
+                        }
                     </List>
                     <Divider />
                     <Grid container style={{padding: '20px 10px 0'}}>
