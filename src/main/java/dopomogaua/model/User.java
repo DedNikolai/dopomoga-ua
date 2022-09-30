@@ -49,6 +49,16 @@ public class User extends DateAudit {
   @EqualsAndHashCode.Exclude
   private Set<Need> needs;
 
+  @OneToMany(mappedBy = "user")
+  @ToString.Exclude
+  @EqualsAndHashCode.Exclude
+  private Set<Message> messages;
+
+  @ManyToMany(mappedBy = "users", cascade = CascadeType.ALL)
+  @ToString.Exclude
+  @EqualsAndHashCode.Exclude
+  private Set<Chat> chats;
+
   @OneToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "photo_id")
   @ToString.Exclude
