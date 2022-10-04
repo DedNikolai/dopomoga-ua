@@ -1,6 +1,8 @@
 create sequence hibernate_sequence start 10 increment 1;
 create sequence category_id_seq start 10 increment 1;
+create sequence chat_id_seq start 10 increment 1;
 create sequence confirmation_token_id_seq start 10 increment 1;
+create sequence message_id_seq start 10 increment 1;
 create sequence need_id_seq start 10 increment 1;
 create sequence password_reset_token_id_seq start 10 increment 1;
 create sequence proposal_id_seq start 10 increment 1;
@@ -28,12 +30,35 @@ create table if not exists category (
     primary key (id)
 );
 
+create table if not exists chats (
+    id int8 not null,
+    date_created timestamp,
+    date_modified timestamp,
+    primary key (id)
+);
+
+create table if not exists chats_users (
+  chat_id int8 not null,
+  user_id int8 not null,
+  primary key (chat_id, user_id)
+);
+
 create table if not exists confirmation_token (
     token_id int8 not null,
     confirmation_token varchar(255),
     created_date timestamp,
     user_id int8 not null,
     primary key (token_id)
+);
+
+create table if not exists message (
+    id int8 not null,
+    date_created timestamp,
+    date_modified timestamp,
+    text varchar(255),
+    chat int8,
+    owner int8,
+    primary key (id)
 );
 
 create table if not exists needs (
@@ -120,9 +145,25 @@ alter table if exists categories_propositions
     add constraint FKq1yhloki35tq3n3admrjthgoy
     foreign key (proposal_id) references proposal;
 
+alter table if exists chats_users
+    add constraint FKel3edus31mycq8mm6gis7ei9
+    foreign key (user_id) references users;
+
+alter table if exists chats_users
+    add constraint FKq1qn1fsgj8yr4ftcsrtxn7t6k
+    foreign key (chat_id) references chats;
+
 alter table if exists confirmation_token
     add constraint FKah4p1rycwibwm6s9bsyeckq51
     foreign key (user_id) references users;
+
+alter table if exists message
+    add constraint FKeeh3jda0302u9mrntv63kdhlb
+    foreign key (chat) references chats;
+
+alter table if exists message
+    add constraint FKdakuwgnm39b2kl5tr32a4062n
+    foreign key (owner) references users;
 
 alter table if exists needs
     add constraint FK1sltfj5v775qrcr962791r1uw

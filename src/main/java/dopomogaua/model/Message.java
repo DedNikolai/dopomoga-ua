@@ -35,7 +35,7 @@ public class Message extends DateAudit {
   private Chat chat;
 
   @ManyToOne
-  @JoinColumn(name = "user")
+  @JoinColumn(name = "owner")
   @ToString.Exclude
   @EqualsAndHashCode.Exclude
   private User user;
