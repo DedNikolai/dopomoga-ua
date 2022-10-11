@@ -9,6 +9,10 @@ import Fab from '@mui/material/Fab';
 import SendIcon from '@mui/icons-material/Send';
 import Message from '../../components/Message/Message';
 import ArrowCircleDownIcon from '@mui/icons-material/ArrowCircleDown';
+import {useParams} from "react-router";
+import { connect } from 'react-redux';
+import {getChat} from '../../store/actions/chat';
+import Preloader from '../../components/Preloader/Preloader';
 
 const scrollStyles = {
     "&::-webkit-scrollbar": {
@@ -142,29 +146,33 @@ const useStyles = makeStyles({
     }
 });
 
-const Chat = ({messages}) => {
+const Chat = (props) => {
     const classes = useStyles();
     const messagesEndRef = useRef(null);
     const [scrollIcon, toggleScrollIcon] = useState(false);
-
+    const {id} = useParams();
+    const {currentChat = {}, chatLoading, getChatById} = props
+    const {messages} = currentChat;
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: "auto" });
+        toggleScrollIcon(false);
       };
     
       useLayoutEffect(() => {
         scrollToBottom()
-      }, [messages]);
+      }, []);
 
       useEffect(() => {
           const scroller = document.querySelector('.MuiList-root');
           scroller.addEventListener('scroll', () => {
-              console.log(scroller.scrollHeight, scroller.scrollTop, scroller.clientHeight)
               if (scroller.scrollHeight > scroller.scrollTop + scroller.clientHeight + 100) {
                   toggleScrollIcon(true);
               }
           });
+          getChatById(id);
       }, []);
-    
+
+    if (chatLoading) return <Preloader />  
 
     return (
         <div>
@@ -176,7 +184,7 @@ const Chat = ({messages}) => {
                         sx={scrollStyles}
                         // onScroll={() => toggleScrollIcon(true)}
                     >
-                        {mockMessages.map(item => <Message message={item} key={item.id} />)}
+                        {messages.map(item => <Message message={item} key={item.id} />)}
                         <div ref={messagesEndRef} />
                         {scrollIcon &&
                             <ArrowCircleDownIcon
@@ -199,6 +207,19 @@ const Chat = ({messages}) => {
             </Grid>
         </div>
     );
+};
+
+const mapStateToProps = ({chat}) => {
+    return {
+        currentChat: chat.chat,
+        chatLoading: chat.chatLoading
+    }
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        getChatById: id => dispatch(getChat(id))
+    }
 }
 
-export default Chat;
+export default connect(mapStateToProps, mapDispatchToProps)(Chat);

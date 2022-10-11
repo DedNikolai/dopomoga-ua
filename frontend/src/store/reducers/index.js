@@ -5,6 +5,7 @@ import categories from './categories/categories';
 import region from './region/region';
 import propositions from './propositions/propositions';
 import modal from './modal/modal';
+import chat from './chat/chat';
 
 const rootReducer = combineReducers({
     user,
@@ -12,7 +13,8 @@ const rootReducer = combineReducers({
     categories,
     region,
     propositions,
-    modal
+    modal,
+    chat
 });
 
 export default rootReducer;

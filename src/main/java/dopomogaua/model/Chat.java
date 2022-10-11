@@ -28,7 +28,7 @@ public class Chat extends DateAudit {
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "chatIdSeq")
   private Long id;
 
-  @OneToMany(mappedBy = "chat")
+  @OneToMany(mappedBy = "chat", fetch = FetchType.EAGER)
   @ToString.Exclude
   @EqualsAndHashCode.Exclude
   private Set<Message> messages;

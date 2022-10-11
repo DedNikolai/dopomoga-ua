@@ -10,5 +10,5 @@ import java.util.Set;
 
 @Repository
 public interface ChatRepository extends JpaRepository<Chat, Long> {
-  List<Chat> findAllByUsersIn (Set<User> userSet);
+  List<Chat> findDistinctByUsersIn (Set<User> userSet);
 }

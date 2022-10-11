@@ -2,6 +2,7 @@ package dopomogaua.service;
 
 import dopomogaua.dto.request.UserRequest;
 import dopomogaua.dto.response.ChatResponse;
+import dopomogaua.exeption.ResourceNotFoundException;
 import dopomogaua.model.Chat;
 import dopomogaua.model.User;
 import dopomogaua.repository.ChatRepository;
@@ -24,16 +25,18 @@ public class ChatServiceImpl implements ChatService {
     private final ModelMapper modelMapper;
 
     @Override
-    public ChatResponse createChat(UserRequest userRequest) {
-        User user = modelMapper.map(userRequest, User.class);
+    public ChatResponse getChatByUser(Long userId) {
+        User user = userRepository.findById(userId).
+                orElseThrow(() -> new ResourceNotFoundException("User", "id", userId));
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User currentUser = userRepository.findByEmail(authentication.getName()).orElse(null);
         Set<User> users = new HashSet<>();
         users.add(user);
         users.add(currentUser);
-        List<Chat> presentChats = chatRepository.findAllByUsersIn(users);
+
+        List<Chat> presentChats = chatRepository.findDistinctByUsersIn(users);
         if (presentChats.size() > 0) {
-            return modelMapper.map(presentChats.get(1), ChatResponse.class);
+            return modelMapper.map(presentChats.get(0), ChatResponse.class);
         }
 
         Chat newChat = new Chat();
