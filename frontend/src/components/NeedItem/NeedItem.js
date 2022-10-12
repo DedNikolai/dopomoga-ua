@@ -11,6 +11,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import CustomAvatar from '../CustomAvatar/CustomAvatar';
 import Button from '@mui/material/Button';
 import {Link} from "react-router-dom";
+import { connect } from 'react-redux';
 
 const ExpandMore = styled((props) => {
     const { ...other } = props;
@@ -25,7 +26,7 @@ const ExpandMore = styled((props) => {
     }),
 }));
 
-export default function NeedItem({need}) {
+function NeedItem({need, currentUser}) {
     const [expanded, setExpanded] = React.useState(false);
 
     const handleExpandClick = () => {
@@ -84,6 +85,7 @@ export default function NeedItem({need}) {
                                 variant="contained"
                                 disableElevation
                                 color="secondary"
+                                disabled={!hasAuthority(currentUser, 'USER')}
                             >
                                 Чат
                             </Button>
@@ -93,4 +95,18 @@ export default function NeedItem({need}) {
             </Collapse>
         </Card>
     );
-}
+};
+
+const mapStateToProps = ({user}) => {
+    return {
+        currentUser: user.currentUser
+    }
+};
+
+export default connect(mapStateToProps)(NeedItem);
+
+const hasAuthority = (user, authirity) => {
+    if(!user) return false
+    const set = new Set(user?.roles);
+    return set.has(authirity);
+};

@@ -32,100 +32,6 @@ const scrollCursorStyles = {
    opacity: '0.5'
 };
 
-
-const mockMessages = [
-    {
-        id: 1,
-        text: "Hey man, What's up ?",
-        time: "09:30",
-        user: {
-            id: 2,
-            photo: {
-                location: "https://material-ui.com/static/images/avatar/2.jpg"
-            }
-        }
-
-    },
-
-    {
-        id: 2,
-        text: "Hey, Iam Good! What about you ?",
-        time: "09:31",
-        user: {
-            id: 1,
-            photo: {
-                location: "https://material-ui.com/static/images/avatar/3.jpg"
-            }
-        }
-
-    },
-
-    {
-        id: 3,
-        text: "Hey man, What's up ?",
-        time: "09:30",
-        user: {
-            id: 2,
-            photo: {
-                location: "https://material-ui.com/static/images/avatar/2.jpg"
-            }
-        }
-
-    },
-
-    {
-        id: 4,
-        text: "Hey man, What's up ?",
-        time: "09:30",
-        user: {
-            id: 2,
-            photo: {
-                location: "https://material-ui.com/static/images/avatar/2.jpg"
-            }
-        }
-
-    },
-
-    {
-        id: 5,
-        text: "Hey man, What's up ?",
-        time: "09:30",
-        user: {
-            id: 2,
-            photo: {
-                location: "https://material-ui.com/static/images/avatar/2.jpg"
-            }
-        }
-
-    },
-
-    {
-        id: 6,
-        text: "Hey man, What's up ?",
-        time: "09:30",
-        user: {
-            id: 2,
-            photo: {
-                location: "https://material-ui.com/static/images/avatar/2.jpg"
-            }
-        }
-
-    },
-
-    {
-        id: 7,
-        text: "Hey man, What's up ?",
-        time: "09:30",
-        user: {
-            id: 2,
-            photo: {
-                location: "https://material-ui.com/static/images/avatar/2.jpg"
-            }
-        }
-
-    },
-];
-
 const useStyles = makeStyles({
     table: {
         minWidth: 650,
@@ -151,8 +57,14 @@ const Chat = (props) => {
     const messagesEndRef = useRef(null);
     const [scrollIcon, toggleScrollIcon] = useState(false);
     const {id} = useParams();
-    const {currentChat = {}, chatLoading, getChatById} = props
+    const {currentChat = {}, chatLoading, getChatById, currentUser} = props
     const {messages} = currentChat;
+    const textRef = useRef('');
+
+    const sendMessage = () => {
+        console.log(textRef.current.value)
+    }
+
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: "auto" });
         toggleScrollIcon(false);
@@ -197,10 +109,19 @@ const Chat = (props) => {
                     <Divider />
                     <Grid container style={{padding: '20px 10px 0'}}>
                         <Grid item xs={10}>
-                            <TextField id="outlined-basic-email" label="Type Something" fullWidth />
+                            <TextField 
+                                id="outlined-basic-email" 
+                                label="Повідомлення" 
+                                fullWidth
+                                inputRef={textRef} 
+                            />
                         </Grid>
                         <Grid item xs={2} align="right">
-                            <Fab color="primary" aria-label="add"><SendIcon /></Fab>
+                            <Fab color="primary" aria-label="add">
+                                <SendIcon
+                                    onClick={sendMessage} 
+                                />
+                            </Fab>
                         </Grid>
                     </Grid>
                 </Grid>
@@ -209,10 +130,11 @@ const Chat = (props) => {
     );
 };
 
-const mapStateToProps = ({chat}) => {
+const mapStateToProps = ({chat, user}) => {
     return {
         currentChat: chat.chat,
-        chatLoading: chat.chatLoading
+        chatLoading: chat.chatLoading,
+        currentUser: user.currentUser,
     }
 };
 
