@@ -9,3 +9,7 @@ export const getChat = id => dispatch => {
         }
     }).finally(() => dispatch({type: TYPES.CHAT_LOADING, payload: false}))
 }
+
+export const sendMessage = message => {
+    api.post('/messages', message)
+}

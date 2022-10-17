@@ -13,6 +13,7 @@ import {useParams} from "react-router";
 import { connect } from 'react-redux';
 import {getChat} from '../../store/actions/chat';
 import Preloader from '../../components/Preloader/Preloader';
+import { sendMessage } from '../../store/actions/chat';
 
 const scrollStyles = {
     "&::-webkit-scrollbar": {
@@ -61,8 +62,10 @@ const Chat = (props) => {
     const {messages} = currentChat;
     const textRef = useRef('');
 
-    const sendMessage = () => {
-        console.log(textRef.current.value)
+    const send = () => {
+        const message = {user: currentUser, chat: currentChat, text: textRef.current.value}
+        textRef.current.value = '';
+        sendMessage(message);
     }
 
     const scrollToBottom = () => {
@@ -119,7 +122,7 @@ const Chat = (props) => {
                         <Grid item xs={2} align="right">
                             <Fab color="primary" aria-label="add">
                                 <SendIcon
-                                    onClick={sendMessage} 
+                                    onClick={send} 
                                 />
                             </Fab>
                         </Grid>
