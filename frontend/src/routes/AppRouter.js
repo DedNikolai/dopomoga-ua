@@ -31,6 +31,8 @@ import UserHelps from "../pages/Admin/UserHelps/UserHelps";
 import Project from "../pages/Project/Project";
 import Policy from "../pages/Policy/Policy";
 import ProtectedRouter from "../components/ProtectedRouter/ProtectedRouter";
+import ChatMessage from "../pages/ChatMessage/ChatMessage";
+import Chats from "../pages/Chats/Chats";
 
 function AppRouter() {
     return (
@@ -41,6 +43,20 @@ function AppRouter() {
                        element={
                            <RequireAuth>
                                <Profile/>
+                           </RequireAuth>
+                       }
+                />
+                <Route path="profile/chats"
+                       element={
+                           <RequireAuth>
+                               <Chats/>
+                           </RequireAuth>
+                       }
+                />
+                <Route path="profile/chat/user/:id"
+                       element={
+                           <RequireAuth>
+                               <ChatMessage/>
                            </RequireAuth>
                        }
                 />
