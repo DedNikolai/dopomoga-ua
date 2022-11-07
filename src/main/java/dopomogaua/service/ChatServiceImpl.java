@@ -4,6 +4,7 @@ import dopomogaua.dto.request.UserRequest;
 import dopomogaua.dto.response.ChatResponse;
 import dopomogaua.exeption.ResourceNotFoundException;
 import dopomogaua.model.Chat;
+import dopomogaua.model.Message;
 import dopomogaua.model.User;
 import dopomogaua.repository.ChatRepository;
 import dopomogaua.repository.UserRepository;
@@ -13,9 +14,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -36,7 +39,9 @@ public class ChatServiceImpl implements ChatService {
 
         List<Chat> presentChats = chatRepository.findDistinctByUsersIn(users);
         if (presentChats.size() > 0) {
-            return modelMapper.map(presentChats.get(0), ChatResponse.class);
+            Chat currentChat = presentChats.get(0);
+            currentChat.getMessages().sort(Comparator.comparing(Message :: getCreatedDate));
+            return modelMapper.map(currentChat, ChatResponse.class);
         }
 
         Chat newChat = new Chat();

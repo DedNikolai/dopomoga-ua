@@ -57,10 +57,11 @@ const Chat = (props) => {
     const classes = useStyles();
     const messagesEndRef = useRef(null);
     const [scrollIcon, toggleScrollIcon] = useState(false);
+    const [messages, setMessages] = useState([]);
     const {id} = useParams();
-    const {currentChat = {}, chatLoading, getChatById, currentUser} = props
-    const {messages} = currentChat;
+    const {currentChat = {}, chatLoading, getChatById, currentUser} = props;
     const textRef = useRef('');
+    const effectCalled = useRef(false);
 
     const send = () => {
         const message = {user: currentUser, chat: currentChat, text: textRef.current.value}
@@ -75,16 +76,20 @@ const Chat = (props) => {
     
       useLayoutEffect(() => {
         scrollToBottom()
-      }, []);
-
+      }, [messages]);
+      
       useEffect(() => {
-          const scroller = document.querySelector('.MuiList-root');
-          scroller.addEventListener('scroll', () => {
-              if (scroller.scrollHeight > scroller.scrollTop + scroller.clientHeight + 100) {
-                  toggleScrollIcon(true);
-              }
-          });
-          getChatById(id);
+        if (!effectCalled.current) {
+            const scroller = document.querySelector('.MuiList-root');
+            scroller.addEventListener('scroll', () => {
+                if (scroller.scrollHeight > scroller.scrollTop + scroller.clientHeight + 100) {
+                    toggleScrollIcon(true);
+                }
+            });
+            getChatById(id, setMessages);
+            effectCalled.current = true;
+        }
+        
       }, []);
 
     if (chatLoading) return <Preloader />  
@@ -143,7 +148,7 @@ const mapStateToProps = ({chat, user}) => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        getChatById: id => dispatch(getChat(id))
+        getChatById: (id, setMessages) => dispatch(getChat(id, setMessages))
     }
 }
 

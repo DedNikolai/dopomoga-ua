@@ -14,6 +14,6 @@ INSERT INTO message
   (id, date_created, date_modified, text, chat, owner)
 VALUES
   (1, '2020-01-29', '2020-01-29', 'Hello, how ara you', 1, 1),
-  (2, '2020-01-29', '2020-01-29', 'Hy, I am fine and you', 1, 2);
+  (2, '2020-01-30', '2020-01-29', 'Hy, I am fine and you', 1, 2);
 
 

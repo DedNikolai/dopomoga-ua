@@ -12,8 +12,8 @@ public class RootController {
         return "forward:/index.html";
     }
 
-    @GetMapping("/{path:^(?:(?!static|.html).)*$}/**")
-    public String redirectToAdmin(@PathVariable String path) {
-        return "forward:/index.html";
-    }
+//    @GetMapping("/{path:^(?:(?!static|.html).)*$}/**")
+//    public String redirectToAdmin(@PathVariable String path) {
+//        return "forward:/index.html";
+//    }
 }

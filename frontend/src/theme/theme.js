@@ -26,7 +26,7 @@ const theme = createTheme({
             // Name of the slot
             root: {
               // Some CSS
-              height: '140px',
+              height: '170px',
             },
           },
         },

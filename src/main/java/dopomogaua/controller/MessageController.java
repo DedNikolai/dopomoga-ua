@@ -5,11 +5,11 @@ import dopomogaua.dto.response.MessageResponse;
 import dopomogaua.service.MessageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
+import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/v1/messages")
@@ -22,5 +22,14 @@ public class MessageController {
     public ResponseEntity<MessageResponse> createCategory(@RequestBody MessageRequest request) {
         MessageResponse response = messageService.createMessage(request);
         return ResponseEntity.ok(response);
+    }
+
+
+    @SendTo("/topic/chats/{id}")
+    public MessageResponse broadcastMessage(
+            @Payload MessageResponse messageResponse,
+            @DestinationVariable String id
+    ) {
+        return messageResponse;
     }
 }

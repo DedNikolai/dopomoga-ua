@@ -16,6 +16,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -31,7 +33,7 @@ public class Chat extends DateAudit {
   @OneToMany(mappedBy = "chat", fetch = FetchType.EAGER)
   @ToString.Exclude
   @EqualsAndHashCode.Exclude
-  private Set<Message> messages;
+  private List<Message> messages = new ArrayList<>();
 
   @ManyToMany(fetch = FetchType.EAGER)
   @ToString.Exclude
