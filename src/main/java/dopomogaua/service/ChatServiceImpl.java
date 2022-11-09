@@ -2,6 +2,7 @@ package dopomogaua.service;
 
 import dopomogaua.dto.request.UserRequest;
 import dopomogaua.dto.response.ChatResponse;
+import dopomogaua.exeption.AppException;
 import dopomogaua.exeption.ResourceNotFoundException;
 import dopomogaua.model.Chat;
 import dopomogaua.model.Message;
@@ -33,6 +34,11 @@ public class ChatServiceImpl implements ChatService {
                 orElseThrow(() -> new ResourceNotFoundException("User", "id", userId));
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User currentUser = userRepository.findByEmail(authentication.getName()).orElse(null);
+
+        if (currentUser.getId() == user.getId()) {
+            throw new AppException("Can create this chat");
+        }
+
         Set<User> users = new HashSet<>();
         users.add(user);
         users.add(currentUser);
@@ -49,5 +55,20 @@ public class ChatServiceImpl implements ChatService {
         Chat createdChat = chatRepository.save(newChat);
 
         return modelMapper.map(createdChat, ChatResponse.class);
+    }
+
+    @Override
+    public List<ChatResponse> getCurrentUserChats() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = userRepository.findByEmail(authentication.getName()).orElse(null);
+        Set<User> users = new HashSet<>();
+        users.add(currentUser);
+        List<Chat> userChats = chatRepository.findDistinctByUsersIn(users);
+        userChats.sort(Comparator.comparing(Chat :: getCreatedDate));
+
+        List<ChatResponse> response = userChats.stream()
+                .map(chat -> modelMapper.map(chat, ChatResponse.class))
+                .collect(Collectors.toList());
+        return response;
     }
 }

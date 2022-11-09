@@ -79,18 +79,22 @@ function NeedItem({need, currentUser}) {
                     <Typography paragraph>
                         {`Phone: ${need.user.phone}`}
                     </Typography>
-                    <Typography paragraph>
-                        <Link to={`/profile/chat/user/${need.user.id}`}>
-                            <Button
-                                variant="contained"
-                                disableElevation
-                                color="secondary"
-                                disabled={!hasAuthority(currentUser, 'USER')}
-                            >
-                                Чат
-                            </Button>
-                        </Link>
-                    </Typography>
+                    {
+                        need.user.id !== currentUser.id ?
+                            <Typography paragraph>
+                                <Link to={`/profile/chat/user/${need.user.id}`}>
+                                    <Button
+                                        variant="contained"
+                                        disableElevation
+                                        color="secondary"
+                                        disabled={!hasAuthority(currentUser, 'USER')}
+                                    >
+                                        Чат
+                                    </Button>
+                                </Link>
+                            </Typography>
+                            : null
+                    }
                 </CardContent>
             </Collapse>
         </Card>
