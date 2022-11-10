@@ -1,17 +1,13 @@
-import React from 'react';
+import React, {useEffect, useMemo} from 'react';
 import {makeStyles} from '@mui/styles';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import Divider from '@mui/material/Divider';
 import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import Avatar from '@mui/material/Avatar';
-import Fab from '@mui/material/Fab';
-import SendIcon from '@mui/icons-material/Send';
+import { connect } from 'react-redux';
+import { getChats } from '../../store/actions/chat';
+import Preloader from '../../components/Preloader/Preloader';
+import ChatList from '../../components/ChatsList/ChatsList';
 
 const useStyles = makeStyles({
     table: {
@@ -19,7 +15,8 @@ const useStyles = makeStyles({
     },
     chatSection: {
         width: '100%',
-        height: '80vh'
+        height: '80vh',
+        overflow: 'hidden'
     },
     headBG: {
         backgroundColor: '#e0e0e0'
@@ -27,15 +24,20 @@ const useStyles = makeStyles({
     borderRight500: {
         borderRight: '1px solid #e0e0e0'
     },
-    messageArea: {
-        height: '70vh',
-        overflowY: 'auto'
-    }
 });
 
-const Chats = () => {
-    const classes = useStyles();
 
+const Chats = (props) => {
+    const classes = useStyles();
+    const {userChats = [], chatsLoading, getUserChats, currentUser} = props;
+    const chats = useMemo(() => userChats, [userChats])
+
+    useEffect(() => {
+        getUserChats();
+    }, []);
+
+    if (chatsLoading) return <Preloader />
+    console.log(chats)
     return (
         <div>
             <h1>Чати</h1>
@@ -45,38 +47,25 @@ const Chats = () => {
                         <TextField id="outlined-basic-email" label="Search" variant="outlined" fullWidth />
                     </Grid>
                     <Divider />
-                    <List>
-                        <ListItem button key="RemySharp">
-                            <ListItemIcon>
-                                <Avatar alt="Remy Sharp" src="https://material-ui.com/static/images/avatar/1.jpg" />
-                            </ListItemIcon>
-                            <ListItemText primary="John Wick"></ListItemText>
-                        </ListItem>
-                    </List>
-                    <List>
-                        <ListItem button key="RemySharp">
-                            <ListItemIcon>
-                                <Avatar alt="Remy Sharp" src="https://material-ui.com/static/images/avatar/1.jpg" />
-                            </ListItemIcon>
-                            <ListItemText primary="Remy Sharp">Remy Sharp</ListItemText>
-                        </ListItem>
-                        <ListItem button key="Alice">
-                            <ListItemIcon>
-                                <Avatar alt="Alice" src="https://material-ui.com/static/images/avatar/3.jpg" />
-                            </ListItemIcon>
-                            <ListItemText primary="Alice">Alice</ListItemText>
-                        </ListItem>
-                        <ListItem button key="CindyBaker">
-                            <ListItemIcon>
-                                <Avatar alt="Cindy Baker" src="https://material-ui.com/static/images/avatar/2.jpg" />
-                            </ListItemIcon>
-                            <ListItemText primary="Cindy Baker">Cindy Baker</ListItemText>
-                        </ListItem>
-                    </List>
+                    <ChatList chats={chats} currentUser={currentUser} />
                 </Grid>
             </Grid>
         </div>
     );
 }
 
-export default Chats;
+const mapStateToProps = ({chat, user}) => {
+    return {
+        userChats: chat.userChats,
+        chatsLoading: chat.chatsLoading,
+        currentUser: user.currentUser
+    }
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        getUserChats: () => dispatch(getChats())
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Chats);

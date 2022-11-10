@@ -2,7 +2,9 @@ import * as TYPE from '../../constants/chat';
 
 const initialstate = {
     chat: {},
-    chatLoading: true
+    chatLoading: true,
+    userChats: [],
+    chatsLoading: true
 }
 
 const chat = (state = initialstate, action) => {
@@ -11,6 +13,10 @@ const chat = (state = initialstate, action) => {
             return {...state, chat: action.payload};
         case TYPE.CHAT_LOADING:
             return {...state, chatLoading :action.payload};
+        case TYPE.GET_CHAT_BY_USER:
+            return {...state, userChats: action.payload};
+        case TYPE.CHATs_LOADING:
+            return {...state, chatsLoading :action.payload};
         default:
             return {...state}
     }

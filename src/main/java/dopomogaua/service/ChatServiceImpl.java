@@ -65,6 +65,7 @@ public class ChatServiceImpl implements ChatService {
         users.add(currentUser);
         List<Chat> userChats = chatRepository.findDistinctByUsersIn(users);
         userChats.sort(Comparator.comparing(Chat :: getCreatedDate));
+        userChats.stream().forEach(chat -> chat.setMessages(null));
 
         List<ChatResponse> response = userChats.stream()
                 .map(chat -> modelMapper.map(chat, ChatResponse.class))
