@@ -1,10 +1,11 @@
-import React, {memo} from "react";
+import React from "react";
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import Avatar from '@mui/material/Avatar';
 import {Link} from "react-router-dom";
+import { connect } from 'react-redux';
 
 const listStyles = {
     "&::-webkit-scrollbar": {
@@ -19,6 +20,7 @@ const listStyles = {
 }
 
 function ChatList({chats, currentUser}) {
+    console.log('chat list')
     return (
         <List sx={listStyles}>
             {
@@ -46,4 +48,15 @@ function ChatList({chats, currentUser}) {
     )
 }
 
-export default memo(ChatList);
+const mapStateToProps = ({user}) => {
+    return {
+        currentUser: user.currentUser
+    }
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ChatList);

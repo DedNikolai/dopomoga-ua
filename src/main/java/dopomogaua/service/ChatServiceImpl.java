@@ -1,6 +1,5 @@
 package dopomogaua.service;
 
-import dopomogaua.dto.request.UserRequest;
 import dopomogaua.dto.response.ChatResponse;
 import dopomogaua.exeption.AppException;
 import dopomogaua.exeption.ResourceNotFoundException;
@@ -58,12 +57,23 @@ public class ChatServiceImpl implements ChatService {
     }
 
     @Override
-    public List<ChatResponse> getCurrentUserChats() {
+    public List<ChatResponse> getCurrentUserChats(String param) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User currentUser = userRepository.findByEmail(authentication.getName()).orElse(null);
         Set<User> users = new HashSet<>();
         users.add(currentUser);
-        List<Chat> userChats = chatRepository.findDistinctByUsersIn(users);
+        List<Chat> userChats = chatRepository.findDistinctByUsersIn(users).stream().
+                filter(chat -> {
+                    if (param == null || param == "") {
+                        return true;
+                    }
+                    User opositeUser = chat.getUsers().stream()
+                            .filter(user -> user.getId() != currentUser.getId()).collect(Collectors.toList()).get(0);
+                    String firstName = opositeUser.getFirstName().toLowerCase();
+                    String secondName = opositeUser.getLastName().toLowerCase();
+                    String substr = param.toLowerCase();
+                    return firstName.contains(substr) || secondName.contains(substr);
+                }).collect(Collectors.toList());
         userChats.sort(Comparator.comparing(Chat :: getCreatedDate));
         userChats.stream().forEach(chat -> chat.setMessages(null));
 

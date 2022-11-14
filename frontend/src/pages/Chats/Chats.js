@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {makeStyles} from '@mui/styles';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
@@ -29,42 +29,56 @@ const useStyles = makeStyles({
 
 const Chats = (props) => {
     const classes = useStyles();
-    const {userChats = [], chatsLoading, getUserChats, currentUser} = props;
-    const chats = useMemo(() => userChats, [userChats])
+    const {userChats = [], chatsLoading, getUserChats} = props;
+    const effect = useRef(false);
+    const searchParam = useRef('');
+
+    const search = () => {
+        getUserChats(searchParam.current.value);
+    }
 
     useEffect(() => {
-        getUserChats();
+        if (!effect.current) {
+            getUserChats('');
+            effect.current = true
+        }
     }, []);
 
-    if (chatsLoading) return <Preloader />
-    console.log(chats)
     return (
         <div>
             <h1>Чати</h1>
             <Grid container component={Paper} className={classes.chatSection}>
                 <Grid item xs={12} className={classes.borderRight500}>
                     <Grid item xs={12} style={{padding: '10px'}}>
-                        <TextField id="outlined-basic-email" label="Search" variant="outlined" fullWidth />
+                        <TextField 
+                            id="outlined-basic-email" 
+                            label="Search" 
+                            variant="outlined" 
+                            fullWidth
+                            inputRef={searchParam}
+                            onChange={search} 
+                        />
                     </Grid>
                     <Divider />
-                    <ChatList chats={chats} currentUser={currentUser} />
+                    {
+                        chatsLoading ? <Preloader /> : <ChatList chats={userChats} />
+                    }                   
                 </Grid>
             </Grid>
         </div>
     );
 }
 
-const mapStateToProps = ({chat, user}) => {
+const mapStateToProps = ({chat}) => {
     return {
         userChats: chat.userChats,
         chatsLoading: chat.chatsLoading,
-        currentUser: user.currentUser
     }
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        getUserChats: () => dispatch(getChats())
+        getUserChats: (param) => dispatch(getChats(param))
     }
 }
 

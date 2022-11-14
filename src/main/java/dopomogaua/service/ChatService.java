@@ -7,5 +7,5 @@ import java.util.List;
 public interface ChatService {
     ChatResponse getChatByUser(Long userId);
 
-    List<ChatResponse> getCurrentUserChats();
+    List<ChatResponse> getCurrentUserChats(String param);
 }
