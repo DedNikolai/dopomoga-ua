@@ -46,3 +46,12 @@ export const getChat = (id, setMessages) => dispatch => {
 export const sendMessage = message => {
     api.post('/messages', message)
 }
+
+export const getChats = (param) => dispatch => {
+    dispatch({type: TYPES.CHATs_LOADING, payload: true});
+    api.get(`/chats/user/current?param=${param}`).then(res => {
+        if (res.status >= 200 && res.status < 300) {
+            dispatch({type: TYPES.GET_CHAT_BY_USER, payload: res.data})
+        }
+    }).finally(() => dispatch({type: TYPES.CHATs_LOADING, payload: false}))
+}

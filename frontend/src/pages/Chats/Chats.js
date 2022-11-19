@@ -1,17 +1,15 @@
-import React from 'react';
+import React, {useEffect, useRef} from 'react';
 import {makeStyles} from '@mui/styles';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import Divider from '@mui/material/Divider';
 import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import Avatar from '@mui/material/Avatar';
-import Fab from '@mui/material/Fab';
-import SendIcon from '@mui/icons-material/Send';
+import { connect } from 'react-redux';
+import { getChats } from '../../store/actions/chat';
+import Preloader from '../../components/Preloader/Preloader';
+import ChatList from '../../components/ChatsList/ChatsList';
+import InputAdornment from '@mui/material/InputAdornment';
+import ClearOutlinedIcon from '@mui/icons-material/ClearOutlined';
 
 const useStyles = makeStyles({
     table: {
@@ -19,7 +17,8 @@ const useStyles = makeStyles({
     },
     chatSection: {
         width: '100%',
-        height: '80vh'
+        height: '80vh',
+        overflow: 'hidden'
     },
     headBG: {
         backgroundColor: '#e0e0e0'
@@ -27,14 +26,30 @@ const useStyles = makeStyles({
     borderRight500: {
         borderRight: '1px solid #e0e0e0'
     },
-    messageArea: {
-        height: '70vh',
-        overflowY: 'auto'
-    }
 });
 
-const Chats = () => {
+
+const Chats = (props) => {
     const classes = useStyles();
+    const {userChats = [], chatsLoading, getUserChats} = props;
+    const effect = useRef(false);
+    const searchParam = useRef('');
+
+    const search = () => {
+        getUserChats(searchParam.current.value);
+    }
+
+    useEffect(() => {
+        if (!effect.current) {
+            getUserChats('');
+            effect.current = true
+        }
+    }, []);
+
+    const clearSearch = () => {
+        getUserChats('');
+        searchParam.current.value = '';
+    }
 
     return (
         <div>
@@ -42,41 +57,41 @@ const Chats = () => {
             <Grid container component={Paper} className={classes.chatSection}>
                 <Grid item xs={12} className={classes.borderRight500}>
                     <Grid item xs={12} style={{padding: '10px'}}>
-                        <TextField id="outlined-basic-email" label="Search" variant="outlined" fullWidth />
+                        <TextField 
+                            id="outlined-basic-email" 
+                            label="Search" 
+                            variant="outlined" 
+                            fullWidth
+                            inputRef={searchParam}
+                            onChange={search}
+                            InputProps={{
+                                endAdornment: <InputAdornment position="end">
+                                                <ClearOutlinedIcon  onClick={clearSearch}/>
+                                              </InputAdornment>
+                              }} 
+                        />
                     </Grid>
                     <Divider />
-                    <List>
-                        <ListItem button key="RemySharp">
-                            <ListItemIcon>
-                                <Avatar alt="Remy Sharp" src="https://material-ui.com/static/images/avatar/1.jpg" />
-                            </ListItemIcon>
-                            <ListItemText primary="John Wick"></ListItemText>
-                        </ListItem>
-                    </List>
-                    <List>
-                        <ListItem button key="RemySharp">
-                            <ListItemIcon>
-                                <Avatar alt="Remy Sharp" src="https://material-ui.com/static/images/avatar/1.jpg" />
-                            </ListItemIcon>
-                            <ListItemText primary="Remy Sharp">Remy Sharp</ListItemText>
-                        </ListItem>
-                        <ListItem button key="Alice">
-                            <ListItemIcon>
-                                <Avatar alt="Alice" src="https://material-ui.com/static/images/avatar/3.jpg" />
-                            </ListItemIcon>
-                            <ListItemText primary="Alice">Alice</ListItemText>
-                        </ListItem>
-                        <ListItem button key="CindyBaker">
-                            <ListItemIcon>
-                                <Avatar alt="Cindy Baker" src="https://material-ui.com/static/images/avatar/2.jpg" />
-                            </ListItemIcon>
-                            <ListItemText primary="Cindy Baker">Cindy Baker</ListItemText>
-                        </ListItem>
-                    </List>
+                    {
+                        chatsLoading ? <Preloader /> : <ChatList chats={userChats} />
+                    }                   
                 </Grid>
             </Grid>
         </div>
     );
 }
 
-export default Chats;
+const mapStateToProps = ({chat}) => {
+    return {
+        userChats: chat.userChats,
+        chatsLoading: chat.chatsLoading,
+    }
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        getUserChats: (param) => dispatch(getChats(param))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Chats);
