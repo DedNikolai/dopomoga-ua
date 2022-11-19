@@ -20,7 +20,6 @@ const listStyles = {
 }
 
 function ChatList({chats, currentUser}) {
-    console.log('chat list')
     return (
         <List sx={listStyles}>
             {

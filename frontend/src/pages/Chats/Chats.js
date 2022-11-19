@@ -8,6 +8,8 @@ import { connect } from 'react-redux';
 import { getChats } from '../../store/actions/chat';
 import Preloader from '../../components/Preloader/Preloader';
 import ChatList from '../../components/ChatsList/ChatsList';
+import InputAdornment from '@mui/material/InputAdornment';
+import ClearOutlinedIcon from '@mui/icons-material/ClearOutlined';
 
 const useStyles = makeStyles({
     table: {
@@ -44,6 +46,11 @@ const Chats = (props) => {
         }
     }, []);
 
+    const clearSearch = () => {
+        getUserChats('');
+        searchParam.current.value = '';
+    }
+
     return (
         <div>
             <h1>Чати</h1>
@@ -56,7 +63,12 @@ const Chats = (props) => {
                             variant="outlined" 
                             fullWidth
                             inputRef={searchParam}
-                            onChange={search} 
+                            onChange={search}
+                            InputProps={{
+                                endAdornment: <InputAdornment position="end">
+                                                <ClearOutlinedIcon  onClick={clearSearch}/>
+                                              </InputAdornment>
+                              }} 
                         />
                     </Grid>
                     <Divider />
