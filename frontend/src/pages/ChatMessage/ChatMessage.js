@@ -94,9 +94,11 @@ const Chat = (props) => {
 
     if (chatLoading) return <Preloader />  
 
+    const opositeUser = currentChat.users.filter(user => user.id !== currentUser.id)[0];
+
     return (
         <div>
-            <h1>Чат</h1>
+            <h2>Чат з {opositeUser.firstName + ' ' + opositeUser.lastName}</h2>
             <Grid container component={Paper} className={classes.chatSection}>
                 <Grid item xs={12}>
                     <List
@@ -116,7 +118,7 @@ const Chat = (props) => {
                     </List>
                     <Divider />
                     <Grid container style={{padding: '20px 10px 0'}}>
-                        <Grid item xs={10}>
+                        <Grid item xs={10} sx={{paddingRight: '10px'}}>
                             <TextField 
                                 id="outlined-basic-email" 
                                 label="Повідомлення" 

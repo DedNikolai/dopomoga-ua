@@ -1,1 +1,1 @@
-web: java -jar target/dopomoga-ua-0.0.1-SNAPSHOT.jar
+web: java -jar target/dopomoga-ua-1.0-SNAPSHOT.jar

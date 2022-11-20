@@ -21,6 +21,36 @@ const theme = createTheme({
 
     components: {
         // Name of the component
+        MuiContainer: {
+            styleOverrides: {
+                // Name of the slot
+                root: {
+                    // Some CSS
+                    padding: '0 10px',
+                },
+            },
+        },
+
+        MuiTypography: {
+            styleOverrides: {
+                // Name of the slot
+                root: {
+                    // Some CSS
+                    marginRight: '10px'
+                },
+            },
+        },
+
+        // MuiButtonBase: {
+        //     styleOverrides: {
+        //         // Name of the slot
+        //         root: {
+        //             // Some CSS
+        //             padding: '10px 10px 10px 0 !important'
+        //         },
+        //     },
+        // },
+
         MuiCardContent: {
           styleOverrides: {
             // Name of the slot

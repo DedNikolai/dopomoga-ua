@@ -70,8 +70,9 @@ const Header = ({currentUser}) => {
                             aria-haspopup="true"
                             onClick={handleOpenNavMenu}
                             color="inherit"
+                            sx={{paddingLeft: '0'}}
                         >
-                            <MenuIcon />
+                            <MenuIcon/>
                         </IconButton>
                         <Menu
                             id="menu-appbar"
@@ -105,7 +106,7 @@ const Header = ({currentUser}) => {
                             variant="h6"
                             noWrap
                             component="div"
-                            sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' }, color: '#fff' }}
+                            sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' }, color: '#fff', fontSize: '16px' }}
                         >
                             DOPOMOGA-UA
                         </Typography>

@@ -30,7 +30,12 @@ function AuthMenu() {
                         variant="h6"
                         noWrap
                         component="div"
-                        sx={{ mr: 2, display: { xs: 'flex', md: 'flex' }, color: '#fff', fontSize: '16px' }}
+                        sx={{ mr: 2,
+                            display: { xs: 'flex', md: 'flex' }, color: '#fff',
+                            fontSize: '16px',
+                            marginLeft: '10px',
+                            marginRight: '0'
+                        }}
                     >
                         {item.name}
                     </Typography>
