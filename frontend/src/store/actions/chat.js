@@ -16,7 +16,7 @@ export const getChat = (id, setMessages) => dispatch => {
             const onConnect = () => {
                 const Stomp = require("stompjs");
                 let SockJS = require("sockjs-client");
-                SockJS = new SockJS("http://localhost:8000/ws");
+                SockJS = new SockJS("https://dopomoga-ua.herokuapp.com/ws");
                 stompClient = Stomp.over(SockJS);
                 const token = LocalStorageService.get(LocalStorageService.Keys.TOKEN);
                 stompClient.connect({'X-Authorization': `token ${token}`}, onConnected, onError);
