@@ -32,7 +32,6 @@ function stringAvatar(name) {
 }
 
 export default function CustomAvatar({image, name}) {
-
     if (image) {
         return <Avatar alt={name} src={image} />
     }

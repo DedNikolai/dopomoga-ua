@@ -1,9 +1,10 @@
 import React from "react";
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 import Grid from '@mui/material/Grid';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
-import Avatar from '@mui/material/Avatar';
+import CustomAvatar from "../../components/CustomAvatar/CustomAvatar";
+
 
 const currentUserClass = {
     display: 'flex', 
@@ -17,7 +18,10 @@ function Message({message, currentUser}) {
         <ListItem>
             <Grid container>
                 <Grid item xs={12} sx={isUserMessage ? currentUserClass : null}>
-                    <Avatar alt="Cindy Baker" src={message.user.photo.location} />
+                    <CustomAvatar
+                        image={message.user.photo?.location}
+                        name={currentUser.firstName + ' ' + currentUser.lastName}
+                    />
                 </Grid>
                 <Grid item xs={12}>
                     <ListItemText align={isUserMessage ? "right" : "left"} primary={message.text}></ListItemText>

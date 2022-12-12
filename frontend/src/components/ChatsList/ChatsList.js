@@ -3,9 +3,9 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import Avatar from '@mui/material/Avatar';
 import {Link} from "react-router-dom";
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
+import CustomAvatar from "../../components/CustomAvatar/CustomAvatar";
 
 const listStyles = {
     "&::-webkit-scrollbar": {
@@ -33,7 +33,10 @@ function ChatList({chats, currentUser}) {
                         >
                             <ListItem button>
                                 <ListItemIcon>
-                                    <Avatar src={user.photo.location} />
+                                    <CustomAvatar
+                                        image={user.photo?.location}
+                                        name={user.firstName + ' ' + user.lastName}
+                                    />
                                 </ListItemIcon>
                                 <ListItemText>{user.firstName + ' ' + user.lastName}</ListItemText>
                             </ListItem>

@@ -118,8 +118,8 @@ public class UserServiceImpl implements UserService {
   }
 
   private String getAppUrl(HttpServletRequest request) {
-//    return "http://localhost:3000";
-    return "https://dopomoga-ua.herokuapp.com";
+    return "http://localhost:3000";
+//    return "https://dopomoga-ua.herokuapp.com";
 //    return "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
   }
 
