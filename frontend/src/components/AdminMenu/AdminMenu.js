@@ -50,9 +50,9 @@ function AdminMenu({signOut, currentUser}) {
         <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar alt="Remy Sharp"
+                    <Avatar
                             sx={{backgroundColor: theme.palette.primary.green}}
-                            childre='ADMIN'
+                            children='A'
                     />
                 </IconButton>
             </Tooltip>

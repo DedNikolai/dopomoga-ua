@@ -20,7 +20,8 @@ public class MessageServiceImpl implements MessageService{
     public MessageResponse createMessage(MessageRequest messageRequest) {
         Message message = modelMapper.map(messageRequest, Message.class);
         Message savedMessage = messageRepository.save(message);
-        messagingTemplate.convertAndSend(String.format("/topic/chats/%s", savedMessage.getChat().getId()),
+        Long id = savedMessage.getChat().getId();
+        messagingTemplate.convertAndSend(String.format("/topic/chats/%s", id),
                 modelMapper.map(savedMessage, MessageResponse.class));
         return modelMapper.map(savedMessage, MessageResponse.class);
     }

@@ -14,10 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,17 +35,26 @@ public class ChatServiceImpl implements ChatService {
             throw new AppException("Can create this chat");
         }
 
-        Set<User> users = new HashSet<>();
-        users.add(user);
-        users.add(currentUser);
+        List<Chat> currentUserChats = chatRepository.findAllByUsers(currentUser);
+        List<Chat> presentChats = currentUserChats.stream().filter(chat -> {
+           List<User> presentUserList = chat.getUsers().stream().filter(item -> item.getId() == user.getId()).collect(Collectors.toList());
+           if (presentUserList.size() > 0) {
+               return  true;
+           }
 
-        List<Chat> presentChats = chatRepository.findDistinctByUsersIn(users);
+           return false;
+        }).collect(Collectors.toList());
+
         if (presentChats.size() > 0) {
             Chat currentChat = presentChats.get(0);
             currentChat.getMessages().sort(Comparator.comparing(Message :: getCreatedDate));
             return modelMapper.map(currentChat, ChatResponse.class);
         }
 
+
+        Set<User> users = new HashSet<>();
+        users.add(currentUser);
+        users.add(user);
         Chat newChat = new Chat();
         newChat.setUsers(users);
         Chat createdChat = chatRepository.save(newChat);
