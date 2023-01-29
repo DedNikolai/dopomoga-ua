@@ -67,6 +67,8 @@ const theme = createTheme({
                 badge: {
                     // Some CSS
                     color: '#fff',
+                    top: '5px',
+                    right: '5px'
                 },
             },
         },

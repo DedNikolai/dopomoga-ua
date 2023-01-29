@@ -58,6 +58,7 @@ create table if not exists message (
     text varchar(255),
     chat int8,
     owner int8,
+    is_read boolean default false,
     primary key (id)
 );
 

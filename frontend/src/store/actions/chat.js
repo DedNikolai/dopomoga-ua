@@ -1,6 +1,8 @@
 import * as TYPES from '../constants/chat';
+import * as USER_TYPES from '../constants/user';
 import api from '../api/FetchData';
 import LocalStorageService from '../../services/localStorageService';
+import {getCurrentUser} from "./user";
 
 let stompClient = null;
 
@@ -11,7 +13,11 @@ export const getChat = (id, setMessages) => dispatch => {
             dispatch({type: TYPES.GET_CHAT, payload: res.data})
             setMessages(res.data.messages)
 
-
+            api.get('/users/current').then(res => {
+                if (res.status === 200) {
+                    dispatch({type: USER_TYPES.SAVE_USER, payload: res.data})
+                }
+            })
 
             const onConnect = () => {
                 const Stomp = require("stompjs");
@@ -37,6 +43,8 @@ export const getChat = (id, setMessages) => dispatch => {
             const onMessageReceived = (msg) => {
                 let newMsg = JSON.parse(msg.body);
                 setMessages( arr => [...arr, newMsg]);
+                newMsg.isRead = true;
+                api.put(`/messages/${newMsg.id}`, newMsg)
             };
 
             onConnect()

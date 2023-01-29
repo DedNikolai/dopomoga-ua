@@ -40,4 +40,7 @@ public class Message extends DateAudit {
   @EqualsAndHashCode.Exclude
   private User user;
 
+  @Column(name = "is_read", columnDefinition = "boolean default false")
+  private Boolean isRead = false;
+
 }

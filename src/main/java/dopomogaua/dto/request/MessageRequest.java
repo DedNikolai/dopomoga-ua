@@ -12,4 +12,5 @@ public class MessageRequest {
     private String text;
     private UserResponse user;
     private ChatRequest chat;
+    private Boolean isRead;
 }

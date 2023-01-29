@@ -10,4 +10,5 @@ public class MessageResponse {
     private Date createdDate;
     private String text;
     private UserResponse user;
+    private Boolean isRead;
 }

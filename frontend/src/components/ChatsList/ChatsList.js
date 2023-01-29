@@ -6,6 +6,7 @@ import ListItemText from '@mui/material/ListItemText';
 import {Link} from "react-router-dom";
 import {connect} from 'react-redux';
 import CustomAvatar from "../../components/CustomAvatar/CustomAvatar";
+import Badge from '@mui/material/Badge';
 
 const listStyles = {
     "&::-webkit-scrollbar": {
@@ -25,6 +26,7 @@ function ChatList({chats, currentUser}) {
             {
                 chats.map(chat => {
                     const user = chat.users[0].id === currentUser.id ? chat.users[1] : chat.users[0];
+
                     return (
                         <Link 
                             to={`/profile/chat/user/${user.id}`} 
@@ -33,10 +35,12 @@ function ChatList({chats, currentUser}) {
                         >
                             <ListItem button>
                                 <ListItemIcon>
-                                    <CustomAvatar
-                                        image={user.photo?.location}
-                                        name={user.firstName + ' ' + user.lastName}
-                                    />
+                                    <Badge badgeContent={chat.messages.length} color="error">
+                                        <CustomAvatar
+                                            image={user.photo?.location}
+                                            name={user.firstName + ' ' + user.lastName}
+                                        />
+                                    </Badge>
                                 </ListItemIcon>
                                 <ListItemText>{user.firstName + ' ' + user.lastName}</ListItemText>
                             </ListItem>

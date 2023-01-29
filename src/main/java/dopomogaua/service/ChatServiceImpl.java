@@ -7,6 +7,7 @@ import dopomogaua.model.Chat;
 import dopomogaua.model.Message;
 import dopomogaua.model.User;
 import dopomogaua.repository.ChatRepository;
+import dopomogaua.repository.MessageRepository;
 import dopomogaua.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -23,6 +24,7 @@ public class ChatServiceImpl implements ChatService {
     private final UserRepository userRepository;
     private final ChatRepository chatRepository;
     private final ModelMapper modelMapper;
+    private final MessageRepository messageRepository;
 
     @Override
     public ChatResponse getChatByUser(Long userId) {
@@ -48,6 +50,9 @@ public class ChatServiceImpl implements ChatService {
         if (presentChats.size() > 0) {
             Chat currentChat = presentChats.get(0);
             currentChat.getMessages().sort(Comparator.comparing(Message :: getCreatedDate));
+            List<Message> messages = messageRepository.findAllByChatAndIsReadFalse(currentChat);
+            messages.forEach(message -> message.setIsRead(true));
+            messageRepository.saveAll(messages);
             return modelMapper.map(currentChat, ChatResponse.class);
         }
 
@@ -81,7 +86,10 @@ public class ChatServiceImpl implements ChatService {
                     return firstName.contains(substr) || secondName.contains(substr);
                 }).collect(Collectors.toList());
         userChats.sort(Comparator.comparing(Chat :: getCreatedDate));
-        userChats.stream().forEach(chat -> chat.setMessages(null));
+        userChats.stream().forEach(chat -> {
+            List<Message> messages = chat.getMessages().stream().filter(message -> !message.getIsRead()).collect(Collectors.toList());
+            chat.setMessages(messages);
+        });
 
         List<ChatResponse> response = userChats.stream()
                 .map(chat -> modelMapper.map(chat, ChatResponse.class))
