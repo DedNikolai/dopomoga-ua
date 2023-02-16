@@ -57,6 +57,7 @@ const Chat = (props) => {
     const classes = useStyles();
     const messagesEndRef = useRef(null);
     const [scrollIcon, toggleScrollIcon] = useState(false);
+    const [stompClient, setStompClient] = useState(null);
     const [messages, setMessages] = useState([]);
     const {id} = useParams();
     const {currentChat = {}, chatLoading, getChatById, currentUser} = props;
@@ -86,14 +87,24 @@ const Chat = (props) => {
                     toggleScrollIcon(true);
                 }
             });
-            getChatById(id, setMessages);
+            getChatById(id, setMessages, currentUser, stompClient, setStompClient);
             effectCalled.current = true;
         }
+
+         return () => {
+             console.log('disconnect');
+             console.log(stompClient);
+              if (stompClient) {
+
+                  stompClient.disconnect();
+              }
+          }
         
-      }, []);
+      }, [stompClient]);
 
-    if (chatLoading) return <Preloader />  
+    if (chatLoading) return <Preloader />;
 
+    console.log(stompClient);
     const opositeUser = currentChat.users.filter(user => user.id !== currentUser.id)[0];
 
     return (
@@ -150,7 +161,7 @@ const mapStateToProps = ({chat, user}) => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        getChatById: (id, setMessages) => dispatch(getChat(id, setMessages))
+        getChatById: (id, setMessages, currentUser, stomp, setStomp) => dispatch(getChat(id, setMessages, currentUser, stomp, setStomp))
     }
 }
 

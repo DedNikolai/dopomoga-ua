@@ -54,6 +54,11 @@ public class User extends DateAudit {
   @EqualsAndHashCode.Exclude
   private Set<Message> messages;
 
+  @OneToMany(mappedBy = "recipient")
+  @ToString.Exclude
+  @EqualsAndHashCode.Exclude
+  private Set<Message> receivedmessages;
+
   @ManyToMany(mappedBy = "users", cascade = CascadeType.ALL)
   @ToString.Exclude
   @EqualsAndHashCode.Exclude

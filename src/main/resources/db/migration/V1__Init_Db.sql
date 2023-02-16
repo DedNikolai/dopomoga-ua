@@ -59,6 +59,7 @@ create table if not exists message (
     chat int8,
     owner int8,
     is_read boolean default false,
+    recipient int8,
     primary key (id)
 );
 

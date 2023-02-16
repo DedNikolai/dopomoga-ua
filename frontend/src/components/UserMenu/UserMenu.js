@@ -55,7 +55,7 @@ function UserMenu({signOut, currentUser}) {
         handleCloseUserMenu();
         signOut()
     };
-    
+
     return (
         <Box sx={{ flexGrow: 0, marginLeft: '20px' }}>
             <Tooltip title="Open settings">

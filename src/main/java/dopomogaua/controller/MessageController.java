@@ -26,7 +26,7 @@ public class MessageController {
 
     @PutMapping("{id}")
     @PreAuthorize("hasAuthority('USER')")
-    public ResponseEntity<MessageResponse> updateMessage(@RequestBody MessageRequest request, @RequestParam Long id) {
+    public ResponseEntity<MessageResponse> updateMessage(@RequestBody MessageRequest request, @PathVariable Long id) {
         MessageResponse response = messageService.changeMessage(request, id);
         return ResponseEntity.ok(response);
     }

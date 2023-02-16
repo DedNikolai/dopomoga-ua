@@ -121,7 +121,7 @@ public class UserServiceImpl implements UserService {
   public UserResponse getCurrentUser() {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     User user = userRepository.findByEmail(authentication.getName()).orElse(null);
-    List<Message> unreadMessages = messageRepository.findAllByUserAndIsReadFalse(user);
+    List<Message> unreadMessages = messageRepository.findAllByRecipientAndIsReadFalse(user);
     UserResponse currentUser = modelMapper.map(user, UserResponse.class);
     currentUser.setMessageNotes(unreadMessages.size());
     return currentUser;

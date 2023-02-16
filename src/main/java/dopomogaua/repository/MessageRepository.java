@@ -10,7 +10,7 @@ import java.util.List;
 
 @Repository
 public interface MessageRepository extends JpaRepository<Message, Long> {
-    List<Message> findAllByUserAndIsReadFalse (User user);
+    List<Message> findAllByChatAndRecipientAndIsReadFalse (Chat chat, User user);
 
-    List<Message> findAllByChatAndIsReadFalse (Chat chat);
+    List<Message> findAllByRecipientAndIsReadFalse (User user);
 }

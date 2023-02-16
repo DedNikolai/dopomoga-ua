@@ -50,7 +50,7 @@ public class ChatServiceImpl implements ChatService {
         if (presentChats.size() > 0) {
             Chat currentChat = presentChats.get(0);
             currentChat.getMessages().sort(Comparator.comparing(Message :: getCreatedDate));
-            List<Message> messages = messageRepository.findAllByChatAndIsReadFalse(currentChat);
+            List<Message> messages = messageRepository.findAllByChatAndRecipientAndIsReadFalse(currentChat, currentUser);
             messages.forEach(message -> message.setIsRead(true));
             messageRepository.saveAll(messages);
             return modelMapper.map(currentChat, ChatResponse.class);
@@ -87,7 +87,9 @@ public class ChatServiceImpl implements ChatService {
                 }).collect(Collectors.toList());
         userChats.sort(Comparator.comparing(Chat :: getCreatedDate));
         userChats.stream().forEach(chat -> {
-            List<Message> messages = chat.getMessages().stream().filter(message -> !message.getIsRead()).collect(Collectors.toList());
+            List<Message> messages = chat.getMessages().stream().filter(message -> {
+                return !message.getIsRead() && message.getUser().getId() != currentUser.getId();
+            }).collect(Collectors.toList());
             chat.setMessages(messages);
         });
 
