@@ -49,7 +49,7 @@ const Header = ({currentUser}) => {
     };
 
     return (
-        <AppBar position="static">
+        <AppBar position="fixed">
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
                     <Link to="/" variant="body2">
