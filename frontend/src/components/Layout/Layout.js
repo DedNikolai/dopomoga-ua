@@ -15,7 +15,7 @@ function Layout({getCurrentUser, currentUserLoading, authLoading}) {
     return (
         <Fragment>
             <Header/>
-            <Box sx={{padding: '0 20px 30px'}}>
+            <Box sx={{padding: '65px 20px 0', marginBottom: '10px'}}>
                 {Loader({loading: currentUserLoading || authLoading})(Outlet)}
             </Box>
         </Fragment>

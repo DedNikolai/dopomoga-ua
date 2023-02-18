@@ -13,14 +13,14 @@ const currentUserClass = {
 
 function Message({message, currentUser}) {
     const isUserMessage = message.user.id === currentUser.id;
-
+    console.log(message)
     return (
         <ListItem>
             <Grid container>
                 <Grid item xs={12} sx={isUserMessage ? currentUserClass : null}>
                     <CustomAvatar
                         image={message.user.photo?.location}
-                        name={currentUser.firstName + ' ' + currentUser.lastName}
+                        name={message.user.firstName + ' ' + message.user.lastName}
                     />
                 </Grid>
                 <Grid item xs={12}>
