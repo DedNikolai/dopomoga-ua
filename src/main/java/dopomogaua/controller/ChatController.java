@@ -17,7 +17,7 @@ public class ChatController {
 
     @GetMapping("user/{id}")
     @PreAuthorize("hasAuthority('USER')")
-    public ResponseEntity<ChatResponse> createCategory(@PathVariable Long id) {
+    public ResponseEntity<ChatResponse> getChatByUser(@PathVariable Long id) {
         ChatResponse response = chatService.getChatByUser(id);
         return ResponseEntity.ok(response);
     }

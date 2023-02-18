@@ -19,4 +19,5 @@ public class UserResponse {
   private Date createdDate;
   private Date modifiedDate;
   private Boolean confirmed;
+  private Integer messageNotes;
 }

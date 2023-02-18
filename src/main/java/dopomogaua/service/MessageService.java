@@ -6,4 +6,6 @@ import dopomogaua.model.Message;
 
 public interface MessageService {
     MessageResponse createMessage(MessageRequest messageRequest);
+
+    MessageResponse changeMessage(MessageRequest messageRequest, Long id);
 }

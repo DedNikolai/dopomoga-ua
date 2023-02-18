@@ -7,13 +7,15 @@ VALUES
 INSERT INTO users
   (id, date_created, date_modified, email, password, confirmed, first_name, last_name, phone, photo_id)
 VALUES
+  (3, '2020-01-29', '2020-01-29', 'admin@gmail.com', '$2a$04$kDaKwBckpCiw/PFvV4qpqOdMl9oypQVKaXvANn.oeKC9xrGiYdfmO', true, 'ADMIN', 'ADMIN', '063-123-45-67', 1),
   (1, '2020-01-29', '2020-01-29', 'test@gmail.com', '$2a$04$kDaKwBckpCiw/PFvV4qpqOdMl9oypQVKaXvANn.oeKC9xrGiYdfmO', true, 'Test', 'Testovich', '063-123-45-67', 1),
   (2, '2020-01-29', '2020-01-29', 'nikolai.blashchuk@gmail.com', '$2a$04$kDaKwBckpCiw/PFvV4qpqOdMl9oypQVKaXvANn.oeKC9xrGiYdfmO', true, 'Nick', 'Blashchuk', '063-621-37-29', 2);
 
 INSERT INTO users_roles
   (user_id, role)
 VALUES
-  (1, 'ADMIN'),
+  (1, 'USER'),
+  (3, 'ADMIN'),
   (2, 'USER');
 
 INSERT INTO category

@@ -8,16 +8,8 @@ import dopomogaua.dto.response.ApiResponse;
 import dopomogaua.dto.response.JwtAuthenticationResponse;
 import dopomogaua.dto.response.UserResponse;
 import dopomogaua.exeption.ResourceNotFoundException;
-import dopomogaua.model.ConfirmationToken;
-import dopomogaua.model.PasswordResetToken;
-import dopomogaua.model.Role;
-import dopomogaua.model.User;
-import dopomogaua.model.UserPhoto;
-import dopomogaua.repository.ConfirmationTokenRepository;
-import dopomogaua.repository.FileSystemRepository;
-import dopomogaua.repository.PasswordResetTokenRepository;
-import dopomogaua.repository.UserPhotoRepository;
-import dopomogaua.repository.UserRepository;
+import dopomogaua.model.*;
+import dopomogaua.repository.*;
 import dopomogaua.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -58,6 +50,7 @@ public class UserServiceImpl implements UserService {
   private final ModelMapper modelMapper;
   private final FileSystemRepository fileSystemRepository;
   private final UserPhotoRepository userPhotoRepository;
+  private final MessageRepository messageRepository;
 
   @Override
   public JwtAuthenticationResponse authenticateUser(LoginRequest loginRequest) {
@@ -102,7 +95,7 @@ public class UserServiceImpl implements UserService {
     email.setSubject("Complete Registration!");
     email.setText("To confirm your account, please click here : " + " \r\n" + url);
     email.setTo(savedUser.getEmail());
-    email.setFrom("nikolai.blashchuk@gmail.com");
+    email.setFrom("nb.it.testing@gmail.com");
 
     mailSender.send(email);
 
@@ -124,10 +117,14 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
+  @Transactional
   public UserResponse getCurrentUser() {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     User user = userRepository.findByEmail(authentication.getName()).orElse(null);
-    return modelMapper.map(user, UserResponse.class);
+    List<Message> unreadMessages = messageRepository.findAllByRecipientAndIsReadFalse(user);
+    UserResponse currentUser = modelMapper.map(user, UserResponse.class);
+    currentUser.setMessageNotes(unreadMessages.size());
+    return currentUser;
   }
 
   @Override
@@ -165,7 +162,7 @@ public class UserServiceImpl implements UserService {
     email.setSubject(subject);
     email.setText(body);
     email.setTo(user.getEmail());
-    email.setFrom("nikolai.blashchuk@gmail.com");
+    email.setFrom("nb.it.testing@gmail.com");
     return email;
   }
 

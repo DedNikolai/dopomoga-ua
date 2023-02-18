@@ -9,7 +9,8 @@ import MenuItem from '@mui/material/MenuItem';
 import {Link} from "react-router-dom";
 import {userSignOut} from '../../store/actions/user';
 import {connect} from 'react-redux';
-import CustomAvatar from '../../components/CustomAvatar/CustomAvatar'
+import CustomAvatar from '../../components/CustomAvatar/CustomAvatar';
+import Badge from '@mui/material/Badge';
 
 const settings = [
     {
@@ -59,10 +60,12 @@ function UserMenu({signOut, currentUser}) {
         <Box sx={{ flexGrow: 0, marginLeft: '20px' }}>
             <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <CustomAvatar
-                        image={currentUser.photo?.location}
-                        name={currentUser.firstName + ' ' + currentUser.lastName}
-                    />
+                    <Badge badgeContent={currentUser.messageNotes} color="error">
+                        <CustomAvatar
+                            image={currentUser.photo?.location}
+                            name={currentUser.firstName + ' ' + currentUser.lastName}
+                        />
+                    </Badge>
                 </IconButton>
             </Tooltip>
             <Menu

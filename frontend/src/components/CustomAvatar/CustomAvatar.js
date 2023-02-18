@@ -38,7 +38,9 @@ export default function CustomAvatar({image, name}) {
 
     return (
         <Stack direction="row" spacing={2}>
-            <Avatar {...stringAvatar(name)} />
+            <Avatar
+                {...stringAvatar(name)}
+            />
         </Stack>
     );
 }
