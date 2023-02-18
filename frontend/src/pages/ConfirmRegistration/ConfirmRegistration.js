@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {Link, Navigate, useSearchParams} from "react-router-dom";
 import Avatar from '@mui/material/Avatar';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -15,9 +15,14 @@ import Preloader from '../../components/Preloader/Preloader';
 function ConfirmRegistration({currentUser, userConfirming, confirmRegistration}) {
     const [searchParams] = useSearchParams();
     const token = searchParams.get('token');
+    const effectCalled = useRef(false);
 
     useEffect(() => {
-        confirmRegistration(token);
+        if (!effectCalled.current) {
+            confirmRegistration(token);
+            effectCalled.current = true;
+        }
+
     }, []);
 
     if (currentUser) {

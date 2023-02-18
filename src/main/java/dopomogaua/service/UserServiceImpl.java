@@ -95,7 +95,7 @@ public class UserServiceImpl implements UserService {
     email.setSubject("Complete Registration!");
     email.setText("To confirm your account, please click here : " + " \r\n" + url);
     email.setTo(savedUser.getEmail());
-    email.setFrom("nikolai.blashchuk@gmail.com");
+    email.setFrom("nb.it.testing@gmail.com");
 
     mailSender.send(email);
 
@@ -162,7 +162,7 @@ public class UserServiceImpl implements UserService {
     email.setSubject(subject);
     email.setText(body);
     email.setTo(user.getEmail());
-    email.setFrom("nikolai.blashchuk@gmail.com");
+    email.setFrom("nb.it.testing@gmail.com");
     return email;
   }
 

@@ -104,7 +104,6 @@ const Chat = (props) => {
 
     if (chatLoading) return <Preloader />;
 
-    console.log(stompClient);
     const opositeUser = currentChat.users.filter(user => user.id !== currentUser.id)[0];
 
     return (
